@@ -11,6 +11,11 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 
+\hypersetup{hypertex=true,
+	colorlinks=true,
+	linkcolor=blue,
+	anchorcolor=blue,
+	citecolor=blue}
 \fancyhf{}
 \chead{\textbf{算法设计与分析}}
 \fancyhead[r]{\bfseries\thepage}
@@ -46,20 +51,21 @@
 	\hspace*{20pt}利用快排的思想，将数组从中间划分为两段$A[0\cdots n/2],\ A[n/2+1\cdots n]$，且左段元素小于右段元素。\\
 	\hspace*{20pt}对于子序列继续递归划分，得到$A[0\cdots n/2^m],A[n/2^m+1\cdots n/2^{m-1}]\cdots A[n-n/2^m+1\cdots n]$，当$2^m=k\rightarrow m=\log k$时，划分完成。\\
 	\hspace*{20pt}因此寻找中位数划分的函数时间复杂度应为$O(n)$，划分函数的递归方程为$W(n)=2W(n/2)+O(n)$，划分左右子段$\log k$次，方能使得总的时间复杂度达到$O(n\log k)$。
-	\paragraph{具体算法实现请见下页}
+	\paragraph{具体算法实现请见下页}算法k-sorted：算法~\ref{k-sorted}
 	\paragraph{算法时间复杂度}
 	对于findk\_pos，每次递归代价为$O(n)$，每次子问题缩小为原来一半的规模，且子问题只有一个，可列出递归方程为$T(n)=T(n/2)+O(n)$，由主定理可以得出$T(n)=O(n)$。\\
-	\hspace*{20pt}对于k\_sorted，每次递归代价为$O(n)$，每次子问题缩小为原来一半，而需要划分左右两序列，子问题为两个，可列出递归方程为$W(n)=2W(n/2)+O(n)$，注意结束条件为递归调用了$\log k$层，每层代价均为$O(n)$，因此时间复杂度为$O(n\log k)$。
+	\hspace*{20pt}对于k\_sorted，每次递归代价为$O(n)$，每次子问题缩小为原来一半，而需要划分左右两序列，子问题为两个，可列出递归方程为$W(n)=2W(n/2)+O(n)$，注意结束条件为递归调用了$\log k$层，每层代价均为$O(n)$，因此时间复杂度为$O(n\log k)$满足题目要求。
 	
 	\begin{algorithm}
 		\caption{k-sorted算法}
-		\label{Sort}
+		\label{k-sorted}
 		\begin{algorithmic}[1]
 			\Require 待划分序列$A[1\cdots n]$，划分段数$k$
 			\Ensure 划分后的的序列$A$
 			\Function{findk\_pos}{$A,k\_pos,begin,end$} \verb|\\|返回该段数组第k小\\
 			\verb|/*|
-			利用快排思想，选定一个key，将大于key的元素放在其右边，小于key放于左边。判断key插入的位置是否为k，如果是则函数返回，如果插入位置大于k说明第k小位于左子序列对左边递归寻找，否则对右子序列递归寻找。
+			利用快排思想，选定一个key，将大于key的元素放在其右边，小于key放于左边。\\
+			判断key插入的位置是否为k，如果是则函数返回，如果插入位置大于k说明第k小位于左子序列对左边递归寻找，否则对右子序列递归寻找。
 			\verb|*/|
 			\State $split \gets begin,key \gets A[begin]$
 			\For{$i\gets begin+1\ to\ end$}
@@ -88,13 +94,52 @@
 	\subsection*{problem 6.9}
 	\markright{problem 6.9}
 	\addcontentsline{toc}{subsection}{problem 6.9}
+	\paragraph{算法分析}同样利用快速排序的思想，令螺钉为A，螺母为B：\\
+	\hspace*{20pt}1. 在A数组中拿一个，根据A和螺母的大小关系，可以分成三部分，B1：比螺钉小的，B2：比螺钉大的，B3：完全匹配的。\\
+	\hspace*{20pt}2. 用B3，同样可以把A分为三部分，A1：比螺母小的，A2：比螺母大的，A3：完全匹配的。\\
+	\hspace*{20pt}3. B1与A1匹配，B2与A2匹配，分别执行上述算法，直至全部匹配。
+	\paragraph{具体算法实现请见下页}算法match：算法~\ref{match算法}
+	\paragraph{算法时间复杂度}对于每次递归代价：\\
+	\hspace*{20pt}首先寻找分割点，遍历了一次数组，时间复杂度为$O(n)$。\\
+	\hspace*{20pt}之后根据分割点遍历A,B两数组将其分为两部分，时间复杂度为$O(n)$。\\
+	\hspace*{20pt}最后将分割后两序列进行递归操作继续划分。因此每次递归操作总的代价为$O(n)$。\\
+	\hspace*{20pt}因此可推得算法的递推方程为$T(n)=2T(n/2)+O(n)$。根据主定理可得时间复杂度为$O(n\log n)$满足题目要求。
 	\begin{algorithm}
-		\caption{对三个数进行排序}
-		\label{Sort}
+		\caption{match算法}
+		\label{match算法}
 		\begin{algorithmic}[1]
-			\Require 含有三个各不相同的整数的序列$A=\{a,b,c\}$
-			\Ensure 从小到大排好序的序列$A$
+			\Require 螺钉数组$A$，螺母数组$B$
+			\Ensure 螺钉螺母对应下标一一匹配后的数组
+			\Function{MATCH}{$A,B,l,r$}\\
+			\verb|/*|找到分割点，mark记录B等于A首元素的下标，\\
+			count记录B中小于A的个数\verb|*/|
+			\State {$count \gets 0, mark\gets 0$}
+			\For{$i\gets l \ to\ r$}
+			\State{$A[l]==B[i]\ ?\ mark=i$}
+			\State{$A[l]>B[i]\ ?\ count+=1$}
+			\EndFor\\
+			\verb|/*|为B和A的左半部分分配count个元素\verb|*/|
+			\State{$swap(A[l],A[l+count])\ swap(B[mark],B[l+count])$} 
+			\State{$mark\gets mark+count, i\gets l,\ j \gets r$}
+			\While{$i<mark$\ \textbf{and}\ $j>mark$}\verb|\\|将a分成两部分
+			\While{$i<mark$\ \textbf{and}\ $a[i]<b[mark]$}\State{$i\gets i+1$}
+			\EndWhile
+			\While{$j>mark$\ \textbf{and}\ $a[j]<b[mark]$}\State{$j\gets j-1$}
+			\EndWhile
+			\State{$swap(a[i++],a[j--])$}
+			\EndWhile
 			
+			\State{$i\gets l,\ j \gets r$}
+			\While{$i<mark$\ \textbf{and}\ $j>mark$}\verb|\\|将b分成两部分
+			\While{$i<mark$\ \textbf{and}\ $b[i]<a[mark]$}\State{$i\gets i+1$}
+			\EndWhile
+			\While{$j>mark$\ \textbf{and}\ $b[j]<a[mark]$}\State{$j\gets j-1$}
+			\EndWhile
+			\State{$swap(b[i++],b[j--])$}
+			\EndWhile
+			\State{$l<mark\ ? \ match(A,B,l,mark-1)$}
+			\State{$r<mark\ ? \ match(A,B,mark+1,r)$}
+			\EndFunction
 		\end{algorithmic}
 	\end{algorithm}
 	\newpage
