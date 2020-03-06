@@ -1,0 +1,131 @@
+\documentclass[11pt]{ctexart}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{algorithm}
+%\usepackage{algorithm2e}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\fancyhf{}
+\chead{\textbf{算法设计与分析}}
+\fancyhead[r]{\bfseries\thepage}
+\fancyhead[l]{\bfseries\rightmark}
+\renewcommand{\headrulewidth}{0.4pt} % 注意不用 \setlength
+\renewcommand{\footrulewidth}{0pt}
+
+\floatname{algorithm}{算法}
+\renewcommand{\algorithmicrequire}{\textbf{输入:}}
+\renewcommand{\algorithmicensure}{\textbf{输出:}}
+
+\begin{titlepage}
+	\title{\Huge\textbf{算法设计与分析 作业二}\\}
+	\author{\Large\textbf{作者}：吴润泽 \and{\Large\textbf{学号}：181860109}\\
+	\\
+	\and {\Large\textbf{Email}：181860109@smail.nju.edu.cn}\\}
+	\date{\Large\today}
+\end{titlepage}
+
+\begin{document}
+	\maketitle
+
+	\tableofcontents
+		\newpage
+	\section*{PART I}
+	\markright{PART I}
+	\addcontentsline{toc}{section}{PART I}
+	\subsection*{problem 6.8}
+	\markright{problem 6.8}
+	\addcontentsline{toc}{subsection}{problem 6.8}
+		
+	\paragraph{算法分析}假定n总是k的倍数，且n和k都是2的幂。\\
+	\hspace*{20pt}利用快排的思想，将数组从中间划分为两段$A[0\cdots n/2],\ A[n/2+1\cdots n]$，且左段元素小于右段元素。\\
+	\hspace*{20pt}对于子序列继续递归划分，得到$A[0\cdots n/2^m],A[n/2^m+1\cdots n/2^{m-1}]\cdots A[n-n/2^m+1\cdots n]$，当$2^m=k\rightarrow m=\log k$时，划分完成。\\
+	\hspace*{20pt}因此寻找中位数划分的函数时间复杂度应为$O(n)$，划分函数的递归方程为$W(n)=2W(n/2)+O(n)$，划分左右子段$\log k$次，方能使得总的时间复杂度达到$O(n\log k)$。
+	\paragraph{具体算法实现请见下页}
+	\paragraph{算法时间复杂度}
+	对于findk\_pos，每次递归代价为$O(n)$，每次子问题缩小为原来一半的规模，且子问题只有一个，可列出递归方程为$T(n)=T(n/2)+O(n)$，由主定理可以得出$T(n)=O(n)$。\\
+	\hspace*{20pt}对于k\_sorted，每次递归代价为$O(n)$，每次子问题缩小为原来一半，而需要划分左右两序列，子问题为两个，可列出递归方程为$W(n)=2W(n/2)+O(n)$，注意结束条件为递归调用了$\log k$层，每层代价均为$O(n)$，因此时间复杂度为$O(n\log k)$。
+	
+	\begin{algorithm}
+		\caption{k-sorted算法}
+		\label{Sort}
+		\begin{algorithmic}[1]
+			\Require 待划分序列$A[1\cdots n]$，划分段数$k$
+			\Ensure 划分后的的序列$A$
+			\Function{findk\_pos}{$A,k\_pos,begin,end$} \verb|\\|返回该段数组第k小\\
+			\verb|/*|
+			利用快排思想，选定一个key，将大于key的元素放在其右边，小于key放于左边。判断key插入的位置是否为k，如果是则函数返回，如果插入位置大于k说明第k小位于左子序列对左边递归寻找，否则对右子序列递归寻找。
+			\verb|*/|
+			\State $split \gets begin,key \gets A[begin]$
+			\For{$i\gets begin+1\ to\ end$}
+				\State {$A[i]\leq key\ ?\ swap(A[++split],A[i])$}
+			\EndFor
+			\State{$split>k\_pos\ ?\ \Return\ findk\_pos(A,k\_pos,begin,split-1)$}
+			\State{$split<k\_pos\ ?\ \Return\ findk\_pos(A,k\_pos,split+1,end)$}
+			\State \Return{$split$}
+			\EndFunction
+			\Function {K\_SORTED}{$A,begin,end,k,count=1$}\\
+			\verb|/*|
+			count记录当前的段数,每次调用findk\_pos，A被分为[begin,mid]和[mid+1,end]两段，段数变为原来两倍，且左段元素小于右段，调用层数达到logk层算法结束，否则继续划分左右子序列
+			\verb|*/|
+			\State{$mid\gets (end-begin)/2+begin,count\gets count*2$}
+			\State{$findk\_pos(A,mid,begin,end)$}
+			\If{$count==k$}\\划分k段，算法结束
+			\State \Return{$A$}
+			\EndIf
+			\State{$k\_sorted(A,begin,mid,k,count)$}
+			\State{$k\_sorted(A,mid+1,end,k,count)$}
+			\EndFunction
+		\end{algorithmic}
+	\end{algorithm}
+
+	\newpage
+	\subsection*{problem 6.9}
+	\markright{problem 6.9}
+	\addcontentsline{toc}{subsection}{problem 6.9}
+	\begin{algorithm}
+		\caption{对三个数进行排序}
+		\label{Sort}
+		\begin{algorithmic}[1]
+			\Require 含有三个各不相同的整数的序列$A=\{a,b,c\}$
+			\Ensure 从小到大排好序的序列$A$
+			
+		\end{algorithmic}
+	\end{algorithm}
+	\newpage
+	\subsection*{problem 6.10}
+	
+	\markright{problem 6.10}
+	\addcontentsline{toc}{subsection}{problem 6.10}
+	\subsection*{problem 6.13}
+	\markright{problem 6.13}
+	\addcontentsline{toc}{subsection}{problem 6.13}
+	\subsection*{problem 6.15}
+	\markright{problem 6.15}
+	\addcontentsline{toc}{subsection}{problem 6.15}
+	\newpage
+	\section*{PART II}
+	\markright{PART II}
+	\addcontentsline{toc}{section}{PART II}
+	\subsection*{problem 7.1}
+	\markright{problem 7.1}
+	\addcontentsline{toc}{subsection}{problem 7.1}
+	\newpage
+	\subsection*{problem 7.2}
+	\markright{problem 7.2}
+	\addcontentsline{toc}{subsection}{problem 7.2}
+	\subsection*{problem 7.3}
+	\markright{problem 7.3}
+	\addcontentsline{toc}{subsection}{problem 7.3}
+	\subsection*{problem 7.4}
+	\markright{problem 7.4}
+	\addcontentsline{toc}{subsection}{problem 7.4}
+	\subsection*{problem 7.6}	
+	\markright{problem 7.6}
+	\addcontentsline{toc}{subsection}{problem 7.6}
+\end{document}
