@@ -177,10 +177,10 @@
 			\Function{Merge}{$A,l,mid,r$}
 			\State{$n1\gets mid-l+1,\ n2\gets r-mid$}\\
 			\verb|Let L[1..(n1+1)] and R[1..(n2+1)] be new arrays|
-			\For{$i\gets\ to\ n1$}
+			\For{$i\gets1\ to\ n1$}
 			\State{$L[i]\gets A[l-i+1]$}
 			\EndFor
-			\For{$i\gets\ to\ n2$}
+			\For{$i\gets1\ to\ n2$}
 			\State{$R[i]\gets A[mid+i]$}
 			\EndFor
 			\State{$L[n1+1]\gets \infty,\ R[n2+1]\gets \infty$}
@@ -202,36 +202,133 @@
 	\addcontentsline{toc}{subsection}{problem 6.13}
 	\subsubsection*{(1)}
 	\paragraph{\textcircled{1}证明}易知当R中元素个数为13倍数相同元素均为k个，则R中存在13个常见元素。假设可以有14个常见元素：则这14个常见元素个数总和$sum>=14\cdot\lceil\frac{n}{13}\rceil>n$，与总元素个数为n矛盾。\\
-	因此R中存在最多13个不同的常见元素，证毕。
-	\paragraph{\textcircled{2}证明}x为$R[1..n]$中常见元素，则设x在$R[1..\lfloor\frac{n}{2}\rfloor]$中有$k_1$个，在$R[\lfloor\frac{n}{2}\rfloor+1..n]$中有$k_2$个，则$k_1+k_2>=\lceil\frac{n}{13}\rceil$，假设x在两个数组中均不为常见元素，则$k_1<\lceil\frac{n}{26}\rceil,\ k_2<\lceil\frac{n}{26}\rceil$，即$k_1+k_2<2\cdot\lceil\frac{n}{26}\rceil<\lceil\frac{n}{13}\rceil$，产生矛盾，因此x至少是两个数组中一个数组的常见元素。
-	\paragraph{\textcircled{3}算法设计}
-	\subsubsection*{(2)}
-	\subsubsection*{(3)}
-	\textbf{存在}\\
+	因此R中存在最多13个不同的常见元素，证毕。\\
+	\textbf{\textcircled{2}证明}x为$R[1..n]$中常见元素，则设x在$R[1..\lfloor\frac{n}{2}\rfloor]$中有$k_1$个，在$R[\lfloor\frac{n}{2}\rfloor+1..n]$中有$k_2$个，则$k_1+k_2>=\lceil\frac{n}{13}\rceil$，假设x在两个数组中均不为常见元素，则$k_1<\lceil\frac{n}{26}\rceil,\ k_2<\lceil\frac{n}{26}\rceil$，即$k_1+k_2<2\cdot\lceil\frac{n}{26}\rceil<\lceil\frac{n}{13}\rceil$，产生矛盾，因此x至少是两个数组中一个数组的常见元素。\\
+	\textbf{\textcircled{3}算法设计}\\
+	1. 当数组元素小于k时，返回数组元素，否则递归划分为两部分。\\
+	2. 得到的两部分结果依次与原数组进行统计，如果元素出现次数不低于$\lceil\frac{n}{k}\rceil$，则加入结果集合，重复前两步直至算法完成。\\
+	3. \textbf{时间复杂度}合并时两部分结果个数不超过2k，每个元素遍历依次数组，即合并复杂度为$O(n)$，
+	递归产生两个子问题，子问题规模为原来一半，可列出递归方程为$T(n)=2T(\frac{n}{2})+O(n)$，根据主定理可得$T(n)=O(n\log n)$。\\
 	$
 	\label{Majority算法}
 	\begin{aligned}
 	\hline
-	&\textbf{算法5 }Majority\text{ 算法}\\
+	&\textbf{算法4 }Majority\text{ 算法}\\
 	\hline
-	&1.\textbf{Function}\ Majority\ (A[1\cdots n])\\
+	&1.\textbf{Function}\ Majority\ (Ori,A,n,L,R,k)\verb|          \\|\text{Ori为原始数组拷贝}\\
+	&2.\hspace*{20pt}\textbf{if}\ len(A)\leq k\ \textbf{do }\textbf{return }A
+	\verb|               \\|\text{递归终点，返回数组即可}\\
+	&4.\hspace*{20pt}mid\gets (L+R)/2\\
+	&5.\hspace*{20pt}LS \gets Majority(Ori,A,L,mid,k)\verb|          \\|\text{进行递归划分}\\
+	&6.\hspace*{20pt}RS \gets Majority(Ori,A,mid+1,R,k))\\
+	&7.\hspace*{20pt}ans\gets set\_init() \verb|                    \\|\text{初始化集合ans}\\
+	&8.\hspace*{20pt}\textbf{for each }\ item\textbf{ in } LS\textbf{ and }RS\textbf{ do}\\
+	&9.\hspace*{40pt}\textbf{if }count(item,Ori)\geq\lceil\frac{n}{k}\rceil\textbf{ do}\verb|    \\|\text{count函数用于统计元素在原数组中出现次数}\\
+	&10.\hspace*{55pt}ans.add(item)\verb|            \\|\text{将满足结果的item加入集合ans}\\
+	&11.\hspace*{15pt}\textbf{return }ans\\
+	\hline
+	\end{aligned}
+	$
+	\subsubsection*{(2)}
+	正常工作
+	\subsubsection*{(3)}
+	\paragraph{存在}采用摩尔投票算法\\
+	1. 数组中次数超过n/2的数最多1个，设置一个count记录频率。\\
+	2. 预设众数为第一个，遍历数组，当众数和当前数相同，频率加一。\\
+	3. 如果不相同，则频率减一(相当于两元素抵消)，如果count变为0，则当前元素作为众数，直到遍历所有元素。\\
+	4. 再进行一次循环判断结果是否出现超过n/2次即可，时间复杂度为$O(n)$。
+	$
+	\label{MooreMajority算法}
+	\begin{aligned}
+	\hline
+	&\textbf{算法5 }MooreMajority\text{ 算法}\\
+	\hline
+	&1.\textbf{Function}\ MooreMajority\ (A[1\cdots n])\\
 	&2.\hspace*{20pt}res\gets A[1],\ count\gets1\\
-	&3.\hspace*{20pt}\textbf{for}\ i\gets 2\ to\ n\ do\\
-	&4.\hspace*{40pt}\textbf{if}\ res==A[i]\ do\ count\gets count+1\\
-	&5.\hspace*{40pt}\textbf{else if}\ count==0\ do\ res\gets A[i], count\gets1\\
+	&3.\hspace*{20pt}\textbf{for}\ i\gets 2\ to\ n\ \textbf{do}\\
+	&4.\hspace*{40pt}\textbf{if}\ res==A[i]\ \textbf{then}\ count\gets count+1\\
+	&5.\hspace*{40pt}\textbf{else if}\ count==0\ \textbf{then}\ res\gets A[i], count\gets1\\
 	&6.\hspace*{40pt}\textbf{else}\ count\gets count-1\\
 	&7.\hspace*{20pt}count\gets 1\\
-	&8.\hspace*{20pt}\textbf{for}\ i\gets 1\ to\ n\ do\\
-	&9.\hspace*{40pt}\textbf{if}\ res==A[i]\ do\ count\gets count+1\\
+	&8.\hspace*{20pt}\textbf{for}\ i\gets 1\ to\ n\ \textbf{do}\\
+	&9.\hspace*{40pt}\textbf{if}\ res==A[i]\ \textbf{then}\ count\gets count+1\\
 	&10.\hspace*{20pt}\textbf{return}\ count\geq\lceil\frac{n}{2}\rceil\ ?\ res\ :\ 0\\
 	\hline
 	\end{aligned}
 	$
 	\subsubsection*{(4)}
-	
+	\paragraph{常见元素问题的下界为}$\Omega(n)$。而比较排序的下界为$\Omega(n\log n)$，因此比比较排序更容易。
 	\subsection*{problem 6.15}
 	\markright{problem 6.15}
 	\addcontentsline{toc}{subsection}{problem 6.15}
+	\subsubsection*{(1)}
+	\paragraph{\textcircled{1}排序算法}
+	1.对输入的n个点进行排序，排序规则为按x由小到大排序(x相等时，按y由小到大排序）。\\
+	\hspace*{20pt}2. x最大且y最大的点(即排序后的最后一个点)一定为$maxima$，且前面点的x坐标小于等于后面的x坐标。\\
+	\hspace*{20pt}3. 从第N个点向前遍历每个点，$maxy$记录当前极大点中y的最大值，当第i个点的大于maxy并且第i-1个点(如果存在)的横坐标不等于第i个点则该点即为极大点，直至遍历所有点。\\
+	\hspace*{20pt}4. \textbf{时间复杂度：}排序采取归并排序时间复杂度为$O(n \log n)$，遍历排序后数组时间复杂度为$O(n)$，因此时间复杂度为$O(n\log n)$。\\
+	$
+	\label{MaximaSort算法}
+	\begin{aligned}
+	\hline
+	&\textbf{算法6 }MaximaSort\text{ 算法}\\
+	\hline
+	&\textbf{输入:}\text{结构体数组A   }\ \ \ \textbf{输出:}\text{maxima点集ans}\\
+	&1.\textbf{Function}\ MaximaSort\ (A[1\cdots n])\\
+	&2.\hspace*{20pt}\text{使用归并排序结构数组A进行排序}\\
+	&3.\hspace*{20pt}maxy\gets1,\ A[0].x\gets -\infty\verb| \\|\text{A[0]作为哨兵}\\
+	&4.\hspace*{20pt}\textbf{for}\ i\gets n\ to\ 1\ \textbf{do}\\
+	&5.\hspace*{40pt}\textbf{if}\ A[i].y>maxy\ \textbf{and}\ A[i-1].x<A[i].x\ \textbf{then}\\ 
+	&6.\hspace*{60pt}maxy\gets y\\
+	&7.\hspace*{60pt}ans.add(A[i])\\
+	&8.\hspace*{20pt}\textbf{return}\ ans\\
+	\hline
+	\end{aligned}
+	$
+	\paragraph{\textcircled{2}分治算法}
+	1. 当数组A中仅有一个点时返回该点。\\
+	2. 取数组A中所有点的x坐标的中值点，将所有点划分为两部分S1，S2。\\
+	3. 递归方式继续划分A1和A2，得到maxima集合R1和R2。\\
+	4. 显然R2中maxima即为当前A的maxima，仅需要判断R1中的maxima是否符合即可。\\
+	5. 取R2中的y坐标最大值$y_{max}$，遍历R1中所有坐标，若点的y坐标大于$y_{max}$，则加入maxima集合。\\
+	6. 回到第1步，直至算法完成。\\
+	7. \textbf{时间复杂度：}合并的比较代价为$O(n)$，递归产生两个子问题，子问题规模为原来一半，可列出递归方程为$T(n)=2T(\frac{n}{2})+O(n)$，根据主定理可得$T(n)=O(n\log n)$。\\
+	$
+	\label{Maxima算法}
+	\begin{aligned}
+	\hline
+	&\textbf{算法7 }Maxima\text{ 算法}\\
+	\hline
+	&\textbf{输入:}\text{结构体数组A   }\ \ \ \textbf{输出:}\text{maxima点集ans}\\
+	&1.\textbf{Function}\ Maxima\ (A[1\cdots n])\\
+	&2.\hspace*{20pt}\textbf{find }the\ x_{mid} \textbf{ in}\ A\\
+	&3.\hspace*{20pt}\textbf{divide }A\textbf{ into }A1,A2\textbf{ based on}x_{mid}\\ 
+	&4.\hspace*{20pt}R1\gets Maxima(A1)\textbf{ and }R2\gets Maxima(A2)\\
+	&5.\hspace*{20pt}\textbf{find }the\ y_{max} \textbf{ in }A2\\
+	&6.\hspace*{20pt}\textbf{for each } item \textbf{ in }A2\textbf{ do}\\
+	&7.\hspace*{40pt}\textbf{if }item.x>y_{max}\textbf{ do }ans.add(item)\\
+	&8.\hspace*{20pt}\textbf{for each } item \textbf{ in }A1\textbf{ do}\\
+	&9.\hspace*{40pt}\textbf{if }item.x>y_{max}\textbf{ do }ans.add(item)\\
+	&10.\hspace*{15pt}\textbf{return}\ ans\\
+	\hline
+	\end{aligned}
+	$
+	
+	\subsubsection*{(2)}
+	$
+	\label{WrongMaxima算法}
+	\begin{aligned}
+	\hline
+	&\textbf{算法8 }WrongMaxima\text{ 算法}\\
+	\hline
+	&\textbf{输入:}\text{结构体数组A   }\ \ \ \textbf{输出:}\text{maxima点集ans}\\
+	&1.\textbf{Function}\ WrongMaxima\ (A[1\cdots n])\\
+	&8.\hspace*{20pt}\textbf{return}\ ans\\
+	\hline
+	\end{aligned}
+	$
+	\paragraph{不正确}当左上象限没有点而左下象限存在点时，左下横坐标最大的点显然是maxima，故不能将左下象限舍弃。
+	\subsubsection*{(3)}
 	\newpage
 	\section*{PART II}
 	\markright{PART II}
@@ -239,17 +336,93 @@
 	\subsection*{problem 7.1}
 	\markright{problem 7.1}
 	\addcontentsline{toc}{subsection}{problem 7.1}
+	\subsubsection*{证明}
+	$
+	\begin{aligned}
+	\hline
+	&\text{假设}2^k\leq h\leq2^{k+1}-1,\ k\in N\\
+	&2^{k-1}+1\leq\lfloor\frac{h}{2}\rfloor+1\leq2^k\\
+	&\lceil\log(2^{k-1}+1)\rceil=k,\ \lceil\log(2^k)\rceil=k\\
+	&\Rightarrow \lceil\log(\lfloor\frac{h}{2}\rfloor+1)\rceil=k\hspace{40pt}(1)\\
+	&2^k+1\leq h+1\leq2^{k+1}\rightarrow\log(2^k+1)>k,\ \log(2^{k+1})=k+1\\
+	&\Rightarrow \lceil\log(h+1)\rceil=k+1\hspace{35pt}(2)\\
+	&\text{因此}\lceil\log(\lfloor\frac{h}{2}\rfloor+1)\rceil+1=\lceil\log(h+1)\rceil=k+1\text{证毕。}\\
+	\hline
+	\end{aligned}
+	$
 	\newpage
 	\subsection*{problem 7.2}
 	\markright{problem 7.2}
 	\addcontentsline{toc}{subsection}{problem 7.2}
+	\subsubsection*{算法设计}
+	1. 给定最大堆为heap1，新建最大堆heap2，存储结构元素(value,index)，比较原则为value。\\
+	2. 从heap1中取出根节点将其放入heap2。\\
+	3. 从heap1中弹出根节点Node，K减一，当K减为0，返回Node的value即可。\\
+	4. 插入根节点对应的左右子节点到heap2中。\\
+	5. 回到第2步。\\
+	\paragraph{算法分析}每次插入元素均为heap1当前最大元素，heap2 pop第i次即为第i大元素。\\
+	$
+	\label{Kth-Maxheap算法}
+	\begin{aligned}
+	\hline
+	&\textbf{算法9 }KthMaxheap\text{ 算法}\\
+	\hline
+	&\textbf{输入:}\text{最大堆heap1[1...n]，K   }\ \ \ \textbf{输出:}\text{第K大元素}\\
+	&1.\textbf{Function}\ KthMaxheap\ (heap1,K)\\
+	&2.\hspace*{20pt}heap2\gets init(heap1[0],0)\\
+	&3.\hspace*{20pt}\textbf{for}\ i\gets 1\ to\ K\ \textbf{do}\\
+	&4.\hspace*{40pt}(value,index)\gets heap2.pop()\\
+	&5.\hspace*{40pt}heap2.insert(heap1[index*2+1],index*2+1)\\
+	&6.\hspace*{40pt}heap2.insert(heap1[index*2],index*2)\\
+	&7.\hspace*{20pt}\textbf{return}\ value\\
+	\hline
+	\end{aligned}
+	$
+	\paragraph{时间复杂度}heap2的元素个数最大为k+1，因此每次插入删除操作复杂度均为$O(\log(k))$。\\
+	最多2k次插入和k次删除，因此总的时间复杂度为$O(k\log k)$，符合要求。
 	\subsection*{problem 7.3}
 	\markright{problem 7.3}
 	\addcontentsline{toc}{subsection}{problem 7.3}
+	对于d叉堆中第m层的第n个元素(m,n均从1开始)，则它在数组中的下标为：
+	$$I(m,n)=(1+d+d^2+\cdots+d^{m-2})+j=\frac{d^{m-1}-1}{d-1}+n$$
+	对于其父节点，则为第m-1层的第$\lfloor\frac{n}{d}\rfloor$个元素，因此下标为：\\
+	$
+	\begin{aligned}
+	PARENT(m,n)&=I(m-1,\lceil\frac{n}{d}\rceil)\\
+	&=\frac{d^{m-2}-1}{d-1}+\lfloor\frac{n}{d}\rfloor\\
+	&=\frac{d^{m-1}-d}{d(d-1)}+\lfloor\frac{n+d-1}{d}\rfloor\\
+	&=\lfloor\frac{d^{m-1}-d}{d(d-1)}+\frac{n+d-1}{d}\rfloor\\
+	&=\lfloor\frac{1}{d}\frac{d^{m-1}-d}{d-1}+n+d-1\rfloor\\
+	&=\lfloor\frac{1}{d}\frac{d^{m-1}-1}{d-1}+n+d-2\rfloor\\
+	&=\lfloor\frac{I(m,n)+d-2}{d}\rfloor\\
+	\end{aligned}
+	$\\
+	对于其子节点，则为第m+1层的第d(n-1)+j个元素，因此下标为：\\
+	$
+	\begin{aligned}
+	CHILD(m,n,j)&=(1+d+d^2+\cdots+d^{m-1})+d(n-1)+j\\
+	&=\frac{d^m-1}{d-1}+d(n-1)+j\\
+	&=\frac{d^{m}-d}{d-1}+d(n-1)+1+j\\
+	&=d(\frac{d^{m-1}-1}{d-1}+n-1)+j+1\\
+	&=d(I(m,n)-1)+j+1\\
+	\end{aligned}
+	$\\
+	因此当元素数组下标为i的父节点和第j个字节点下标为，\\
+	$D-ARY-PARENT(i)=\lfloor\frac{i-2}{d}+1\rfloor$\\
+	$D-ARY-CHILD(i,j)=d(i-1)+j+1$，得证。
 	\subsection*{problem 7.4}
 	\markright{problem 7.4}
 	\addcontentsline{toc}{subsection}{problem 7.4}
+	对于完美二叉树，设其树的高度为h，则最底层共有$2^h$个树叶。\\
+	其节点总数为$fulln(h)=\sum_{i=0}^{h}2^i=2^{h+1}-1$，其所有节点的高度和为$fullh(h)=\sum_{i=0}^{h}2^i(h-i)=2^{h+1}-h-2$。\\
+	\hspace*{20pt}对于完美二叉树，最底层每减少两个节点(即一个父节点变为叶节点)，节点高度和减少1，而节点个数减少2，可知当最层仅剩一个节点时，节点个数和高度和的差值最小。\\
+	\hspace*{20pt}对于完美二叉树，若最底层加一个节点，对于最左侧节点其所有高度均加1，若原高度为h，则总高度增加h+1。\\
+	\hspace*{20pt}根据堆的性质，堆的左右子树至少有一个为完美二叉树，可以看作由完美二叉树，从右向左删除最底层叶结点构成。\\
+	可知当最底层仅有一个节点时，节点个数和所有节点高度和的差值最小。\\
+	\hspace*{20pt}设堆高度为h，则节点个数和高度和差值为$$node(h)-height(h)\geq1+fulln(h-1)-fullh(h-1)-h=1$$
+	\hspace*{20pt}即n个节点的堆中，所有节点的高度之和最多为n-1，在最底层仅有一个节点时等号成立。
 	\subsection*{problem 7.6}	
 	\markright{problem 7.6}
 	\addcontentsline{toc}{subsection}{problem 7.6}
+	
 \end{document}
