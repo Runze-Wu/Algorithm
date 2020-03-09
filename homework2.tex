@@ -207,7 +207,7 @@
 	\textbf{\textcircled{3}算法设计}\\
 	1. 当数组元素小于k时，返回数组元素，否则递归划分为两部分。\\
 	2. 得到的两部分结果依次与原数组进行统计，如果元素出现次数不低于$\lceil\frac{n}{k}\rceil$，则加入结果集合，重复前两步直至算法完成。\\
-	3. \textbf{时间复杂度}合并时两部分结果个数不超过2k，每个元素遍历依次数组，即合并复杂度为$O(n)$，
+	3. \textbf{时间复杂度}合并时两部分结果个数不超过2k，遍历原始数组统计个数，即合并复杂度为$O(n)$，
 	递归产生两个子问题，子问题规模为原来一半，可列出递归方程为$T(n)=2T(\frac{n}{2})+O(n)$，根据主定理可得$T(n)=O(n\log n)$。\\
 	$
 	\label{Majority算法}
@@ -301,8 +301,8 @@
 	\hline
 	&\textbf{输入:}\text{结构体数组A   }\ \ \ \textbf{输出:}\text{maxima点集ans}\\
 	&1.\textbf{Function}\ Maxima\ (A[1\cdots n])\\
-	&2.\hspace*{20pt}\textbf{find }the\ x_{mid} \textbf{ in}\ A\\
-	&3.\hspace*{20pt}\textbf{divide }A\textbf{ into }A1,A2\textbf{ based on}x_{mid}\\ 
+	&2.\hspace*{20pt}\textbf{find }x_{mid} \textbf{ in}\ A\\
+	&3.\hspace*{20pt}\textbf{divide }A\textbf{ into }A1,A2\textbf{ based on }x_{mid}\\ 
 	&4.\hspace*{20pt}R1\gets Maxima(A1)\textbf{ and }R2\gets Maxima(A2)\\
 	&5.\hspace*{20pt}\textbf{find }the\ y_{max} \textbf{ in }A2\\
 	&6.\hspace*{20pt}\textbf{for each } item \textbf{ in }A2\textbf{ do}\\
@@ -319,15 +319,22 @@
 	\label{WrongMaxima算法}
 	\begin{aligned}
 	\hline
-	&\textbf{算法8 }WrongMaxima\text{ 算法}\\
+	&\textbf{算法8 }WrongMaxima2\text{ 算法}\\
 	\hline
 	&\textbf{输入:}\text{结构体数组A   }\ \ \ \textbf{输出:}\text{maxima点集ans}\\
-	&1.\textbf{Function}\ WrongMaxima\ (A[1\cdots n])\\
-	&8.\hspace*{20pt}\textbf{return}\ ans\\
+	&2.\hspace*{20pt}\textbf{find }{mid\_{point}} \textbf{ in}\ A\\
+	&3.\hspace*{20pt}\textbf{divide }A\textbf{ into }A1,A2,A3,A4\textbf{ based on}{mid\_{point}}\\ 
+	&4.\hspace*{20pt}R2\gets Maxima(A2)\textbf{ and }R3\gets Maxima(A3)textbf{ and }R4\gets Maxima(A4)\\
+	&5.\hspace*{20pt}\textbf{find }the\ y_{max} \textbf{ in }A2\\
+	&6.\hspace*{20pt}\textbf{for each } item \textbf{ in }A2\textbf{ do}\\
+	&7.\hspace*{40pt}\textbf{if }item.x>y_{max}\textbf{ do }ans.add(item)\\
+	&8.\hspace*{20pt}\textbf{for each } item \textbf{ in }A1\textbf{ do}\\
+	&9.\hspace*{40pt}\textbf{if }item.x>y_{max}\textbf{ do }ans.add(item)\\
+	&10.\hspace*{15pt}\textbf{return}\ ans\\
 	\hline
 	\end{aligned}
-	$
-	\paragraph{不正确}当左上象限没有点而左下象限存在点时，左下横坐标最大的点显然是maxima，故不能将左下象限舍弃。
+	$\\
+	\textbf{不正确}当仅有左下象限存在点时，左下横坐标最大的点显然是maxima，故不能将左下象限舍弃。
 	\subsubsection*{(3)}
 	\newpage
 	\section*{PART II}
@@ -349,7 +356,12 @@
 	&\text{因此}\lceil\log(\lfloor\frac{h}{2}\rfloor+1)\rceil+1=\lceil\log(h+1)\rceil=k+1\text{证毕。}\\
 	\hline
 	\end{aligned}
-	$
+	$\\
+	\paragraph{堆的层数计算}
+	h可以理解为堆的节点个数，设堆高度为k\\
+	则根据堆的完全二叉树性质可知$2^k\leq h\leq2^{k+1}-1$，则$\lceil\log(h+1)\rceil$即为计算堆层数即k+1层。\\
+	由于$2^{k-2}-1<\lfloor\frac{h}{2}\rfloor<2^{k}-1$，因此具有$\lfloor\frac{h}{2}\rfloor$结点个数的堆高度为k-1，即
+	$\lceil\log(\lfloor\frac{h}{2}\rfloor+1)\rceil$即堆层数为k层，加上最后一层则为k+1层，因此两式均为计算堆的层数。
 	\newpage
 	\subsection*{problem 7.2}
 	\markright{problem 7.2}
