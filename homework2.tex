@@ -154,12 +154,13 @@
 	\paragraph{具体算法实现请见算法MergeSort：\hyperref[MergeSort算法]{MergeSort算法}}
 	\paragraph{算法时间复杂度}与归并排序算法相同，在合并函数中仅添加一条赋值语句，复杂度仍为$O(n\log n)$符合题目要求。
 	\subsubsection*{(2)}
-	\paragraph{算法分析}同样利用归并排序的思想，在归并排序中合并左右数组A，B\\
-	\hspace*{20pt}1. 同样若$a[i]<b[j]$必不存在广义逆序，而对于$a[i]>b[j]\&a[i]>C\cdot b[j]$，那么$a[i+1\cdots n]>C\cdot b[j]$均成立，与 \hyperref[MergeSort算法]{MergeSort算法}\ 相似。
-		\paragraph{具体算法实现}
-	在 \hyperref[MergeSort算法]{MergeSort算法}\ 合并操作(算法第24行)中添加判断条件：\\
-	若满足{$L[i]>C\cdot R[j-1]$则$sum\gets sum+n1-i+1$即可。
-	\paragraph{算法时间复杂度}与 \hyperref[MergeSort算法]{MergeSort算法}\ 相同，复杂度仍为$O(n\log n)$。
+	\paragraph{算法分析}
+	利用归并排序的思想，在归并排序中合并左右数组A，B。
+	若$a[i]>b[j]\&a[i]>C\cdot b[j]$，则$a[i+1\cdots n]>C\cdot b[j]$均成立，与 \hyperref[MergeSort算法]{MergeSort算法}\ 相似。当$a[i]>C\cdot b[j]$时，遍历a数组，找到$a[tem]>C\cdot b[j]$，更新总的逆序对个数即可。
+	\paragraph{具体算法实现请见算法GeneralPair：\hyperref[GeneralPair算法]{GeneralPair算法}}
+	\paragraph{算法时间复杂度}
+	在$a[i]>C\cdot b[j]$时，遍历左数组，每次合并的时间复杂度为$O(n^2)$。总的递推方程为$T(n)=2T(\frac{n}{2})+O(n^2)$，时间复杂度变为$O(n^2)$。
+
 	\begin{algorithm}
 		\caption{MergeSort算法}
 		\label{MergeSort算法}
@@ -195,6 +196,45 @@
 			\EndFunction
 		\end{algorithmic}
 	\end{algorithm}
+	\begin{algorithm}
+		\caption{GeneralPair算法}
+		\label{GeneralPair算法}
+		\begin{algorithmic}[1]
+			\Require 无序序列$A,l,r,C$
+			\Ensure  总广义逆序对数和$sum$
+			\State{$sum\gets 0$}
+			\Function {MERGESORT}{$A,l,r,C$}
+			\State{$l==r\ ?\ \Return{}$}
+			\State{$mid\gets \frac{l+r}{2}$}
+			\State{$MergeSort(A,l,mid,C),\ MergeSort(A,mid+1,r,C)$}
+			\State{$Merge(A,l,mid,r)$}
+			\EndFunction
+			\Function{Merge}{$A,l,mid,r$}
+			\State{$n1\gets mid-l+1,\ n2\gets r-mid$}\\
+			\verb|Let L[1..(n1+1)] and R[1..(n2+1)] be new arrays|
+			\For{$i\gets1\ to\ n1$}
+			\State{$L[i]\gets A[l-i+1]$}
+			\EndFor
+			\For{$i\gets1\ to\ n2$}
+			\State{$R[i]\gets A[mid+i]$}
+			\EndFor
+			\State{$L[n1+1]\gets \infty,\ R[n2+1]\gets \infty$}
+			\State{$i\gets 1,\ j\gets 1$}
+			\For{$k\gets l\ to\ r$}
+			\If{$L[i]<R[j]$}
+			\State{$A[k]\gets L[i++]$}
+			\Else
+			\For{$tem\gets i\ to\ n1$}\verb|\\|找到广义逆序对
+			\If{$L[i]>C\cdot R[j]$}
+			\State{$sum\gets sum+n1-i+1$}\verb|\\|更新sum逆序对和
+			\EndIf
+			\EndFor
+			\State{$A[k]\gets R[j++]$}
+			\EndIf
+			\EndFor
+			\EndFunction
+		\end{algorithmic}
+	\end{algorithm}
 	\newpage
 	\subsection*{problem 6.13}
 	\markright{problem 6.13}
@@ -212,7 +252,7 @@
 	\label{Majority算法}
 	\begin{aligned}
 	\hline
-	&\textbf{算法4 }Majority\text{ 算法}\\
+	&\textbf{算法5 }Majority\text{ 算法}\\
 	\hline
 	&1.\textbf{Function}\ Majority\ (Ori,A,n,L,R,k)\verb|          \\|\text{Ori为原始数组拷贝}\\
 	&2.\hspace*{20pt}\textbf{if}\ len(A)\leq k\ \textbf{do }\textbf{return }A
@@ -240,7 +280,7 @@
 	\label{MooreMajority算法}
 	\begin{aligned}
 	\hline
-	&\textbf{算法5 }MooreMajority\text{ 算法}\\
+	&\textbf{算法6 }MooreMajority\text{ 算法}\\
 	\hline
 	&1.\textbf{Function}\ MooreMajority\ (A[1\cdots n])\\
 	&2.\hspace*{20pt}\textbf{if }n\%2==0\textbf{ do}\\
@@ -272,7 +312,7 @@
 	\label{MaximaSort算法}
 	\begin{aligned}
 	\hline
-	&\textbf{算法6 }MaximaSort\text{ 算法}\\
+	&\textbf{算法7 }MaximaSort\text{ 算法}\\
 	\hline
 	&\textbf{输入:}\text{结构体数组A   }\ \ \ \textbf{输出:}\text{maxima点集ans}\\
 	&1.\textbf{Function}\ MaximaSort\ (A[1\cdots n])\\
@@ -298,7 +338,7 @@
 	\label{Maxima算法}
 	\begin{aligned}
 	\hline
-	&\textbf{算法7 }Maxima\text{ 算法}\\
+	&\textbf{算法8 }Maxima\text{ 算法}\\
 	\hline
 	&\textbf{输入:}\text{结构体数组A   }\ \ \ \textbf{输出:}\text{maxima点集ans}\\
 	&1.\textbf{Function}\ Maxima\ (A[1\cdots n])\\
@@ -318,7 +358,7 @@
 	\label{WrongMaxima算法}
 	\begin{aligned}
 	\hline
-	&\textbf{算法8 }WrongMaxima\text{ 算法}\\
+	&\textbf{算法9 }WrongMaxima\text{ 算法}\\
 	\hline
 	&1.\textbf{Function}\ WrongMaxima\ (A[1\cdots n])\\
 	&2.\hspace*{20pt}\textbf{if }n\leq1\textbf{ then return }A\\
@@ -379,7 +419,7 @@
 	\label{Kth-Maxheap算法}
 	\begin{aligned}
 	\hline
-	&\textbf{算法10 }KthMaxheap\text{ 算法}\\
+	&\textbf{算法11 }KthMaxheap\text{ 算法}\\
 	\hline
 	&\textbf{输入:}\text{最大堆heap1[1...n]，K   }\ \ \ \textbf{输出:}\text{第K大元素}\\
 	&1.\textbf{Function}\ KthMaxheap\ (heap1,K)\\
@@ -468,7 +508,7 @@
 	\paragraph{具体算法实现请见算法FindTrans：\hyperref[FindTrans算法]{算法FindTrans}}
 	\paragraph{时间复杂度}对每个单词内部进行归并排序，设单词总数为$num$，单词长度为$len(x_i)$时间复杂度为$\sum_{i=0}^{num}len(x_i)\log(len(x_i))=O(n\log n)$;集合每次的插入操作时间复杂度为$\log n$，进行次数为$O(n)$，因此维护集合有序性的时间复杂度为$O(n\log n)$。因此总的时间复杂度为$O(n\log n)$。\\
 	\begin{algorithm}
-		\setcounter{algorithm}{10}
+		\setcounter{algorithm}{11}
 		\caption{FindTransposition算法}
 		\label{FindTrans算法}	
 		\begin{algorithmic}[1]
@@ -479,7 +519,7 @@
 		\For{$i\gets 0\ to\ num$}
 		\State{$key\gets merge\_sort(oris[i])\verb|\\|\text{得到归并排序后的关键词key}$}
 		\State{$data\_cur(key,oris[i],0)\verb|\\|\text{构造结构体data\_cur}$}
-		\If{$find(data\_set,data\_old)\==True$}
+		\If{$find(data\_set,data\_old)==True$}
 		\State{$\verb|/*|\text{如果找到相同的key，则返回对应的结构体}data\_old\verb|*/|$}
 		\State{$data\_old.count\small{++}$}
 		\State{$data\_old.ori\gets min(data\_old.ori,oris[i])$}	

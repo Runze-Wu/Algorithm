@@ -1,12 +1,19 @@
-/*#include<iostream>
+#include<iostream>
 #include<string>
 #include<vector>
 using namespace std;
 long long sum=0;
-void merge(vector<string>&a, int l, int mid,int r)
+int c;
+void merge(vector<int>&a, int l, int mid,int r)
 {
-    vector<string> temp(r-l+1);
+    vector<int> temp(r-l+1);
     for(int i=l;i<=r;i++)temp[i-l]=a[i];
+    // for(int i=l;i<=mid;i++)
+    //     cout<<a[i]<<" ";
+    // cout<<endl;
+    // for (int i = mid+1; i <= r; i++)
+    //     cout << a[i] << " ";
+    // cout << endl;
     int i=l;
     int j=mid+1;
     for(int k=l;k<=r;k++)
@@ -20,8 +27,18 @@ void merge(vector<string>&a, int l, int mid,int r)
             i++;
         }
         else if(temp[i-l]>temp[j-l]){
-            a[k]=temp[j-l];
-            sum+=mid-i+1;
+            for(int tem=i;tem<=mid;tem++)
+            {
+                if (temp[tem - l] > c * temp[j - l]){
+                    sum += mid - tem + 1;
+                    break;
+                }
+            }
+            // if (temp[i - l] > c * temp[j - l]){
+            //     sum += mid - i + 1;
+            //     cout<<"pair "<<temp[i-l]<<" "<<temp[j-l]<<endl;
+            // }
+            a[k] = temp[j - l];
             j++;
         }
         else{
@@ -30,7 +47,7 @@ void merge(vector<string>&a, int l, int mid,int r)
         }
     }
 }
-void merge_sort(vector<string>&a,int l,int r)
+void merge_sort(vector<int>&a,int l,int r)
 {
     if(l>=r)return;
     int mid=(l+r)/2;
@@ -40,19 +57,17 @@ void merge_sort(vector<string>&a,int l,int r)
 }
 int main()
 {
-    cout << "wo yi yue du guan yu chao xi de shuo ming"<<endl; 
+    // cout << "wo yi yue du guan yu chao xi de shuo ming"<<endl; 
     int n;
-    cin>>n;
-    vector<string> ori(n);
+    cin>>c>>n;
+    vector<int> ori(n);
     for(int i=0;i<n;i++)
         cin>>ori[i];
     merge_sort(ori,0,n-1);
-    // for (int i = 0; i < n; i++)
-    //     cout<<ori[i]<<endl;
     cout<<sum<<endl;
     return 0;
-}*/
-#include<iostream>
+}
+/*#include<iostream>
 #include<string>
 #include<set>
 using namespace std;
@@ -145,4 +160,4 @@ int main()
         cout<<*i<<endl;
     }
     return 0;
-}
+}*/

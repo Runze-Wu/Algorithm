@@ -6,7 +6,6 @@
 \usepackage{amsmath}
 \usepackage{algorithm}
 %\usepackage{algorithm2e}
-\usepackage{algorithmicx}
 \usepackage{algpseudocode}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -31,7 +30,7 @@
 	\title{\Huge\textbf{算法设计与分析 作业三}\\}
 	\author{\Large\textbf{作者}：吴润泽 \and{\Large\textbf{学号}：181860109}\\
 	\\
-	\and {\Large\textbf{Email}：181860109@smail.nju.edu.cn}\\}
+	\and {\Large\textbf{Email}：\href{mailto:181860109@smail.nju.edu.cn}{181860109@smail.nju.edu.cn}}\\}
 	\date{\Large\today}
 \end{titlepage}
 
@@ -42,24 +41,207 @@
 	\section*{CHAPTER 8}
 	\markright{CHAPTER 8}
 	\addcontentsline{toc}{section}{CHAPTER 8}
-	\subsection*{problem 8.2}
+	\hypertarget{problem 8.2}{\subsection*{problem 8.2}}
 	\markright{problem 8.2}
 	\addcontentsline{toc}{subsection}{problem 8.2}
-	\subsection*{problem 8.4}
+	\paragraph{算法}
+	假设有5个数a，b，c，d，e\\
+	1.比较a b，将较小者放入a，较大者放入b\\
+	2.比较c d，将较小者放入c，较大者放入d\\
+	3.比较a c，将较小者放入a，较大者放入c，若a和c发生交换则同时交换b和d，即保证a b和
+	c d原有大小关系不变。此时有$a<c<d,a<b$，则a不可能是中位数\\
+	4.比较b e，将较小者放入b，较大者放入e\\
+	5.比较b c，将较小者放入b，较大者放入c，若b和c发生交换则同时交换d和e，即保证b e和
+	c d原有大小关系不变。此时有$b<c<d,b<e$，则b不可能是中位数\\
+	6.比较c e，\hspace{5pt}将较小者放入c，较大者放入e，此时有$c<d<e$，且$c>b,c>a$，即c就是中位数。
+	\newpage
+	\hypertarget{problem 8.4}{\subsection*{problem 8.4}}
 	\markright{problem 8.4}
 	\addcontentsline{toc}{subsection}{problem 8.4}
+	\paragraph{算法}
+	设数组array元素个数为n，不妨设n为奇数，阶为k的元素为m；\\
+	1. 当k等于$\frac{n+1}{2}$时，直接调用算法A，即可找到m；\\
+	2. 当k小于$\frac{n+1}{2}$时，遍历数组array，记录其元素最小值为min，对于原数组array，有$n-k$个元素大于m，$k-1$个元素小于m。\\
+	3. 开辟新数组temp，将前$n-2k+1$个元素值赋为min-1，并将array的n个元素放入其后。
+	则数组temp中有$n-k$个元素大于m，$n-k$个元素小于m。因此m为temp中位数，调用算法A，即可找到m。\\
+	4. 当k大于$\frac{n+1}{2}$时，同理记录其元素最大值为max，开辟数组temp，在数组temp中前$2k-n-1$个赋值为max+1。同样使得m变为temp中位数，调用算法A，即可找到m。\\
+	\label{Kth-find算法}
+	$\begin{aligned}
+	\hline
+	&\textbf{算法1 }KthFind\text{ 算法}\\
+	\hline
+	&1.\textbf{Function}\ {KthFind}\ (array,n,k)\\
+	&2.\hspace*{20pt}\textbf{if }k==\frac{n+1}{2}\textbf{ return }A(array,n)\\
+	&3.\hspace*{20pt}min\_num:= min(array,n),max\_num:= max(array,n)\\
+	&4.\hspace*{20pt}Let\ temB[1...2n]\ be\ new\ array.\\
+	&5.\hspace*{20pt}\textbf{for}\ i:= 1\ to\ n\ \textbf{do}\\
+	&6.\hspace*{40pt}temB[i]:=A[i]\\
+	&7.\hspace*{20pt}\textbf{if }k<\frac{n+1}{2} \textbf{ then}\\
+	&8.\hspace*{40pt}\textbf{for}\ i:= 1\ to\ n-2k+1\ \textbf{do}\\
+	&9.\hspace*{60pt}temB[i+n]:= min\_num-1\\
+	&10.\hspace*{35pt}\textbf{return }A(temB,2n-2k+1)\\
+	&11.\hspace*{15pt}\textbf{if }k>\frac{n+1}{2} \textbf{ then}\\
+	&12.\hspace*{35pt}\textbf{for}\ i:= 1\ to\ 2k-n-1\ \textbf{do}\\
+	&13.\hspace*{55pt}temB[i+n]:= max\_num-1\\
+	&14.\hspace*{35pt}\textbf{return }A(temB,2k-1)\\
+	\hline
+	\end{aligned}
+	$
+
+	\paragraph{时间复杂度}寻找最值和开辟新数组的时间复杂度为$O(n)$，添加的元素个数最多为$n-1$个，数组的规模仍为$O(n)$，而找中位数算法A，时间复杂度为$O(n)$，因此总的时间复杂度仍为线性。
+	\newpage
 	\subsection*{problem 8.5}
 	\markright{problem 8.5}
 	\addcontentsline{toc}{subsection}{problem 8.5}
+	\subsubsection*{(1)}使用归并排序进行降序排列，排序结果前k个元素即为所求。\\
+	归并排序时间复杂度为$O(n\log n)$，输出复杂度为$O(k)$，总时间复杂度为$O(n\log n)$.\\
+	$\begin{aligned}
+	\hline
+	&1.\textbf{Function}\ {KthOrder1}\ (array,n,k)\\
+	&2.\hspace*{20pt}\text{对原数组使用归并排序，并按照升序排列}\\
+	&3.\hspace*{20pt}\textbf{for}\ i:= 1\ to\ k\ \textbf{do}\\
+	&4.\hspace*{40pt}res.add(array[i])\\
+	&5.\hspace*{20pt}\textbf{return }res\\
+	\hline
+	\end{aligned}
+	$
+	\subsubsection*{(2)}根据原数组建立最大堆，最大堆堆顶存储当前堆的最大值，则弹出堆顶元素k次，k个元素即为所求。\\
+	根据已有序列建堆的时间复杂度为$O(n)$，弹出堆顶元素k次，每次修复堆时间复杂度为$O(\log n)$，则总的时间复杂度为$O(n+k\log n)$.\\
+	$\begin{aligned}
+	\hline
+	&1.\textbf{Function}\ {KthOrder2}\ (array,n,k)\\
+	&2.\hspace*{20pt}\text{根据原数组进行建堆，得到最大堆为heap}\\
+	&3.\hspace*{20pt}\textbf{for}\ i:= 1\ to\ k\ \textbf{do}\\
+	&4.\hspace*{40pt}res.add(heap.top())\\
+	&5.\hspace*{40pt}heap.pop()\verb|\\|\text{弹出堆顶元素，并修复}\\
+	&6.\hspace*{20pt}\textbf{return }res\\
+	\hline
+	\end{aligned}
+	$
+	\hypertarget{problem 8.5(3)}{\subsubsection*{(3)}}
+	利用 \hyperlink{problem 8.4}{problem 8.4} 中 \hyperref[Kth-find算法]{Kth-find算法} ，找到原数组中的第k+1大元素m。遍历原数组，找到其中大于m的元素加入结果数组res。 对res使用归并排序，升序排列，得到res即为所求。\\
+	找第k+1大，遍历原数组为线性时间$O(n)$，对res归并排序$O(k\log k)$，总时间复杂度为$O(n+k\log k)$.\\
+	$\begin{aligned}
+	\hline
+	&1.\textbf{Function}\ {KthOrder3}\ (array,n,k)\\
+	&2.\hspace*{20pt}m:=KthFind(array,n,k+1)\verb|\\找到数组第k+1大元素|\\
+	&3.\hspace*{20pt}\textbf{for}\ i:= 1\ to\ n\ \textbf{do}\\
+	&4.\hspace*{40pt}\textbf{if }array[i]>m \textbf{ do } res.add(array[i])\\
+	&5.\hspace*{20pt}\text{对res数组使用归并排序，并按照升序排列}\\
+	&6.\hspace*{20pt}\textbf{return }res\\
+	\hline
+	\end{aligned}
+	$
+	\newpage
 	\subsection*{problem 8.6}
 	\markright{problem 8.6}
 	\addcontentsline{toc}{subsection}{problem 8.6}
+	\subsubsection*{(1)}使用归并排序进行排列时间复杂度为$O(n\log n)$，遍历中位数M左右两侧元素，与M差值最小的加入res，并移动对应侧指针，直至res个数为k即可。总时间复杂度为$O(n\log n+k)$.\\
+	$\begin{aligned}
+	\hline
+	&1.\textbf{Function}\ {KthNear1}\ (array,n,k)\\
+	&2.\hspace*{20pt}\text{对原数组使用归并排序}\\
+	&3.\hspace*{20pt}l:=\frac{n+1}{2}-1,\ r:=\frac{n+1}{2}+1\\
+	&4.\hspace*{20pt}\textbf{for}\ i:= 1\ to\ k\ \textbf{do}\\
+	&5.\hspace*{40pt}\textbf{if }array[l]+array[r]>2M \textbf{ do } res.add(array[r++])\\
+	&6.\hspace*{40pt}\textbf{else }res.add(array[l--])\\
+	&7.\hspace*{20pt}\textbf{return }res\\
+	\hline
+	\end{aligned}
+	$
+	\subsubsection*{(2)}利用 \hyperlink{problem 8.4}{problem8.4} 中的查找中位数算法，得到中位数为M，时间复杂度为$O(n)$。
+	\hspace*{20pt}将原数组分为大于M和小于M的两数组L,S，时间复杂度为$O(n)$。
+	\hspace*{20pt}与 \hyperlink{problem 8.5(3)}{problem 8.5(3)} 同样思想，找到L的前k小(查找第k+1小，即第n-k-1大)LK和S的前k大元素SK，时间复杂度为$O(k)$。对LK进行归并排序按照升序排列，对SK进行归并排序按照降序排列，时间复杂度为$O(k\log k)$。
+	之后遍历LK和SK找到与M最接近的K个元素即可。\\
+	$\begin{aligned}
+	\hline
+	&1.\textbf{Function}\ {KthNear2}\ (array,n,k)\\
+	&2.\hspace*{20pt}M:=A(array,n)\verb|\\|\text{找到中位数M}\\
+	&3.\hspace*{20pt}\text{划分原数组为大于M和小于M两部分:L[1..n1],S[1..n2]}\\
+	&4.\hspace*{20pt}large:=KthFind(L,n1,n1-k-1)\verb|\\找到L数组第k+1小元素|\\
+	&5.\hspace*{20pt}small:=KthFind(S,n2,k+1)\verb|\\找到L数组第k+1大元素|\\
+	&6.\hspace*{20pt}\text{找到L数组小于large的k个元素,并升序排列,得到LK}\\
+	&7.\hspace*{20pt}\text{找到S数组大于small的k个元素,并降序排列,得到SK}\\
+	&8.\hspace*{20pt}l:=0,\ r:=0\\
+	&9.\hspace*{20pt}\textbf{for}\ i:= 1\ to\ k\ \textbf{do}\\
+	&10.\hspace*{35pt}\textbf{if }LK[l]+SK[r]>2M \textbf{ do } res.add(SK[r++])\\
+	&11.\hspace*{15pt}\textbf{else }res.add(LK[l--])\\
+	&12.\hspace*{15pt}\textbf{return }res\\
+	\hline
+	\end{aligned}
+	$
 	\subsection*{problem 8.8}
 	\markright{problem 8.8}
 	\addcontentsline{toc}{subsection}{problem 8.8}
+	\paragraph{算法设计}
+	 使用两个堆，大根堆q1维护较小值，小根堆维护较大值，令大根堆q2元素个数为$m$，小根堆元素个数为$n$：\\
+	 \hspace*{20pt}使得小根堆的堆顶是较大数中最小的，大根堆的堆顶是较小数中最大的；\\
+	 \hspace*{20pt}将大于大根堆堆顶的数放小根堆，小于等于大根堆堆顶的数放大根堆；\\
+	 对于大根堆的堆顶元素，有$n$个元素比该元素大，$m-1$个元素比该元素小；\\
+	 对于小根堆的堆顶元素，有$m$个元素比该元素小， $n-1$个元素比该元素大；\\
+	在维护$|m-n| \leq 1$之后，当$m=n$时，两堆顶元素均为中位数，当$m\ne n$时，元素个数较多的堆顶元素即为当前中位数；\\
+	易知插入和删除的时间复杂度均为$O(\log n)$，查找中值为常数。\\
+	$\begin{aligned}
+	&\textbf{查找中值}\\
+	\hline
+	&1.\hspace*{20pt}\textbf{if }(q1.size()+q2.size())\%2==1\textbf{ then }\\
+	&2.\hspace*{40pt}\textbf{if }q1.size()>q2.size()\textbf{ do }mid:=q1.top()\\
+	&3.\hspace*{40pt}\textbf{else } mid:=q2.top()\\
+	&4.\hspace*{20pt}\textbf{else } mid:=(q1.top+q2.top())/2\\
+	\hline
+	\end{aligned}\\
+	$$
+	\begin{aligned}
+	&\textbf{插入操作}\\
+	\hline
+	&1.\hspace*{20pt}\textbf{if }input > q1.top()\textbf{ do }q2.push(input)\\
+	&2.\hspace*{20pt}\textbf{else }myq1.push(input)\verb|\\|\text{大根堆放较小数，小根堆放较大数}\\
+	&3.\hspace*{20pt}\textbf{while }|q1.size()-q2.size()|>1\textbf{ do}\\
+	&4.\hspace*{40pt}\textbf{if }q1.size()>q2.size()\textbf{ do }q2.push(q1.pop())\\
+	&4.\hspace*{40pt}\textbf{else } q1.push(q2.pop())\\
+	\hline
+	\end{aligned}\\
+	$
+	$
+	\begin{aligned}
+	&\textbf{删除操作}\\
+	\hline
+	&1.\hspace*{20pt}\textbf{if }(q1.size()+q2.size())\%2==1\textbf{ then }\\
+	&2.\hspace*{40pt}\textbf{if }q1.size()>q2.size()\textbf{ do }q1.pop()\\
+	&3.\hspace*{40pt}\textbf{else }q2.pop()\\
+	&4.\hspace*{20pt}\textbf{else }q2.pop()\verb|\\|\text{当为偶数时任意弹出一个}\\
+	\hline
+	\end{aligned}
+	$
 	\subsection*{problem 8.9}
 	\markright{problem 8.9}
 	\addcontentsline{toc}{subsection}{problem 8.9}
+	\subsubsection*{(1)}
+	对中位数$x_k$，设n为奇数，有$\frac{n+1}{2}-1$个元素小于$x_k$，$\frac{n+1}{2}-1$个元素大于$x_k$，则$\sum_{x_i>x_k}\frac{1}{n}=\sum_{x_i<x_k}\frac{1}{n}=\frac{1}{2}-\frac{1}{2n}<\frac{1}{2}.$对n为偶数，同样成立。
+	\subsubsection*{(2)}
+	建立以(w,x)为元素的结构体数组ori，w为权重，x为其对应下标。对其进行归并排序，时间复杂度为$O(n\log n)$。遍历ori，对权重进行累加，当权重和大于$\frac{1}{2}$时，对应结构体元素的x即为加权中位数，时间复杂度为$O(n)$。因此总的时间复杂度为$O(n\log n)$。\\
+	$\begin{aligned}
+	\hline
+	&1.\textbf{Function}\ {KthNear1}\ (ori,n)\\
+	&2.\hspace*{20pt}\text{对结构体数组ori使用归并排序}\\
+	&3.\hspace*{20pt}cur\_weight:=0\verb|\\|\text{当前权重}\\
+	&4.\hspace*{20pt}\textbf{for}\ i:= 1\ to\ n\ \textbf{do}\\
+	&5.\hspace*{40pt}\textbf{if }cur\_weight+ori[i].w>\frac{1}{2} \textbf{ do }\\ 	&6.\hspace*{60pt}\textbf{return }ori[i].x\\
+	&7.\hspace*{40pt}\textbf{else }\verb|\\|\text{更新权重和权重}\\
+	&8.\hspace*{60pt}cur\_weight:=cur\_weight+ori[i].w\\
+	\hline
+	\end{aligned}
+	$
+	\subsubsection*{(3)}
+	\paragraph{参考BFRPT算法}假设划分的权值和为tar,初始$tar=\frac{1}{2}$\\
+	1. 将所有元素分成$\lceil\frac{n}{5}\rceil$组，每组5个元素\\
+	2. 根据\hypertarget{problem 8.2}{problem 8.2}可知，比较6次找到5个元素中位数\\
+	3. 递归使用BFRPT来找出各组中位数的中位数，记为m\\
+	4. 基于m对元素进行划分，假设有x个元素小于m，n-x-1个元素大于m\\
+	5. 计算x个元素的权值和T，若权值和T=tar，则m为加权平均数\\
+	6. 若权值和T>tar,则在x个元素中递归寻找中位数，tar值不变\\
+	7. 若权值和T<tar,则在n-x-1个元素中递归寻找中位数，tar=tar-T\\
+	8. 时间复杂度$T(n)=T(n/5)+T(7n/10)+O(n)=\Theta(n)$，满足要求。
 	\section*{CHAPTER 9}
 	\markright{CHAPTER 9}
 	\addcontentsline{toc}{section}{CHAPTER 9}
