@@ -22,4 +22,6 @@ clean:
 		*.sty \
 		*.cfg \
 		*.cls \
-		*.sty
+		*.sty \
+		*.exe \
+		*.synctex.gz
