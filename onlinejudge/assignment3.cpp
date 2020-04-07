@@ -63,6 +63,7 @@ int main()
     }
     return 0;
 }*/
+/*
 #include <iostream>
 #include <queue>
 #include <stdio.h>
@@ -102,5 +103,105 @@ int main()
         else
             printf("%d ", myq1.top());
     }
+    return 0;
+}*/
+#include <iostream>
+#include <queue>
+using namespace std;
+struct Node
+{
+    int value;
+    Node *Left;
+    Node *Right;
+    Node() : value(0), Left(NULL), Right(NULL) {}
+    Node(int val) : value(val), Left(NULL), Right(NULL) {}
+};
+void LastOrderTree(Node *root)
+{
+    if (root)
+    {
+        LastOrderTree(root->Left);
+        LastOrderTree(root->Right);
+        cout << root->value << " ";
+    }
+}
+int LevelOrderTree(Node *root)
+{
+    if (root == NULL)
+        return 0;
+    int max_width = 0;
+    queue<Node *> myqueue;
+    myqueue.push(root);
+    while (!myqueue.empty())
+    {
+        int cur_width = myqueue.size();
+        max_width = max_width > cur_width ? max_width : cur_width;
+        for (int i = 0; i < cur_width; i++)
+        {
+            Node *temp = myqueue.front();
+            myqueue.pop();
+            if (temp->Left)
+                myqueue.push(temp->Left);
+            if (temp->Right)
+                myqueue.push(temp->Right);
+        }
+    }
+    return max_width;
+}
+int search_node(int num, const int *array, int len)
+{
+    for (int i = 0; i < len; i++)
+        if (num == array[i])
+            return i;
+    return -1;
+}
+Node *BuiltTree(int len, const int *pre_oder, const int *in_order)
+{
+    if (len == 0)
+        return NULL;
+    Node *root = new Node(*pre_oder);
+    int split = search_node(*pre_oder, in_order, len);
+    root->Left = BuiltTree(split, pre_oder + 1, in_order);
+    root->Right = BuiltTree(len - split - 1, pre_oder + split + 1, in_order + split + 1);
+    return root;
+}
+
+int MaxLen(Node *root)
+{
+    if (root == NULL)
+        return 0;
+    int left = MaxLen(root->Left);
+    int right = MaxLen(root->Right);
+    return left > right ? left + 1 : right + 1;
+}
+int MaxWidth(Node *root)
+{
+    static int max_width = 0;
+    if (root == NULL)
+        return 0;
+    int left_depth = MaxLen(root->Left);
+    int right_depth =MaxLen(root->Right);
+    max_width = (max_width > (left_depth + right_depth)) ? max_width : (left_depth + right_depth);
+    return max_width;
+}
+int main()
+{
+    int n;
+    cin >> n;
+    int *pre_order = new int[n + 1];
+    int *in_order = new int[n + 1];
+    for (int i = 0; i < n; i++)
+        cin >> pre_order[i];
+    for (int i = 0; i < n; i++)
+        cin >> in_order[i];
+    Node *root = BuiltTree(n, pre_order, in_order);
+    // LastOrderTree(root);
+    int maxlen = MaxLen(root);
+    cout << maxlen - 1 << endl;
+    int maxwidth=MaxWidth(root);
+    cout<<maxwidth<<endl;
+
+    delete[] pre_order;
+    delete[] in_order;
     return 0;
 }
