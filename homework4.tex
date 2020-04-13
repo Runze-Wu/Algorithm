@@ -83,15 +83,36 @@ vw是BE$\Leftrightarrow$v是w的后继$\Leftrightarrow active(v)\subset active(w
 4. 可能是CE。
 x结点先遍历v，然后从v返回x，x遍历u，易知$v.finishTime<u.discoverTime$。\\
 如图所示\includegraphics{CEORDER.png}\\
+\newpage
 {\subsection*{problem 4.7}}
 \markright{problem 4.7}
 \addcontentsline{toc}{subsection}{problem 4.7}
+在第一次DFS中，将结点压栈，同一强连通片的源头结点是最后一个压栈的。\textbf{(引理4.4)}若l是某个强连通片首节点，x是另一个强连通片中的节点，
+并且存在l通向x的路径，则x比l先结束遍历，即x先进栈l后进栈。满足这些性质，才能保证第二次DFS中，
+按正确的顺序取出每个SCC的首节点。\\
+\hspace*{20pt}无论是DFS还是BFS在一次遍历中都可以访问一个或者多个强连通片的所有节点。\\
+\hspace*{20pt}如果第一次DFS换为BFS，由于BFS中按层序遍历，同一连通片中出度不为0的点可能先入栈。在第二次DFS的时候，不能有正确的访问顺序。
+\hspace*{20pt}如果第二次DFS换为BFS，由于出栈的访问首节点顺序正确，BFS同样可以正确地划分强连通片。\\
+\hspace*{20pt}因此第一次必须为DFS，第二次DFS和BFS都可以。
 {\subsection*{problem 4.8}}
 \markright{problem 4.8}
 \addcontentsline{toc}{subsection}{problem 4.8}
+\noindent\textbf{充要条件:}对于无向连通图的DFS生成树的根节点v，v是割点，当且仅当v有两个及两个以上的子树。
+\paragraph{证明:}
+\textbf{$\Rightarrow$}如果v是割点，假设v只有一个子树，易知子树是连通的，将v删除，
+剩下的部分为v的子树仍然连通，这与v是割点相矛盾。因此v有两个及两个以上的子树。\\
+\textbf{$\Leftarrow$}如果v有两个及两个以上的子树，因为图本身连通，则子树之间相连必然通过v，即v是割点。
 {\subsection*{problem 4.9}}
 \markright{problem 4.9}
 \addcontentsline{toc}{subsection}{problem 4.9}
+正确
+\paragraph{证明:}
+当从TE vw回退时，如果以w为根的子树存在BE指向v的祖先，
+则v的祖先的discoverTime会被赋值给以w为根的子树中某个节点的back值，
+并最终会传递到w.back，即必有$w.back<v.discoverTime$；\\
+\hspace*{20pt}否则，没有存在BE指向v的祖先，如果子树不存在BE，则子树所有点back值均为初始值，
+即$w.back>v.discoverTime$，如果子树中存在BE，则子树中的所有结点的back值也将大于等于$v.discoverTime$，
+因为BE只能指向v或者子树内部结点，故back值最小也不会低于$v.discoverTime$，仍然满足$w.back>v.discoverTime$，即仍能正确判断是否为割点。
 {\subsection*{problem 4.12}}
 \markright{problem 4.12}
 \addcontentsline{toc}{subsection}{problem 4.12}
