@@ -121,6 +121,7 @@ x结点先遍历v，然后从v返回x，x遍历u，易知$v.finishTime<u.discove
 \includegraphics{4-12.png}\\
 图中的BE为AE和AD，根据题目给定算法，计算出外圈大环的大小为5和右侧环大小为4，最终结果为4。
 但图中最小环大小应为3，为左侧小环。因此算法不正确。
+\newpage
 {\subsection*{problem 4.13}}
 \markright{problem 4.13}
 \addcontentsline{toc}{subsection}{problem 4.13}
@@ -147,24 +148,30 @@ $\begin{aligned}
 		 & 7.\hspace*{60pt}res:=u,\textbf{break}                                                               \\
 		 & 8.\hspace*{20pt}\textbf{return }res                                                                 \\
 		\hline
-		 & 1.\textbf{Function}\ {AddDir}\ (u)    \verb|\\|\text{给环路加方向}                     \\
-		 & 2.\hspace*{20pt}u.vis=True\verb|\\|\text{标记其已经加边避免重复}                       \\
-		 & 3.\hspace*{20pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                     \\
-		 & 4.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ and }v.vis=False\textbf{ then}                    \\
-		 & 5.\hspace*{60pt}change\ uv\ dircetion\ to\ u\rightarrow v                                           \\
-		 & 6.\hspace*{60pt}AddDir(v)                                                                           \\
-		 & 7.\hspace*{40pt}\textbf{elif }uv=BE\textbf{ then}                                                   \\
-		 & 8.\hspace*{60pt}change\ uv\ dircetion\ to\ u\rightarrow v                                           \\
+	\end{aligned}\\
+	\begin{aligned}
 		\hline
-		 & 1.\textbf{Function}\ {Main-AddDirection}\ (V,E)   \verb|\\|\text{wrapper部分}          \\
-		 & 2.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                                        \\
-		 & 3.\hspace*{40pt}v.color:=WHITE,v.vis:=False                                                         \\
-		 & 4.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                                        \\
-		 & 5.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ and }v.vis=False\textbf{ then}                    \\
-		 & 6.\hspace*{60pt}res:=FindLoop(v)                                                                    \\
-		 & 7.\hspace*{60pt}\textbf{if }res=None\textbf{ then }\textbf{return }False                            \\
-		 & 9.\hspace*{60pt}\textbf{else }AddDir(res)                                                           \\
-		 & 10.\hspace*{15pt}\textbf{return }True                                                               \\
+		 & 1.\textbf{Function}\ {AddDir}\ (u)    \verb|\\|\text{给环路加方向}  \\
+		 & 2.\hspace*{20pt}u.vis=True\verb|\\|\text{标记其已经加边避免重复}    \\
+		 & 3.\hspace*{20pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                  \\
+		 & 4.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ and }v.vis=False\textbf{ then} \\
+		 & 5.\hspace*{60pt}change\ uv\ dircetion\ to\ u\rightarrow v                        \\
+		 & 6.\hspace*{60pt}AddDir(v)                                                        \\
+		 & 7.\hspace*{40pt}\textbf{elif }uv=BE\textbf{ then}                                \\
+		 & 8.\hspace*{60pt}change\ uv\ dircetion\ to\ u\rightarrow v                        \\
+		\hline
+	\end{aligned}\\
+	\begin{aligned}
+		\hline
+		 & 1.\textbf{Function}\ {Main-AddDirection}\ (V,E)   \verb|\\|\text{wrapper部分} \\
+		 & 2.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                               \\
+		 & 3.\hspace*{40pt}v.color:=WHITE,v.vis:=False                                                \\
+		 & 4.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                               \\
+		 & 5.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ and }v.vis=False\textbf{ then}           \\
+		 & 6.\hspace*{60pt}res:=FindLoop(v)                                                           \\
+		 & 7.\hspace*{60pt}\textbf{if }res=None\textbf{ then }\textbf{return }False                   \\
+		 & 9.\hspace*{60pt}\textbf{else }AddDir(res)                                                  \\
+		 & 10.\hspace*{15pt}\textbf{return }True                                                      \\
 		\hline
 	\end{aligned}
 $\newpage
@@ -214,7 +221,7 @@ $\begin{aligned}
 		\hline
 	\end{aligned}
 $
-
+\newpage
 \markright{problem 4.16}
 \hypertarget{problem 4.16}{\subsection*{problem 4.16}}
 \addcontentsline{toc}{subsection}{problem 4.16}
@@ -230,32 +237,30 @@ $A_{2}\rightarrow A_{1},A_{3}\rightarrow A_{2},\cdots,A_{n}\rightarrow A_{n-1}$�
 \textbf{算法实现}\\
 $\begin{aligned}
 		\hline
-		 & \textbf{算法3 }ZeroTopoLogical \text{ 算法}                                                                      \\
+		\label{ZeroTopoLogical}
+		 & \textbf{算法3 }ZeroTopoLogical \text{ 算法}                                                                                                  \\
 		\hline
-		 & 1.\textbf{Function}\ {InitQueue}\ (G(V,E),queue)  \verb|\\|\text{找到一个环路，并返回BE边祖先结点} \\
-		 & 2.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\textbf{ do}                                                     \\
-		 & 3.\hspace*{40pt}\textbf{if }InEdge[u]=0\textbf{ then }                                                           \\
-		 & 4.\hspace*{60pt}queue.push(u)                                                                                    \\
-		 & 5.\hspace{20pt}\textbf{return }len(queue)>0\verb|\\|\text{没有找到入度为0的点，返回False}          \\
-		\hline
-	\end{aligned}
-$
-$\begin{aligned}                                                                \\
+		 & 1.\textbf{Function}\ {InitQueue}\ (G(V,E),queue)  \verb|\\|\text{找到一个环路，并返回BE边祖先结点}                             \\
+		 & 2.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\textbf{ do}                                                                                 \\
+		 & 3.\hspace*{40pt}\textbf{if }InEdge[u]=0\textbf{ then }                                                                                       \\
+		 & 4.\hspace*{60pt}queue.push(u)                                                                                                                \\
+		 & 5.\hspace{20pt}\textbf{return }len(queue)>0\verb|\\|\text{没有找到入度为0的点，返回False}                                      \\
 		\hline
 		\label{FindHamiltZeroTopoLogical}
 		 & 1.\textbf{Function}\ {Main-ZeroTopoLogical}\ (G(V,E))  \verb|\\|\text{找到一个环路，并返回BE边祖先结点}                        \\
 		 & 2.\hspace*{20pt}queue.init(),topo:=list(),count:=0                                                                                           \\
 		 & 3.\hspace*{20pt}\verb|/*|\text{queue存放入度为0的结点的队列,topo存放拓扑排序结果,count为排好序的结点数}\verb|*/| \\
-		 & 4.\hspace*{20pt}\textbf{if }InitQueue(queue)=False\textbf{ then return} False                                                                 \\
+		 & 4.\hspace*{20pt}\textbf{if }InitQueue(G,queue)=False\textbf{ then return} False                                                              \\
 		 & 5.\hspace*{20pt}\textbf{while }queue.empty()!=False\textbf{ do}                                                                              \\
 		 & 6.\hspace*{40pt}u=queue.pop(),topo[count++]=u\verb|\\|\text{确定u为当前的逻辑起点}                                             \\
 		 & 7.\hspace*{40pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                                                              \\
 		 & 8.\hspace*{60pt}InEdge[v]--                                                                                                                  \\
 		 & 9.\hspace*{60pt}\textbf{if }v.vis=False\textbf{ then }queue.push(v)                                                                          \\
-		 & 11.\hspace{15pt}\textbf{return }count=len(V)\verb|\\|\text{所有结点应确定拓扑排序，否则存在环路}                              \\
+		 & 11.\hspace{15pt}\textbf{return }count=len(V)\verb|\\|\text{所有结点应确定拓扑排序，否则存在环路}                               \\
 		\hline
 	\end{aligned}
 $
+\newpage
 {\subsection*{problem 4.17}}
 \markright{problem 4.17}
 \addcontentsline{toc}{subsection}{problem 4.17}
@@ -296,6 +301,7 @@ $\begin{aligned}
 		\hline
 	\end{aligned}
 $
+\newpage
 {\subsection*{problem 4.18}}
 \markright{problem 4.18}
 \addcontentsline{toc}{subsection}{problem 4.18}
@@ -305,6 +311,7 @@ $
 易得影响力最低的连通片，一定是出度为0的连通片（一定存在，可能只有一个连通片），影响力是连通片中结点个数减1。
 因此，找到所有出度为0的连通片，并找出结点个数最小的即可。\\
 \hspace*{20pt}SCC的划分和寻找出度为0的连通片并统计的时间复杂度为$O(m+n)。$\\
+\textbf{算法实现}\\
 $\begin{aligned}
 		\hline
 		\label{MinImpact}
@@ -325,13 +332,15 @@ $
 则对所有的入度为0的连通片进行DFS遍历，遍历到的连通片即为其可到达的，DFS结束后计算遍历到连通片的结点个数。
 取所有DFS得到结点个数最多的即为所求。\\
 由于每次DFS后，都要查找所有访问过的连通片，因此时间复杂度为$O(n(m+n))$。\\
-\textbf{算法实现}\\
-$\begin{aligned}
+\textbf{具体算法实现见}\hyperlink{MaxImpact}{MaxImpact算法}\\
+$
+	\begin{aligned}
 		\hline
-		\label{MinImpact}
+		\hypertarget{MaxImpact}{}
+		\label{MaxImpact}
 		 & \textbf{算法6 } \text{MaxImpact 算法}                                                                              \\
 		\hline
-		 & 1.\textbf{Function}\ {MinImpact}\ (G(V,E))                                                                         \\
+		 & 1.\textbf{Function}\ {MaxImpact}\ (G(V,E))                                                                         \\
 		 & 2.\hspace*{20pt}construct\ G\downarrow\ using\ Scc(G)                                                              \\
 		 & 3.\hspace*{20pt}MaxPoint:=None,CurCount:=0,MaxCount:=0                                                             \\
 		 & 4.\hspace*{20pt}\verb|/*|\text{记录最大的DFS生成树的根以及结点个数}\verb|*/|           \\
@@ -344,52 +353,141 @@ $\begin{aligned}
 		 & 11.\hspace*{95pt}x.vis:=False  \verb|\\|\text{将访问置为False，避免下次DFS错误计算}                  \\
 		 & 12.\hspace*{55pt}\textbf{if }MaxCount<CurCount\textbf{ then }                                                      \\
 		 & 13.\hspace*{75pt}MaxPoint:=u,MaxCount:=CurCount                                                                    \\
-		 & 14.\hspace{15pt}\textbf{return }(MaxCount-1,MaxPoint)\verb|\\|\text{返回最大影响力,以及对应的连通片} \\                                                \\
+		 & 14.\hspace{15pt}\textbf{return }(MaxCount-1,MaxPoint)\verb|\\|\text{返回最大影响力,以及对应的连通片} \\
 		\hline
 	\end{aligned}
 $
 \newpage
-{\subsection*{problem 4.20}}
+\hypertarget{problem 4.20}{\subsection*{problem 4.20}}
 \markright{problem 4.20}
 \addcontentsline{toc}{subsection}{problem 4.20}
-与\hyperlink{problem 4.16}{problem 4.16} 类似，每学期可以修所有入度为0的结点。
-然后将所有入度为0的结点的指出的边删去，假设本题有解即为有向无环图，
-一定再次出现入度为0的结点，重复上述过程即可修完所有课程，重复的次数即为所需要的最少学期数。
+与\hyperlink{problem 4.16}{problem 4.16} 类似，每学期可以修所有入度为0的结点，将其加入暂存队列temqueue中。
+0. 在安排课程数小于总课程数前，重复下列步骤。\\
+1. 将temqueue的副本复制给queue，并将temqueue清空（避免每次都查找所有点来初始化队列）。\\
+2. 将queue中的结点弹出，并将其指出的边删去，安排课程数加1。\\
+3. 假设本题有解即为有向无环图，一定再次出现入度为0的结点，将其加入暂存队列temqueue中。\\
+4. 当queue中结点全部弹出，学期数加1，即queue中的的课程均被安排。\\
 可得算法时间复杂度是线性$O(m+n)$。\\
 \textbf{算法实现}\\
 $\begin{aligned}
 		\hline
-		 & \textbf{算法3 }ZeroTopoLogical \text{ 算法}                                                                                               \\
+		 & \textbf{算法7 }ClassTopoLogical \text{ 算法}                                                                                                 \\
 		\hline
-		 & 1.\textbf{Function}\ {InitQueue}\ (G(V,E),queue)  \verb|\\|\text{找到一个环路，并返回BE边祖先结点}                          \\
-		 & 2.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\textbf{ do}                                                                              \\
-		 & 3.\hspace*{40pt}\textbf{if }InEdge[u]=0\textbf{ and }u.vis=False\textbf{ then }                                                           \\
-		 & 4.\hspace*{60pt}queue.push(u)                                                                                                             \\
-		 & 5.\hspace*{20pt}\textbf{return }len(queue)>0\verb|\\|\text{没有找到入度为0的点，返回False}                                   \\                                                              \\
-		\hline
-		\label{FindHamiltZeroTopoLogical}
-		 & 1.\textbf{Function}\ {Main-ZeroTopoLogical}\ (G(V,E))  \verb|\\|\text{找到一个环路，并返回BE边祖先结点}                     \\
-		 & 2.\hspace*{20pt}queue.init(),count:=0,TermCount:=0                                                                                        \\
-		 & 3.\hspace*{20pt}\verb|/*|\text{queue存放入度为0的结点的队列,count为排好序的结点数,TermCount为学期数}\verb|*/| \\
-		 & 4.\hspace*{20pt}\textbf{while }count<len(V)\textbf{ do}\verb|\\|\text{安排的课程数还少于总课程}                                                                                   \\
-		 & 5.\hspace*{40pt}\textbf{if }InitQueue(queue)=False\textbf{ then return }False                                                             \\
-		 & 6.\hspace*{40pt}\textbf{while }queue.empty()!=False\textbf{ do}                                                                           \\
-		 & 7.\hspace*{60pt}u=queue.pop()\\
-		 & 8.\hspace*{60pt}u.vis=True\\
-		 & 9.\hspace*{60pt} count:=count+1\verb|\\|\text{已经确定的课程安排数加1}                              \\
-		 & 10.\hspace*{55pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do }\\
-		 & 11.\hspace*{75pt}InEdge[v]--                                                               \\
-		 & 12.\hspace*{35pt}TermCount:=TermCount+1\verb|\\|\text{所有零入度课程均已安排，学期数加1}                       \\
-		 & 13.\hspace{15pt}\textbf{return }TermCount\verb|\\|\text{最少学期数}                           \\
+		\label{ClassTopoLogClassical}
+		 & 1.\textbf{Function}\ {Main-ClassTopoLogical}\ (G(V,E))  \verb|\\|\text{找到一个环路，并返回BE边祖先结点}                       \\
+		 & 2.\hspace*{20pt}queue.init(),temqueue.init(),count:=0,TermCount:=0                                                                           \\
+		 & 3.\hspace*{20pt}\verb|/*|\text{temqueue存放入度为0的结点的队列,count为排好序的结点数,TermCount为学期数}\verb|*/| \\
+		 & 4.\hspace*{40pt}\textbf{if }\hyperref[ZeroTopoLogical]{InitQueue}(G,temqueue)=False\verb|\\|\text{初始化temqueue队列}          \\
+		 & 5.\hspace*{60pt}\textbf{ then return }False  \verb|\\|\text{与\hyperref[ZeroTopoLogical]{problem 4.16 InitQueue函数}相同。}    \\
+		 & 6.\hspace*{20pt}\textbf{while }count<len(V)\textbf{ do}\verb|\\|\text{安排的课程数还少于总课程}                                \\
+		 & 7.\hspace*{40pt}queue:=temqueue.copy(),temqueue.clear()\verb|\\|\text{得到上一次记录的入度为0的结点}                           \\
+		 & 8.\hspace*{40pt}\textbf{while }queue.empty()!=False\textbf{ do}                                                                              \\
+		 & 9.\hspace*{60pt}u=queue.pop()                                                                                                                \\
+		 & 10.\hspace*{55pt} count:=count+1\verb|\\|\text{已经确定的课程安排数加1}                                                        \\
+		 & 11.\hspace*{55pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do }                                                                            \\
+		 & 12.\hspace*{75pt}InEdge[v]--                                                                                                                 \\
+		 & 13.\hspace*{75pt}\textbf{if }InEdge[v]=0\textbf{ then }temqueue.push(v)                                                                      \\
+		 & 14.\hspace*{35pt}TermCount:=TermCount+1\verb|\\|\text{所有零入度课程均已安排，学期数加1}                                       \\
+		 & 15.\hspace{15pt}\textbf{return }TermCount\verb|\\|\text{最少学期数}                                                            \\
 		\hline
 	\end{aligned}
 $
+\newpage
 {\subsection*{problem 4.22}}
 \markright{problem 4.22}
 \addcontentsline{toc}{subsection}{problem 4.22}
+\subsubsection*{(1)}
+与\hyperlink{problem 4.16}{problem 4.16} 相同，i恨j记为i指向j。
+找到合理的拓扑排序即可。如果存在环路则不存在拓扑排序。
+仍为重复找入度为0的顶点u，将u放入拓扑序列中（因为没有人恨他），并删去u指向的边。
+如果在所有点安排拓扑排序前，没有找到入度为0的顶点，说明存在环路，不存在符合条件的排队。\\
+\textbf{具体算法实现}与\hyperref[ZeroTopoLogical]{ZeroTopoLogical算法}相同。
+\subsubsection*{(2)}
+与\hyperlink{problem 4.20}{problem 4.20} 相同。
+首先将所有入度为0的点的边删除后，这些结点的行数记为row。
+再将删除过程中发现的入度为0的点加入队列，row加1，表明开始下一次的排列。
+重复上述过程，直到所有小孩被安排顺序。\\
+\hspace*{20pt}如果没有发现入度为0的点且没有小孩全部安排，说明存在环路，不存在符合条件的安排。\\
+\textbf{具体算法实现}与\hyperref[ClassTopoLogClassical]{ClassTopoLogClassical算法}相同。
 {\subsection*{problem 4.23}}
 \markright{problem 4.23}
 \addcontentsline{toc}{subsection}{problem 4.23}
+\noindent\textbf{(1)}
+存在，$x_1=TRUE,x_2=TRUE,x_3=FALSE,x_4=TRUE$符合。\\
+% \hypertarget{problem 4.23(2)}{\subsubsection*{(2)}}
+\textbf{(2)}
+$(x_3\vee x_4)\wedge(x_1\vee x_2)\wedge(\overline{x_1}\vee\overline{x_2})\wedge(\overline{x_1}\vee{x_2})\wedge({x_1}\vee\overline{x_2})$。
+\subsubsection*{(3)}
+\begin{figure}[h]
+	\centering
+	\begin{minipage}{150pt}
+		\centering
+		\includegraphics[width=150pt,height=120pt]{4-23-1.png}
+		\caption{题目所给的实例}
+	\end{minipage}
+	\qquad
+	\begin{minipage}{150pt}
+		\centering
+		\includegraphics[width=100pt,height=120pt]{4-23-2.png}
+		\caption{{(2)}中所给实例}
+	\end{minipage}
+\end{figure}
+\subsubsection*{(4)}
+\paragraph{证明}
+如果连通片中存在同时包含$x$和$\overline{x}$的强连通片，
+$(x\rightarrow \overline{x}),(x\leftarrow \overline{x})$两条边存在，
+且由构造实例图过程
+表明原2-SAT有子句$(x\wedge\overline{x})\equiv FALSE$，该子句恒为假，故实例I不存在使所有子句都满足的赋值。
+\subsubsection*{(5)}
+\paragraph{证明}
+子句$(\alpha\vee\beta)\equiv (\overline{\alpha}\rightarrow \beta)
+	\wedge(\overline{\beta }\rightarrow \alpha)$，因此若要使得$(\alpha\vee\beta)$成立，上述蕴涵关系必须成立。
+在2-SAT实例图中的一条边$a\rightarrow b$则说明了必含有子句$(\overline{a}\vee b)$。故要想使得原式成立$a\rightarrow b$必须为TRUE。\\
+\hspace*{20pt}因此可以抽象地看作，如果选取点a(a为TRUE)，且存在$a\rightarrow b$，则b点必须选择。或者两者均不选择。
+如果一系列结点在同一个强连通片中，意味着彼此可达，则要么都选择，要么都不能选择。
+如果连通片中不存在一个文字及该文字的取反，说明这种选择是一定存在的。\\
+\textbf{证明选择的可行性}\\
+\hspace*{20pt}如果存在$a\rightarrow b$，则$\overline{b}\rightarrow\overline{a}$一定存在，即原图是存在对称关系的。
+\hspace*{20pt}因此可以将原图化为强连通片压缩图G$\downarrow$（必为DAG），原图中的对称关系也存在于G$\downarrow$中。
+即a所在连通片G1的其他文字的取反在$\overline{a}$的连通片$\overline{G1}$中。\\
+\hspace*{20pt}对立连通片之间的对称传递：如果$G1\rightarrow G2$，那么$\overline{G2}\rightarrow \overline{G1}$。\\
+\hspace*{20pt}同时对于DAG中存在边相连（祖先后继关系）的情况，为满足原式逻辑成立，故其后继也应为真，故需要进行拓扑排序。\\
+\hspace*{20pt}因此，当x所在的强连通分量G1的拓扑序在$\overline{x}$所在的强连通分量的拓扑序之后则G1为真，$\overline{G1}$为假，
+即按照反向拓扑的顺序进行（出度最小，对其它连通片影响最小）。重复选择直至所有连通片都被标记即可得到一组解。
+\subsubsection*{(6)}
+利用课本上的划分强连通片的算法，将有向图G改造为G的收缩图G$\downarrow$，之后进行逆向拓扑排序，即在构造图时将边的方向置反即可，
+出度为0转化为入度为0。反复选取拓扑序在前的连通片并将其对立的连通片置为假即可。时间复杂度为线性$O(m+n)$。\\
+
+$\begin{aligned}
+		\hline
+		\label{2-SAT}
+		 & \textbf{算法8 } \text{2-SAT 算法}                                                                                                          \\
+		\hline
+		 & 1.\textbf{Function}\ {2-SAT}\ (G(V,E))                                                                                                     \\
+		 & 2.\hspace*{20pt}queue.init(),temqueue.init(),count:=0,TermCount:=0                                                                         \\
+		 & 3.\hspace*{20pt}construct\ G\downarrow\ using\ Scc(G)                                                                                      \\
+		 & 4.\hspace*{20pt}queue.init(),temqueue.init(),count:=0                                                                                      \\
+		 & 5.\hspace*{20pt}\verb|/*|\text{temqueue存放入度为0的结点的队列,count为被选择的连通片个数}\verb|*/|             \\
+		 & 6.\hspace*{20pt}\textbf{foreach }part\ X\ of\ V\downarrow\textbf{ do }                                                                     \\
+		 & 7..\hspace*{40pt}\textbf{foreach }point\ y\ of\ X\downarrow\textbf{ do }                                                                   \\
+		 & 8.\hspace*{60pt}\textbf{if }\overline{y} in X\textbf{ then return}FALSE                                                                    \\
+		 & 9.\hspace*{40pt}\textbf{if }\hyperref[ZeroTopoLogical]{InitQueue}(G,temqueue)=False\verb|\\|\text{初始化temqueue队列}        \\
+		 & 10.\hspace*{55pt}\textbf{ then return }False  \verb|\\|\text{与\hyperref[ZeroTopoLogical]{problem 4.16 InitQueue函数}相同。} \\
+		 & 11.\hspace*{15pt}\textbf{while }count<len(V\downarrow)\textbf{ do}\verb|\\|\text{被选择的连通片个数}                         \\
+		 & 12.\hspace*{35pt}queue:=temqueue.copy(),temqueue.clear()\verb|\\|\text{得到上一次记录的入度为0的结点}                        \\
+		 & 13.\hspace*{35pt}\textbf{while }queue.empty()!=False\textbf{ do}                                                                           \\
+		 & 14.\hspace*{55pt}u=queue.pop()                                                                                                             \\
+		 & 15.\hspace*{55pt}\textbf{foreach }point\ x\ of\ u\textbf{ do }                                                                             \\
+		 & 16.\hspace*{75pt}x.value=TRUE\verb|\\|\text{将u中所有点标记为TRUE}                                                           \\
+		 & 17.\hspace*{55pt}count:=count+2\verb|\\|\text{已经确定连通片个数，对立连通片也被确认}                                        \\
+		 & 18.\hspace*{55pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do }                                                                          \\
+		 & 19.\hspace*{75pt}InEdge[v]--                                                                                                               \\
+		 & 20.\hspace*{75pt}\textbf{if }InEdge[v]=0\textbf{ then }temqueue.push(v)                                                                    \\
+		 & 21.\hspace*{35pt}TermCount:=TermCount+1\verb|\\|\text{所有零入度课程均已安排，学期数加1}                                     \\
+		 & 22.\hspace{15pt}\textbf{return }TermCount\verb|\\|\text{最少学期数}                                                          \\
+		\hline
+	\end{aligned}
+$
 \section*{Chapter 5}
 \markright{Chapter 5}
 \addcontentsline{toc}{section}{Chapter 5}
