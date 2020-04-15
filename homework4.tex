@@ -47,7 +47,7 @@
 \hypertarget{(1)}{\subsubsection*{(1)}}
 \textbf{$\Rightarrow$}如果w是v在DFS树中的后继结点，那么$actice(w)\subseteq active(v)$:\\
 当$w\ne v$时，
-因为w是v的后继节点，所以$v.discover<w.discover$,并且$v.finish>w.finish$。所以$actice(w)\subset active(v)$。当$w=v$时显然成立。
+因为w是v的后继结点，所以$v.discover<w.discover$,并且$v.finish>w.finish$。所以$actice(w)\subset active(v)$。当$w=v$时显然成立。
 \textbf{$\Leftarrow$}如果$actice(w)\subseteq active(v)$，那么w是v在DFS树中的后继结点:\\
 当$w\ne v$时，因为$active(w)\subseteq active(v)$，即$v.discover<w.discover$，并且$v.finish>w.finish$，即在遍历v的过程中将w遍历，即w是v的后继结点。
 \hypertarget{(2)}{\subsubsection*{(2)}}
@@ -56,13 +56,13 @@ v不是w的后继结点$\Leftrightarrow actice(v)\not\subset active(w)$得证。
 \subsubsection*{(3)}
 \paragraph*{\textcircled{1}}
 \textbf{$\Rightarrow$}如果vw是CE，那么v和w没有祖先和后继关系，
-由\hyperref[(2)]{(2)}可知active(w)和active(v)互不包含。同时CE说明在v指向w时，w已经是黑色节点，w已经遍历结束，
+由\hyperref[(2)]{(2)}可知active(w)和active(v)互不包含。同时CE说明在v指向w时，w已经是黑色结点，w已经遍历结束，
 所以active(w)在active(v)之前。\\
 \hspace*{20pt}\textbf{$\Leftarrow$ }active(w)在active(v)之前，w先完成整个遍历过程，后才遍历到v。且二者没有祖先后继关系，
 那么边vw即为CE。\\
 \paragraph*{\textcircled{2}}
 \textbf{$\Rightarrow$}vw是DE，即v指向w时w为黑色，并且$active(w)\subset active(v)$，
-若不存在第三个节点x，满足x是v的后继，w是x的后继，则v遍历到w时w一定为白色，边为TE。
+若不存在第三个结点x，满足x是v的后继，w是x的后继，则v遍历到w时w一定为白色，边为TE。
 即一定有$active(w)\subset active(x)\subset active(v)$。\\
 \hspace*{20pt}\textbf{$\Leftarrow$}如果存在结点x，满足$active(w)\subset active(x)\subset active(v)$，
 由\hyperref[(1)]{(1)}可知，x是v的后继，w是x的后继，且在遍历时v先走到x，然后x走到w，即v是w的祖先结点，因此vw是DE。\\
@@ -87,17 +87,17 @@ x结点先遍历v，然后从v返回x，x遍历u，易知$v.finishTime<u.discove
 {\subsection*{problem 4.7}}
 \markright{problem 4.7}
 \addcontentsline{toc}{subsection}{problem 4.7}
-在第一次DFS中，将结点压栈，同一强连通片的源头结点是最后一个压栈的。\textbf{(引理4.4)}若l是某个强连通片首节点，x是另一个强连通片中的节点，
+在第一次DFS中，将结点压栈，同一强连通片的源头结点是最后一个压栈的。\textbf{(引理4.4)}若l是某个强连通片首结点，x是另一个强连通片中的结点，
 并且存在l通向x的路径，则x比l先结束遍历，即x先进栈l后进栈。满足这些性质，才能保证第二次DFS中，
-按正确的顺序取出每个SCC的首节点。\\
-\hspace*{20pt}无论是DFS还是BFS在一次遍历中都可以访问一个或者多个强连通片的所有节点。\\
+按正确的顺序取出每个SCC的首结点。\\
+\hspace*{20pt}无论是DFS还是BFS在一次遍历中都可以访问一个或者多个强连通片的所有结点。\\
 \hspace*{20pt}如果第一次DFS换为BFS，由于BFS中按层序遍历，同一连通片中出度不为0的点可能先入栈。在第二次DFS的时候，不能有正确的访问顺序。
-\hspace*{20pt}如果第二次DFS换为BFS，由于出栈的访问首节点顺序正确，BFS同样可以正确地划分强连通片。\\
+\hspace*{20pt}如果第二次DFS换为BFS，由于出栈的访问首结点顺序正确，BFS同样可以正确地划分强连通片。\\
 \hspace*{20pt}因此第一次必须为DFS，第二次DFS和BFS都可以。
 {\subsection*{problem 4.8}}
 \markright{problem 4.8}
 \addcontentsline{toc}{subsection}{problem 4.8}
-\noindent\textbf{充要条件:}对于无向连通图的DFS生成树的根节点v，v是割点，当且仅当v有两个及两个以上的子树。
+\noindent\textbf{充要条件:}对于无向连通图的DFS生成树的根结点v，v是割点，当且仅当v有两个及两个以上的子树。
 \paragraph{证明:}
 \textbf{$\Rightarrow$}如果v是割点，假设v只有一个子树，易知子树是连通的，将v删除，
 剩下的部分为v的子树仍然连通，这与v是割点相矛盾。因此v有两个及两个以上的子树。\\
@@ -108,7 +108,7 @@ x结点先遍历v，然后从v返回x，x遍历u，易知$v.finishTime<u.discove
 正确
 \paragraph{证明:}
 当从TE vw回退时，如果以w为根的子树存在BE指向v的祖先，
-则v的祖先的discoverTime会被赋值给以w为根的子树中某个节点的back值，
+则v的祖先的discoverTime会被赋值给以w为根的子树中某个结点的back值，
 并最终会传递到w.back，即必有$w.back<v.discoverTime$；\\
 \hspace*{20pt}否则，没有存在BE指向v的祖先，如果子树不存在BE，则子树所有点back值均为初始值，
 即$w.back>v.discoverTime$，如果子树中存在BE，则子树中的所有结点的back值也将大于等于$v.discoverTime$，
@@ -116,24 +116,274 @@ x结点先遍历v，然后从v返回x，x遍历u，易知$v.finishTime<u.discove
 {\subsection*{problem 4.12}}
 \markright{problem 4.12}
 \addcontentsline{toc}{subsection}{problem 4.12}
+算法中，默认环为多条TE和BE构成，但存在两条BE和TE构成环的情况。从A点出发，依次遍历B，C，D，E。
+如下图所示。\\
+\includegraphics{4-12.png}\\
+图中的BE为AE和AD，根据题目给定算法，计算出外圈大环的大小为5和右侧环大小为4，最终结果为4。
+但图中最小环大小应为3，为左侧小环。因此算法不正确。
 {\subsection*{problem 4.13}}
 \markright{problem 4.13}
 \addcontentsline{toc}{subsection}{problem 4.13}
+如果有向图没有环，则至少有一个点的入度为0。即无向图DFS生成树必须存在环。
+\paragraph{算法设计}
+1. 有向图中每个点的入度至少为1，则有图的边数不小于图的点数，则无向图中必定有环（存在BE）。\\
+2. 利用DFS找到一条BE（找到一个环），设边为uv，u为后继，v为祖先。
+（如果没有找到BE，说明存在一棵DFS生成树无环，则不能构造成功）\\
+3. 以v为起点进行DFS，将每条TE xy，标记方向为x->y，最后将uv边标记方向为u->v，即满足了该环中每个点的入度都大于0。\\
+4. 找到图中仍为白色的点，进行2、3步，若没有算法结束。\\
+5. 由于只进行了两次深度优先遍历，较易得算法时间复杂度为线性。\\
+\textbf{具体算法实现见}\hyperref[AddDirection]{AddDirection算法}\\
+$\begin{aligned}
+		\hline
+		\label{AddDirection}
+		 & \textbf{算法1 }AddDirection\text{ 算法}                                                             \\
+		\hline
+		 & 1.\textbf{Function}\ {FindLoop}\ (u)  \verb|\\|\text{找到一个环路，并返回BE边祖先结点} \\
+		 & 2.\hspace*{20pt}u.color:=GRAY, res:=None                                                            \\
+		 & 3.\hspace*{20pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                     \\
+		 & 4.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ and }v.vis=False\textbf{ then}                    \\
+		 & 5.\hspace*{60pt}FindLoop(v)                                                                         \\
+		 & 6.\hspace*{40pt}\textbf{elif }uv=BE\textbf{ then}                                                   \\
+		 & 7.\hspace*{60pt}res:=u,\textbf{break}                                                               \\
+		 & 8.\hspace*{20pt}\textbf{return }res                                                                 \\
+		\hline
+		 & 1.\textbf{Function}\ {AddDir}\ (u)    \verb|\\|\text{给环路加方向}                     \\
+		 & 2.\hspace*{20pt}u.vis=True\verb|\\|\text{标记其已经加边避免重复}                       \\
+		 & 3.\hspace*{20pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                     \\
+		 & 4.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ and }v.vis=False\textbf{ then}                    \\
+		 & 5.\hspace*{60pt}change\ uv\ dircetion\ to\ u\rightarrow v                                           \\
+		 & 6.\hspace*{60pt}AddDir(v)                                                                           \\
+		 & 7.\hspace*{40pt}\textbf{elif }uv=BE\textbf{ then}                                                   \\
+		 & 8.\hspace*{60pt}change\ uv\ dircetion\ to\ u\rightarrow v                                           \\
+		\hline
+		 & 1.\textbf{Function}\ {Main-AddDirection}\ (V,E)   \verb|\\|\text{wrapper部分}          \\
+		 & 2.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                                        \\
+		 & 3.\hspace*{40pt}v.color:=WHITE,v.vis:=False                                                         \\
+		 & 4.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                                        \\
+		 & 5.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ and }v.vis=False\textbf{ then}                    \\
+		 & 6.\hspace*{60pt}res:=FindLoop(v)                                                                    \\
+		 & 7.\hspace*{60pt}\textbf{if }res=None\textbf{ then }\textbf{return }False                            \\
+		 & 9.\hspace*{60pt}\textbf{else }AddDir(res)                                                           \\
+		 & 10.\hspace*{15pt}\textbf{return }True                                                               \\
+		\hline
+	\end{aligned}
+$\newpage
 {\subsection*{problem 4.14}}
 \markright{problem 4.14}
 \addcontentsline{toc}{subsection}{problem 4.14}
-{\subsection*{problem 4.16}}
+\paragraph{算法设计}
+因为G是有向无环图，则G一定存在拓扑排序（\textbf{引理4.2}）。\\
+1. 入度最小的点（即拓扑排序的队首）a，如果图中存在哈密顿路径，则a的入度一定为0。假设a的入度不为0，结点x指向a。
+由于a是拓扑排序队首，故一定存在a到达x的路径（因为有图连通）设为$a\rightarrow\cdots\rightarrow x$，同时x指向a，构成环路，与题干相矛盾。故a的入度一定为0。\\
+2. 显然，从a点出发，如果存在哈密顿路径，则一次DFS遍历所有结点。\\
+3. 首先找到图G的入度为0的点a，如果不存在或存在多个则不可能存在哈密顿通路。\\
+4. 从a开始DFS，每当递归回溯时（边为uv），检查哈密顿路径path长度是否为结点个数。\\
+5. 如果等于结点个数，说明存在路径$a\rightarrow\cdots u\rightarrow v\rightarrow\cdots n$，算法结束。\\
+6. 否则，将$v.vis$置为假，将v从path中剔除（哈密顿通路上u不直接到达v），从u的下一子结点继续DFS。\\
+7. 找最小入度结点为$O(m+n)$，DFS过程显然是$O(m+n)$，因此时间复杂度是线性的。\\
+\textbf{具体算法实现见}\hyperref[FindHamilton]{FindHamilton算法}\\
+$\begin{aligned}
+		\hline
+		\label{FindHamilton}
+		 & \textbf{算法2 }FindHamilton \text{ 算法}                                                                       \\
+		\hline
+		 & 1.\textbf{Function}\ {FindHamilton}\ (u,path,n)  \verb|\\|\text{找到一个环路，并返回BE边祖先结点} \\
+		 & 2.\hspace*{20pt}u.vis:=True,path.push(u)                                                                       \\
+		 & 3.\hspace*{20pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                                \\
+		 & 4.\hspace*{40pt}\textbf{if }v.vis=False\textbf{ then}                                                          \\
+		 & 5.\hspace*{60pt}FindHamilton(v,path,n)                                                                         \\
+		 & 5.\hspace*{60pt}\textbf{if }len(path)==n\textbf{ then return }True                                             \\
+		 & 6.\hspace*{60pt}v.vis:=False,path.pop()\verb|\\|\text{没有找到，故将vis置为假，将v从path剔除}     \\
+		 & 7.\hspace*{20pt}\textbf{return }False\verb|\\|\text{u所有子结点都没有找到哈密顿通路}              \\
+		\hline
+	\end{aligned}
+$
+$\begin{aligned}
+		\hline
+		 & 1.\textbf{Function}\ {Main-FindHamilton}\ (V,E)   \verb|\\|\text{wrapper部分}                                           \\
+		 & 2.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\textbf{ do}                                                                         \\
+		 & 3.\hspace*{40pt}u.vis:=False,u.cnt:=0\verb|\\|\text{入度初始化为0}                                                      \\
+		 & 4.\hspace*{40pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do }u.cnt++\verb|\\|\text{计算各点的入度}                  \\
+		 & 5.\hspace*{20pt}tar:=None,cnt:=0  \verb|\\|\text{初始化要寻找的点}                                                     \\
+		 & 6.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\textbf{ do}     \verb|\\|\text{找到唯一一个入度为0的点}               \\
+		 & 7.\hspace*{40pt}\textbf{if }tar!=None\textbf{ and }cnt=0\textbf{ and }u.cnt=0                                                        \\
+		 & 8.\hspace*{60pt}\textbf{ then return } False\verb|\\|\text{存在不止一个入度为0的点，不可能存在哈密顿通路}              \\
+		 & 9.\hspace*{40pt}\textbf{if }cnt\geq u.cnt\textbf{ then }tar:=u,cnt:=u.cnt                                                            \\
+		 & 10.\hspace*{15pt}\textbf{if }tar=None\textbf{ or }cnt!=0\textbf{ then return } False \verb|\\|\text{不存在入度为0的点} \\
+		 & 11.\hspace*{15pt}\textbf{return }FindHamilton(tar)                                                                                   \\
+		\hline
+	\end{aligned}
+$
+
 \markright{problem 4.16}
+\hypertarget{problem 4.16}{\subsection*{problem 4.16}}
 \addcontentsline{toc}{subsection}{problem 4.16}
+\noindent \textbf{证明 }有向无环图中必有入度为0的点。\\
+\hspace*{20pt}设图有N个结点，假设每个点的入度均不为0，必有
+$A_{2}\rightarrow A_{1},A_{3}\rightarrow A_{2},\cdots,A_{n}\rightarrow A_{n-1}$，
+而对于$A_n$入度不为0，故存在某个结点指向它，则出现环路，产生矛盾，得证。\\
+\textbf{算法设计}\\
+\textbf{1.} 有向无环图可以出现一个或者多个入度为0的结点，对这些结点的拓扑先后顺序没有要求。\\
+\textbf{2.} 入度为0的结点的出边删去，必会出现入度为0的点（仍为无环图）。\\
+\textbf{3.} 重复\textbf{1，2}步，直到算法结束。可知时间复杂度为线性。\\
+由开始的\textbf{证明}可知，图中存在回路，会出现没有入度为0的点的情况，无法确定拓扑顺序。\\
+\textbf{算法实现}\\
+$\begin{aligned}
+		\hline
+		 & \textbf{算法3 }ZeroTopoLogical \text{ 算法}                                                                      \\
+		\hline
+		 & 1.\textbf{Function}\ {InitQueue}\ (G(V,E),queue)  \verb|\\|\text{找到一个环路，并返回BE边祖先结点} \\
+		 & 2.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\textbf{ do}                                                     \\
+		 & 3.\hspace*{40pt}\textbf{if }InEdge[u]=0\textbf{ then }                                                           \\
+		 & 4.\hspace*{60pt}queue.push(u)                                                                                    \\
+		 & 5.\hspace{20pt}\textbf{return }len(queue)>0\verb|\\|\text{没有找到入度为0的点，返回False}          \\
+		\hline
+	\end{aligned}
+$
+$\begin{aligned}                                                                \\
+		\hline
+		\label{FindHamiltZeroTopoLogical}
+		 & 1.\textbf{Function}\ {Main-ZeroTopoLogical}\ (G(V,E))  \verb|\\|\text{找到一个环路，并返回BE边祖先结点}                        \\
+		 & 2.\hspace*{20pt}queue.init(),topo:=list(),count:=0                                                                                           \\
+		 & 3.\hspace*{20pt}\verb|/*|\text{queue存放入度为0的结点的队列,topo存放拓扑排序结果,count为排好序的结点数}\verb|*/| \\
+		 & 4.\hspace*{20pt}\textbf{if }InitQueue(queue)=False\textbf{ then return} False                                                                 \\
+		 & 5.\hspace*{20pt}\textbf{while }queue.empty()!=False\textbf{ do}                                                                              \\
+		 & 6.\hspace*{40pt}u=queue.pop(),topo[count++]=u\verb|\\|\text{确定u为当前的逻辑起点}                                             \\
+		 & 7.\hspace*{40pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                                                              \\
+		 & 8.\hspace*{60pt}InEdge[v]--                                                                                                                  \\
+		 & 9.\hspace*{60pt}\textbf{if }v.vis=False\textbf{ then }queue.push(v)                                                                          \\
+		 & 11.\hspace{15pt}\textbf{return }count=len(V)\verb|\\|\text{所有结点应确定拓扑排序，否则存在环路}                              \\
+		\hline
+	\end{aligned}
+$
 {\subsection*{problem 4.17}}
 \markright{problem 4.17}
 \addcontentsline{toc}{subsection}{problem 4.17}
+\hypertarget{4.17(1)}{\subsubsection*{(1)}}
+\noindent 易知只需要以顶点s为起点进行一次DFS，判断是否遍历所有点即可。代价为$O(m+n)$。\\
+$\begin{aligned}
+		\hline
+		 & 1.\textbf{Function}\ {OneToAll}\ (G(V,E),s)                         \\
+		 & 2.\hspace{20pt}DFS(s)                                               \\
+		 & 3.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\textbf{ do}        \\
+		 & 4.\hspace{40pt}\textbf{if }u.color=WHITE\textbf{ then return }False \\
+		 & 5.\hspace*{20pt}\textbf{return }True                                \\
+		\hline
+	\end{aligned}$
+\subsubsection*{(2)}
+利用课本上的划分强连通片的算法，将有向图G改造为G的收缩图G$\downarrow$，
+各点之间的方向转换为各连通片之间的方向，易知G$\downarrow$为有向无环图。\\
+\hspace*{20pt}题目可以转换为一个连通片可以到达其他所有连通片。
+由于G$\downarrow$为有向无环图，必有入度为0的连通片。
+故如果图G存在到达所有顶点的点，其必在该连通片中。
+再利用\hyperlink{4.17(1)}{(1)}算法判断该连通片能否到达所有连通片即可。\\
+\hspace*{20pt}强连通片划分与DFS判断是否可达算法时间复杂度均为$O(m+n)$，因此时间复杂度为$O(m+n)$，符合题意。\\
+\textbf{具体算法实现见}\hyperref[SccOneToAll]{SccOneToAll算法}\\
+$\begin{aligned}
+		\hline
+		\label{SccOneToAll}
+		 & \textbf{算法4 } \text{SccOneToAll 算法}                                                            \\
+		\hline
+		 & 1.\textbf{Function}\ {SccOneToAll}\ (G(V,E))                                                       \\
+		 & 2.\hspace*{20pt}construct\ G\downarrow\ using\ Scc(G)                                              \\
+		 & 3.\hspace*{20pt}point:=None,CountZero:=0\verb|\\|\text{记录入度为0的连通片个数}      \\
+		 & 4.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\downarrow\textbf{ do}                             \\
+		 & 5.\hspace*{40pt}\textbf{if }InEdge[u]=0\textbf{ then }                                             \\
+		 & 6.\hspace*{60pt}point:=u,CountZero:=CountZero+1                                                    \\
+		 & 7.\hspace*{20pt}\textbf{if }point=None\textbf{ or }CountZero>1\textbf{ then }                      \\
+		 & 8.\hspace{40pt}\textbf{return }False\verb|\\|\text{没有或多个入度为0的点，返回False} \\
+		 & 9.\hspace{20pt}\textbf{return }OneToAll(G\downarrow,point)                                         \\
+		\hline
+	\end{aligned}
+$
 {\subsection*{problem 4.18}}
 \markright{problem 4.18}
 \addcontentsline{toc}{subsection}{problem 4.18}
+\subsubsection*{(1)}
+同样利用课本上的划分强连通片的算法，将有向图G改造为G的收缩图G$\downarrow$。
+易知同一个连通片中的影响力值相同。
+易得影响力最低的连通片，一定是出度为0的连通片（一定存在，可能只有一个连通片），影响力是连通片中结点个数减1。
+因此，找到所有出度为0的连通片，并找出结点个数最小的即可。\\
+\hspace*{20pt}SCC的划分和寻找出度为0的连通片并统计的时间复杂度为$O(m+n)。$\\
+$\begin{aligned}
+		\hline
+		\label{MinImpact}
+		 & \textbf{算法5 } \text{MinImpact 算法}                                                                                  \\
+		\hline
+		 & 1.\textbf{Function}\ {MinImpact}\ (G(V,E))                                                                             \\
+		 & 2.\hspace*{20pt}construct\ G\downarrow\ using\ Scc(G)                                                                  \\
+		 & 3.\hspace*{20pt}MinPoint:=None,MinCount:=\infty\verb|\\|\text{记录连通片的最小个数}                      \\
+		 & 4.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\downarrow\textbf{ do}                                                 \\
+		 & 5.\hspace*{40pt}\textbf{if }OutEdge[u]=0\textbf{ and }MinImpact<number(u)\textbf{ then }                               \\
+		 & 6.\hspace*{60pt}MinPoint:=u,MinCount:=number(u)                                                                        \\
+		 & 7.\hspace{20pt}\textbf{return }(MinCount-1,MinPoint)\verb|\\|\text{结点个数减1为影响力,以及对应的连通片} \\
+		\hline
+	\end{aligned}
+$
+\subsubsection*{(2)}
+同样得到有向图G的收缩图G$\downarrow$，易知影响力最大的连通片，一定是入度为0的连通片（压缩图无环）。\\
+则对所有的入度为0的连通片进行DFS遍历，遍历到的连通片即为其可到达的，DFS结束后计算遍历到连通片的结点个数。
+取所有DFS得到结点个数最多的即为所求。\\
+由于每次DFS后，都要查找所有访问过的连通片，因此时间复杂度为$O(n(m+n))$。\\
+\textbf{算法实现}\\
+$\begin{aligned}
+		\hline
+		\label{MinImpact}
+		 & \textbf{算法6 } \text{MaxImpact 算法}                                                                              \\
+		\hline
+		 & 1.\textbf{Function}\ {MinImpact}\ (G(V,E))                                                                         \\
+		 & 2.\hspace*{20pt}construct\ G\downarrow\ using\ Scc(G)                                                              \\
+		 & 3.\hspace*{20pt}MaxPoint:=None,CurCount:=0,MaxCount:=0                                                             \\
+		 & 4.\hspace*{20pt}\verb|/*|\text{记录最大的DFS生成树的根以及结点个数}\verb|*/|           \\
+		 & 5.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\downarrow\textbf{ do}                                             \\
+		 & 6.\hspace*{40pt}\textbf{if }InEdge[u]=0\textbf{ then }                                                             \\
+		 & 7.\hspace*{60pt}DFS(G\downarrow,u),CurCount:=0   \verb|\\|\text{更新当前DFS树的结点个数}             \\
+		 & 8.\hspace*{60pt}\textbf{foreach }point\ x\ in\ V\downarrow\textbf{ do}                                             \\
+		 & 9.\hspace*{80pt}\textbf{if }x.vis=True\textbf{ then }                                                              \\
+		 & 10.\hspace*{95pt}CurCount:=CurCount+number(x)                                                                      \\
+		 & 11.\hspace*{95pt}x.vis:=False  \verb|\\|\text{将访问置为False，避免下次DFS错误计算}                  \\
+		 & 12.\hspace*{55pt}\textbf{if }MaxCount<CurCount\textbf{ then }                                                      \\
+		 & 13.\hspace*{75pt}MaxPoint:=u,MaxCount:=CurCount                                                                    \\
+		 & 14.\hspace{15pt}\textbf{return }(MaxCount-1,MaxPoint)\verb|\\|\text{返回最大影响力,以及对应的连通片} \\                                                \\
+		\hline
+	\end{aligned}
+$
+\newpage
 {\subsection*{problem 4.20}}
 \markright{problem 4.20}
 \addcontentsline{toc}{subsection}{problem 4.20}
+与\hyperlink{problem 4.16}{problem 4.16} 类似，每学期可以修所有入度为0的结点。
+然后将所有入度为0的结点的指出的边删去，假设本题有解即为有向无环图，
+一定再次出现入度为0的结点，重复上述过程即可修完所有课程，重复的次数即为所需要的最少学期数。
+可得算法时间复杂度是线性$O(m+n)$。\\
+\textbf{算法实现}\\
+$\begin{aligned}
+		\hline
+		 & \textbf{算法3 }ZeroTopoLogical \text{ 算法}                                                                                               \\
+		\hline
+		 & 1.\textbf{Function}\ {InitQueue}\ (G(V,E),queue)  \verb|\\|\text{找到一个环路，并返回BE边祖先结点}                          \\
+		 & 2.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\textbf{ do}                                                                              \\
+		 & 3.\hspace*{40pt}\textbf{if }InEdge[u]=0\textbf{ and }u.vis=False\textbf{ then }                                                           \\
+		 & 4.\hspace*{60pt}queue.push(u)                                                                                                             \\
+		 & 5.\hspace*{20pt}\textbf{return }len(queue)>0\verb|\\|\text{没有找到入度为0的点，返回False}                                   \\                                                              \\
+		\hline
+		\label{FindHamiltZeroTopoLogical}
+		 & 1.\textbf{Function}\ {Main-ZeroTopoLogical}\ (G(V,E))  \verb|\\|\text{找到一个环路，并返回BE边祖先结点}                     \\
+		 & 2.\hspace*{20pt}queue.init(),count:=0,TermCount:=0                                                                                        \\
+		 & 3.\hspace*{20pt}\verb|/*|\text{queue存放入度为0的结点的队列,count为排好序的结点数,TermCount为学期数}\verb|*/| \\
+		 & 4.\hspace*{20pt}\textbf{while }count<len(V)\textbf{ do}\verb|\\|\text{安排的课程数还少于总课程}                                                                                   \\
+		 & 5.\hspace*{40pt}\textbf{if }InitQueue(queue)=False\textbf{ then return }False                                                             \\
+		 & 6.\hspace*{40pt}\textbf{while }queue.empty()!=False\textbf{ do}                                                                           \\
+		 & 7.\hspace*{60pt}u=queue.pop()\\
+		 & 8.\hspace*{60pt}u.vis=True\\
+		 & 9.\hspace*{60pt} count:=count+1\verb|\\|\text{已经确定的课程安排数加1}                              \\
+		 & 10.\hspace*{55pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do }\\
+		 & 11.\hspace*{75pt}InEdge[v]--                                                               \\
+		 & 12.\hspace*{35pt}TermCount:=TermCount+1\verb|\\|\text{所有零入度课程均已安排，学期数加1}                       \\
+		 & 13.\hspace{15pt}\textbf{return }TermCount\verb|\\|\text{最少学期数}                           \\
+		\hline
+	\end{aligned}
+$
 {\subsection*{problem 4.22}}
 \markright{problem 4.22}
 \addcontentsline{toc}{subsection}{problem 4.22}
