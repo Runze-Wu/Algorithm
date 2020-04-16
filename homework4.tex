@@ -125,17 +125,17 @@ x结点先遍历v，然后从v返回x，x遍历u，易知$v.finishTime<u.discove
 {\subsection*{problem 4.13}}
 \markright{problem 4.13}
 \addcontentsline{toc}{subsection}{problem 4.13}
-如果有向图没有环，则至少有一个点的入度为0。即无向图DFS生成树必须存在环。
-\paragraph{算法设计}
+\paragraph{算法设计} 如果有向图没有环，则至少有一个点的入度为0。\\
 1. 有向图中每个点的入度至少为1，则有图的边数不小于图的点数，则无向图中必定有环（存在BE）。\\
 2. 利用DFS找到一条BE（找到一个环），设边为uv，u为后继，v为祖先。
 （如果没有找到BE，说明存在一棵DFS生成树无环，则不能构造成功）\\
 3. 以v为起点进行DFS，将每条TE xy，标记方向为x->y，最后将uv边标记方向为u->v，即满足了该环中每个点的入度都大于0。\\
 4. 找到图中仍为白色的点，进行2、3步，若没有算法结束。\\
 5. 由于只进行了两次深度优先遍历，较易得算法时间复杂度为线性。\\
-\textbf{具体算法实现见}\hyperref[AddDirection]{AddDirection算法}\\
+\textbf{具体算法实现见}\hyperlink{AddDirection}{AddDirection算法}\\
 $\begin{aligned}
 		\hline
+		\hypertarget{AddDirection}{}
 		\label{AddDirection}
 		 & \textbf{算法1 }AddDirection\text{ 算法}                                                             \\
 		\hline
@@ -148,38 +148,36 @@ $\begin{aligned}
 		 & 7.\hspace*{60pt}res:=u,\textbf{break}                                                               \\
 		 & 8.\hspace*{20pt}\textbf{return }res                                                                 \\
 		\hline
-	\end{aligned}\\
-	\begin{aligned}
+		 & 1.\textbf{Function}\ {AddDir}\ (u)    \verb|\\|\text{给环路加方向}                     \\
+		 & 2.\hspace*{20pt}u.vis=True\verb|\\|\text{标记其已经加边避免重复}                       \\
+		 & 3.\hspace*{20pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                     \\
+		 & 4.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ and }v.vis=False\textbf{ then}                    \\
+		 & 5.\hspace*{60pt}change\ uv\ dircetion\ to\ u\rightarrow v                                           \\
+		 & 6.\hspace*{60pt}AddDir(v)                                                                           \\
+		 & 7.\hspace*{40pt}\textbf{elif }uv=BE\textbf{ then}                                                   \\
+		 & 8.\hspace*{60pt}change\ uv\ dircetion\ to\ u\rightarrow v                                           \\
 		\hline
-		 & 1.\textbf{Function}\ {AddDir}\ (u)    \verb|\\|\text{给环路加方向}  \\
-		 & 2.\hspace*{20pt}u.vis=True\verb|\\|\text{标记其已经加边避免重复}    \\
-		 & 3.\hspace*{20pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                  \\
-		 & 4.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ and }v.vis=False\textbf{ then} \\
-		 & 5.\hspace*{60pt}change\ uv\ dircetion\ to\ u\rightarrow v                        \\
-		 & 6.\hspace*{60pt}AddDir(v)                                                        \\
-		 & 7.\hspace*{40pt}\textbf{elif }uv=BE\textbf{ then}                                \\
-		 & 8.\hspace*{60pt}change\ uv\ dircetion\ to\ u\rightarrow v                        \\
-		\hline
-	\end{aligned}\\
-	\begin{aligned}
-		\hline
-		 & 1.\textbf{Function}\ {Main-AddDirection}\ (V,E)   \verb|\\|\text{wrapper部分} \\
-		 & 2.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                               \\
-		 & 3.\hspace*{40pt}v.color:=WHITE,v.vis:=False                                                \\
-		 & 4.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                               \\
-		 & 5.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ and }v.vis=False\textbf{ then}           \\
-		 & 6.\hspace*{60pt}res:=FindLoop(v)                                                           \\
-		 & 7.\hspace*{60pt}\textbf{if }res=None\textbf{ then }\textbf{return }False                   \\
-		 & 9.\hspace*{60pt}\textbf{else }AddDir(res)                                                  \\
-		 & 10.\hspace*{15pt}\textbf{return }True                                                      \\
+		 & 1.\textbf{Function}\ {Main-AddDirection}\ (V,E)   \verb|\\|\text{wrapper部分}          \\
+		 & 2.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                                        \\
+		 & 3.\hspace*{40pt}v.color:=WHITE,v.vis:=False                                                         \\
+		 & 4.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                                        \\
+		 & 5.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ and }v.vis=False\textbf{ then}                    \\
+		 & 6.\hspace*{60pt}res:=FindLoop(v)                                                                    \\
+		 & 7.\hspace*{60pt}\textbf{if }res=None\textbf{ then }\textbf{return }False                            \\
+		 & 8.\hspace*{60pt}\textbf{else }AddDir(res)                                                           \\
+		 & 9.\hspace*{20pt}\textbf{return }True                                                               \\
 		\hline
 	\end{aligned}
 $\newpage
-{\subsection*{problem 4.14}}
+\hypertarget{problem 4.14}{\subsection*{problem 4.14}}
 \markright{problem 4.14}
 \addcontentsline{toc}{subsection}{problem 4.14}
-\paragraph{算法设计}
-因为G是有向无环图，则G一定存在拓扑排序（\textbf{引理4.2}）。\\
+\paragraph{证明 }有向无环图中必有入度为0的点。\\
+\hspace*{20pt}设图有N个结点，假设每个点的入度均不为0，必有
+$A_{2}\rightarrow A_{1},A_{3}\rightarrow A_{2},\cdots,A_{n}\rightarrow A_{n-1}$，
+而对于$A_n$入度不为0，故存在某个结点指向它，则出现环路，产生矛盾，得证。\\
+\textbf{算法设计}\\
+0. 因为G是有向无环图，则G一定存在拓扑排序（\textbf{引理4.2}）。\\
 1. 入度最小的点（即拓扑排序的队首）a，如果图中存在哈密顿路径，则a的入度一定为0。假设a的入度不为0，结点x指向a。
 由于a是拓扑排序队首，故一定存在a到达x的路径（因为有图连通）设为$a\rightarrow\cdots\rightarrow x$，同时x指向a，构成环路，与题干相矛盾。故a的入度一定为0。\\
 2. 显然，从a点出发，如果存在哈密顿路径，则一次DFS遍历所有结点。\\
@@ -188,24 +186,21 @@ $\newpage
 5. 如果等于结点个数，说明存在路径$a\rightarrow\cdots u\rightarrow v\rightarrow\cdots n$，算法结束。\\
 6. 否则，将$v.vis$置为假，将v从path中剔除（哈密顿通路上u不直接到达v），从u的下一子结点继续DFS。\\
 7. 找最小入度结点为$O(m+n)$，DFS过程显然是$O(m+n)$，因此时间复杂度是线性的。\\
-\textbf{具体算法实现见}\hyperref[FindHamilton]{FindHamilton算法}\\
+\textbf{具体算法实现见}\hyperlink{FindHamilton}{FindHamilton算法}\\
 $\begin{aligned}
 		\hline
+		\hypertarget{FindHamilton}{}
 		\label{FindHamilton}
-		 & \textbf{算法2 }FindHamilton \text{ 算法}                                                                       \\
+		 & \textbf{算法2 }FindHamilton \text{ 算法}                                                                                             \\
 		\hline
-		 & 1.\textbf{Function}\ {FindHamilton}\ (u,path,n)  \verb|\\|\text{找到一个环路，并返回BE边祖先结点} \\
-		 & 2.\hspace*{20pt}u.vis:=True,path.push(u)                                                                       \\
-		 & 3.\hspace*{20pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                                \\
-		 & 4.\hspace*{40pt}\textbf{if }v.vis=False\textbf{ then}                                                          \\
-		 & 5.\hspace*{60pt}FindHamilton(v,path,n)                                                                         \\
-		 & 5.\hspace*{60pt}\textbf{if }len(path)==n\textbf{ then return }True                                             \\
-		 & 6.\hspace*{60pt}v.vis:=False,path.pop()\verb|\\|\text{没有找到，故将vis置为假，将v从path剔除}     \\
-		 & 7.\hspace*{20pt}\textbf{return }False\verb|\\|\text{u所有子结点都没有找到哈密顿通路}              \\
-		\hline
-	\end{aligned}
-$
-$\begin{aligned}
+		 & 1.\textbf{Function}\ {FindHamilton}\ (u,path,n)  \verb|\\|\text{找到一个环路，并返回BE边祖先结点}                       \\
+		 & 2.\hspace*{20pt}u.vis:=True,path.push(u)                                                                                             \\
+		 & 3.\hspace*{20pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                                                      \\
+		 & 4.\hspace*{40pt}\textbf{if }v.vis=False\textbf{ then}                                                                                \\
+		 & 5.\hspace*{60pt}FindHamilton(v,path,n)                                                                                               \\
+		 & 5.\hspace*{60pt}\textbf{if }len(path)==n\textbf{ then return }True                                                                   \\
+		 & 6.\hspace*{60pt}v.vis:=False,path.pop()\verb|\\|\text{没有找到，故将vis置为假，将v从path剔除}                           \\
+		 & 7.\hspace*{20pt}\textbf{return }False\verb|\\|\text{u所有子结点都没有找到哈密顿通路}                                    \\
 		\hline
 		 & 1.\textbf{Function}\ {Main-FindHamilton}\ (V,E)   \verb|\\|\text{wrapper部分}                                           \\
 		 & 2.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\textbf{ do}                                                                         \\
@@ -225,11 +220,8 @@ $
 \markright{problem 4.16}
 \hypertarget{problem 4.16}{\subsection*{problem 4.16}}
 \addcontentsline{toc}{subsection}{problem 4.16}
-\noindent \textbf{证明 }有向无环图中必有入度为0的点。\\
-\hspace*{20pt}设图有N个结点，假设每个点的入度均不为0，必有
-$A_{2}\rightarrow A_{1},A_{3}\rightarrow A_{2},\cdots,A_{n}\rightarrow A_{n-1}$，
-而对于$A_n$入度不为0，故存在某个结点指向它，则出现环路，产生矛盾，得证。\\
-\textbf{算法设计}\\
+\noindent 由\hyperlink{problem 4.14}{problem 4.14}证明可知，有向无环图必有入度为0的点。\\
+\noindent\textbf{算法设计}\\
 \textbf{1.} 有向无环图可以出现一个或者多个入度为0的结点，对这些结点的拓扑先后顺序没有要求。\\
 \textbf{2.} 入度为0的结点的出边删去，必会出现入度为0的点（仍为无环图）。\\
 \textbf{3.} 重复\textbf{1，2}步，直到算法结束。可知时间复杂度为线性。\\
@@ -237,6 +229,7 @@ $A_{2}\rightarrow A_{1},A_{3}\rightarrow A_{2},\cdots,A_{n}\rightarrow A_{n-1}$�
 \textbf{算法实现}\\
 $\begin{aligned}
 		\hline
+		\hypertarget{ZeroTopoLogical}{}
 		\label{ZeroTopoLogical}
 		 & \textbf{算法3 }ZeroTopoLogical \text{ 算法}                                                                                                  \\
 		\hline
@@ -246,7 +239,6 @@ $\begin{aligned}
 		 & 4.\hspace*{60pt}queue.push(u)                                                                                                                \\
 		 & 5.\hspace{20pt}\textbf{return }len(queue)>0\verb|\\|\text{没有找到入度为0的点，返回False}                                      \\
 		\hline
-		\label{FindHamiltZeroTopoLogical}
 		 & 1.\textbf{Function}\ {Main-ZeroTopoLogical}\ (G(V,E))  \verb|\\|\text{找到一个环路，并返回BE边祖先结点}                        \\
 		 & 2.\hspace*{20pt}queue.init(),topo:=list(),count:=0                                                                                           \\
 		 & 3.\hspace*{20pt}\verb|/*|\text{queue存放入度为0的结点的队列,topo存放拓扑排序结果,count为排好序的结点数}\verb|*/| \\
@@ -255,7 +247,7 @@ $\begin{aligned}
 		 & 6.\hspace*{40pt}u=queue.pop(),topo[count++]=u\verb|\\|\text{确定u为当前的逻辑起点}                                             \\
 		 & 7.\hspace*{40pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                                                              \\
 		 & 8.\hspace*{60pt}InEdge[v]--                                                                                                                  \\
-		 & 9.\hspace*{60pt}\textbf{if }v.vis=False\textbf{ then }queue.push(v)                                                                          \\
+		 & 9.\hspace*{60pt}\textbf{if }InEdge[v]=0\textbf{ then }queue.push(v)                                                                          \\
 		 & 11.\hspace{15pt}\textbf{return }count=len(V)\verb|\\|\text{所有结点应确定拓扑排序，否则存在环路}                               \\
 		\hline
 	\end{aligned}
@@ -383,12 +375,12 @@ $\begin{aligned}
 		 & 7.\hspace*{40pt}queue:=temqueue.copy(),temqueue.clear()\verb|\\|\text{得到上一次记录的入度为0的结点}                           \\
 		 & 8.\hspace*{40pt}\textbf{while }queue.empty()!=False\textbf{ do}                                                                              \\
 		 & 9.\hspace*{60pt}u=queue.pop()                                                                                                                \\
-		 & 10.\hspace*{55pt} count:=count+1\verb|\\|\text{已经确定的课程安排数加1}                                                        \\
+		 & 10.\hspace*{55pt}count:=count+1\verb|\\|\text{已经确定的课程安排数加1}                                                         \\
 		 & 11.\hspace*{55pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do }                                                                            \\
 		 & 12.\hspace*{75pt}InEdge[v]--                                                                                                                 \\
 		 & 13.\hspace*{75pt}\textbf{if }InEdge[v]=0\textbf{ then }temqueue.push(v)                                                                      \\
-		 & 14.\hspace*{35pt}TermCount:=TermCount+1\verb|\\|\text{所有零入度课程均已安排，学期数加1}                                       \\
-		 & 15.\hspace{15pt}\textbf{return }TermCount\verb|\\|\text{最少学期数}                                                            \\
+		 & 14.\hspace*{35pt}TermCount:=TermCount+1\verb|\\|\text{安排的学期数加1}                                                         \\
+		 & 15.\hspace{15pt}\textbf{return }TermCount\verb|\\|\text{最少的学期数}                                                          \\
 		\hline
 	\end{aligned}
 $
@@ -457,14 +449,14 @@ $(x\rightarrow \overline{x}),(x\leftarrow \overline{x})$两条边存在，
 \subsubsection*{(6)}
 利用课本上的划分强连通片的算法，将有向图G改造为G的收缩图G$\downarrow$，之后进行逆向拓扑排序，即在构造图时将边的方向置反即可，
 出度为0转化为入度为0。反复选取拓扑序在前的连通片并将其对立的连通片置为假即可。时间复杂度为线性$O(m+n)$。\\
-
+\textbf{具体算法实现}\hyperref[2-SAT]{2-SAT算法}\\
 $\begin{aligned}
 		\hline
 		\label{2-SAT}
 		 & \textbf{算法8 } \text{2-SAT 算法}                                                                                                          \\
 		\hline
 		 & 1.\textbf{Function}\ {2-SAT}\ (G(V,E))                                                                                                     \\
-		 & 2.\hspace*{20pt}queue.init(),temqueue.init(),count:=0,TermCount:=0                                                                         \\
+		 & 2.\hspace*{20pt}queue.init(),temqueue.init(),count:=0                                                                                      \\
 		 & 3.\hspace*{20pt}construct\ G\downarrow\ using\ Scc(G)                                                                                      \\
 		 & 4.\hspace*{20pt}queue.init(),temqueue.init(),count:=0                                                                                      \\
 		 & 5.\hspace*{20pt}\verb|/*|\text{temqueue存放入度为0的结点的队列,count为被选择的连通片个数}\verb|*/|             \\
@@ -483,26 +475,221 @@ $\begin{aligned}
 		 & 18.\hspace*{55pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do }                                                                          \\
 		 & 19.\hspace*{75pt}InEdge[v]--                                                                                                               \\
 		 & 20.\hspace*{75pt}\textbf{if }InEdge[v]=0\textbf{ then }temqueue.push(v)                                                                    \\
-		 & 21.\hspace*{35pt}TermCount:=TermCount+1\verb|\\|\text{所有零入度课程均已安排，学期数加1}                                     \\
-		 & 22.\hspace{15pt}\textbf{return }TermCount\verb|\\|\text{最少学期数}                                                          \\
+		 & 21.\hspace{15pt}\textbf{return }True\verb|\\|\text{能够正常选择}                                                             \\
 		\hline
 	\end{aligned}
 $
+\newpage
 \section*{Chapter 5}
 \markright{Chapter 5}
 \addcontentsline{toc}{section}{Chapter 5}
 {\subsection*{problem 5.1}}
 \markright{problem 5.1}
 \addcontentsline{toc}{subsection}{problem 5.1}
+\subsubsection*{不存在BE}
+假设存在边uv是BE，即当遍历结点u时，发现其黑色邻居v，且v是u在BFS树中的祖先结点。
+由于为无向图，v也直接指向u，故当队列中v弹出时，发现u为白色，则将u加入队列，即vu是TE。
+则在u出队时发现的uv边应是TE，不应二次遍历，故无向图BFS不存在BE。
+\subsubsection*{不存在DE}
+假设存在边uv是DE，在结点u刚出队列，即将处理它的所有邻居的时刻，结点v的情况:\\
+1. 结点v不可能是白色，否则uv只能是TE。\\
+2. 结点v不可能是灰色，因为u刚出队列，如果v为灰色，说明v已经在队列中，这和u是v在遍历树中的祖先结点矛盾。\\
+3. 结点v不可能是黑色，在u刚被发现的时刻，如果v已经结束遍历，这同样与u是v在遍历树中的祖先结点矛盾。
 {\subsection*{problem 5.2}}
 \markright{problem 5.2}
 \addcontentsline{toc}{subsection}{problem 5.2}
+可以使用深度优先遍历判断。无向图DFS在遍历过程中如果uv为TE则直接给v染为与u相反颜色即可，
+如果uv为BE说明存在环路，则判断uv两点颜色是否相同，若不同继续递归遍历，若相同则不是二分图。
+$\begin{aligned}
+		\hline
+		\label{2-SAT}
+		 & \textbf{算法9 } \text{BinaryDFS 算法}                                                                                                  \\
+		\hline
+		 & 1.\textbf{Function}\ {BinaryDFS}\ (u)
+		 & 2.\hspace*{20pt}u.color:=GRAY, u.parcolor:=RED                                                                                         \\
+		 & 3.\hspace*{20pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                                                        \\
+		 & 4.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ and }v.vis=False\textbf{ then}                                                       \\
+		 & 5.\hspace*{60pt}v.parcolo:r=!u.parcolor\verb|\\|\text{给v添加与u相反的颜色}                                              \\
+		 & 6.\hspace*{60pt}\textbf{if }BinaryDFS(v)=FALSE\textbf{ then return }FALSE                                                              \\
+		 & 7.\hspace*{40pt}\textbf{elif }uv=BE\textbf{ then}                                                                                      \\
+		 & 8.\hspace*{60pt}\textbf{if }u.parcolor=v.parcolor\textbf{ then return }FALSE\verb|\\|\text{如果uv颜色相同说明不是二分图} \\
+		 & 9.\hspace*{20pt}\textbf{return }True \verb|\\|\text{可以正确染色}                                                        \\
+		\hline
+	\end{aligned}
+$
+\subsubsection*{深度优先遍历}
+\noindent \textbf{优点：}能够找到所有的可行解，相比于BFS内存开销较小。\\
+\textbf{缺点：}因为会发生回溯在深度较大的情况下效率不高。递归栈的空间与深度成正比存在爆栈的风险。
+\subsubsection*{广度优先遍历}
+\noindent\textbf{优点：}保证了每个结点只访问一遍，且以最短路径访问，效率高。\\
+\textbf{缺点：}但是需要较大的内存来维护队列。
 {\subsection*{problem 5.4}}
 \markright{problem 5.4}
 \addcontentsline{toc}{subsection}{problem 5.4}
+\subsubsection*{(1)}
+\noindent 对于一个结点，其高度为左右子树中较高子树的高度加1。
+因此递归计算左右子树高度，当结点为空时高度记为0即可。每个结点访问一次，时间复杂度为$O(n)$。\\
+$
+	\begin{aligned}
+		\hline
+		 & 1.\textbf{Function}\ {MaxLen}\ (root)                        \\
+		 & 2.\hspace*{20pt}\textbf{if }root=NULL\textbf{ then return }0 \\
+		 & 3.\hspace*{20pt}left:=MaxLen(root->left)                     \\
+		 & 4.\hspace*{20pt}right:=MaxLen(root->left)                    \\
+		 & 5.\hspace*{20pt}\textbf{return }max(left,right)+1            \\
+		\hline
+	\end{aligned}
+$
+\subsubsection*{(2)}
+\noindent 树的最短路径的最大的边一定通过根结点，
+从根出发到达左子树最长边和到达右子树
+最长边之和即为左右子树高度之和。时间复杂度同样为$O(n)$。\\
+$
+	\begin{aligned}
+		\hline
+		 & 1.\textbf{Function}\ {MaxWidth}\ (root)                      \\
+		 & 2.\hspace*{20pt}\textbf{if }root=NULL\textbf{ then return }0 \\
+		 & 3.\hspace*{20pt}left:=MaxLen(root->left)                     \\
+		 & 4.\hspace*{20pt}right:=MaxLen(root->left)                    \\
+		 & 5.\hspace*{20pt}\textbf{return }(left+right)                 \\
+		\hline
+	\end{aligned}
+$
 {\subsection*{problem 5.8}}
 \markright{problem 5.8}
 \addcontentsline{toc}{subsection}{problem 5.8}
+\subsubsection*{(1)}
+\subsubsection*{1. 有向图}
+\paragraph{1.1 DFS }
+\hypertarget{problem 5.8证明}{\textbf{证明：}}
+有向图中，有环路当且仅当存在BE\\
+在有向图中如果存在边uv是BE，说明v是u的祖先节点，
+且有一条路径$v\rightarrow x\rightarrow \cdots\rightarrow u$，即u和v存在一条环路。
+\\
+如果有环，假设图中存在环路$u\rightarrow x\rightarrow\cdots v\rightarrow u$，
+任取环路中一点y为起点进行DFS，且存在边wy，则在遍历中，当遍历至w时，发现有一条指向y的边，同时y是其祖先结点，故wy为BE。
+\\
+$
+	\begin{aligned}
+		\hline
+		\label{DirDFSLoop}
+		 & \textbf{算法10 } \text{DirDFSLoop 算法}     \\
+		\hline
+		 & 1.\textbf{Function}\ {DFSLoop}\ (u)  \verb|\\|\text{找到BE，返回True存在环路} \\
+		 & 2.\hspace*{20pt}u.color:=GRAY                                                             \\
+		 & 3.\hspace*{20pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                      \\
+		 & 4.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ then}                     \\
+		 & 5.\hspace*{60pt}\textbf{if }DFSLoop(v)\textbf{ then return }True                                                                             \\
+		 & 6.\hspace*{40pt}\textbf{elif }uv=BE\textbf{ then}                                                    \\
+		 & 7.\hspace*{60pt}\textbf{return }True                                                               \\
+		 & 8.\hspace*{20pt}\textbf{return }False                                                                  \\
+		\hline
+		 & 1.\textbf{Function}\ {DirDFSLoop}\ (V,E)   \verb|\\|\text{wrapper部分}          \\
+		 & 2.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                                        \\
+		 & 3.\hspace*{40pt}v.color:=WHITE     \verb|\\|\text{初始化所有点为未访问}                                                    \\
+		 & 4.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                                        \\
+		 & 5.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ then}                    \\
+		 & 6.\hspace*{60pt}\textbf{if }DFSLoop(v)\textbf{ then return }True \verb|\\|\text{存在环路，无需继续遍历}                                                                \\
+		 & 7.\hspace*{15pt}\textbf{return }False    \verb|\\|\text{不存在返回False}                                                            \\
+		\hline
+	\end{aligned}
+$
+\newpage
+\paragraph{1.2 BFS}
+对于有向图，没有环，当且仅当存在拓扑排序。
+由\hyperlink{problem 4.14}{problem 4.14}证明可知，有向无环图必有入度为0的点。
+每次寻找入度为0的点将其加入队列，并按照BFS的方式进行遍历，
+即队列每弹出一个结点，便将其出边删除，如果为无环图，该过程必产生入度为0的点，同样将其加入队列。
+最后判断放入队列的结点数的个数，如果等于总结点数，说明无环，否则有环。\\
+%\textbf{具体算法实现}与\hyperlink{ZeroTopoLogical}{ZeroTopoLogical算法}相同。\\
+$
+\begin{aligned}
+	\hline
+	\hypertarget{DirDFSLoop}{}
+	\label{DirDFSLoop}
+	 & \textbf{算法11 }DirBFSLoop \text{ 算法}                                                                                                  \\
+	\hline
+	 & 1.\textbf{Function}\ {BFSLoop}\ (u)  \verb|\\|\text{计算该次BFS可被安排的结点数}                        \\
+	 & 2.\hspace*{20pt}queue.push(u),count:=0                                                                                           \\
+	 & 3.\hspace*{20pt}\verb|/*|\text{queue存放入度为0的结点的队列,count为排好序的结点数}\verb|*/| \\
+	 & 4.\hspace*{20pt}\textbf{while }queue.empty()!=False\textbf{ do}                                                                              \\
+	 & 5.\hspace*{40pt}u=queue.pop(),count:=count+1\verb|\\|\text{确定u为当前的逻辑起点}                                             \\
+	 & 6.\hspace*{40pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                                                              \\
+	 & 7.\hspace*{60pt}InEdge[v]--                                                                                                                  \\
+	 & 8.\hspace*{60pt}\textbf{if }InEdge[v]==0\textbf{ then }queue.push(v)                                                                          \\
+	 & 9.\hspace*{20pt}\textbf{return }count\verb|\\|\text{返回排好序的结点数}                               \\
+	\hline
+	 & 1.\textbf{Function}\ {DirBFSLoop}\ (G(V,E))  \verb|\\|\text{wrapper部分}                             \\
+	 & 2.\hspace*{20pt}count:=0 \verb|\\|\text{count为排好序的结点数}\\
+	 & 3.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\textbf{ do}                                                                                 \\
+	 & 4.\hspace*{40pt}\textbf{if }InEdge[u]=0\textbf{ then }                                                                                       \\
+	 & 5.\hspace*{60pt}count:=count+BFSLoop(u)                                                                                                                \\
+	 & 6.\hspace*{20pt}\textbf{return }count=len(V)>0\verb|\\|\text{所有结点应确定拓扑排序，否则存在环路}                                      \\
+	\hline
+	\end{aligned}
+$
+\newpage
+\subsubsection*{2. 无向图}
+\paragraph{2.1 DFS}
+对于无向图，DFS中可能出现BE和TE，由\hyperlink{problem 5.8证明}{1.1DFS}证明可知，如果有BE则有环路。\\
+$
+	\begin{aligned}
+		\hline
+		\label{NoDirDFSLoop}
+		 & \textbf{算法12 } \text{NoDirDFSLoop 算法}     \\
+		\hline
+		 & 1.\textbf{Function}\ {NoDFSLoop}\ (u)  \verb|\\|\text{找到BE，返回True存在环路} \\
+		 & 2.\hspace*{20pt}u.color:=GRAY                                                             \\
+		 & 3.\hspace*{20pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                      \\
+		 & 4.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ then}                     \\
+		 & 5.\hspace*{60pt}\textbf{if }NoDFSLoop(v)\textbf{ then return }True                                                                             \\
+		 & 6.\hspace*{40pt}\textbf{else return }True\verb|\\|\text{不是TE，则有环路}                                                                                                                \\
+		 & 7.\hspace*{20pt}\textbf{return }False                                                                  \\
+		\hline
+		 & 1.\textbf{Function}\ {NoDirDFSLoop}\ (V,E)   \verb|\\|\text{wrapper部分}          \\
+		 & 2.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                                        \\
+		 & 3.\hspace*{40pt}v.color:=WHITE      \verb|\\|\text{初始化所有点为未访问}                                                   \\
+		 & 4.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                                        \\
+		 & 5.\hspace*{40pt}\textbf{if }v.color=WHITE\textbf{ then}                    \\
+		 & 6.\hspace*{60pt}\textbf{if }NoDFSLoop(v)\textbf{ then return }True \verb|\\|\text{存在环路，无需继续遍历}                                                                \\
+		 & 7.\hspace*{15pt}\textbf{return }False    \verb|\\|\text{不存在返回False}                                                            \\
+		\hline
+	\end{aligned}
+$
+\newpage
+\paragraph{2.2 BFS}
+对于无向图，BFS中可能存在CE和TE，如果存在uv为CE，即当遍历u时刻发现v是灰色，即两者皆在队列中，那么u和v必有一点x（已经出队）可达，
+则三点构成环路。\\
+$
+\begin{aligned}
+	\hline
+	\hypertarget{DirDFSLoop}{}
+	\label{DirDFSLoop}
+	 & \textbf{算法13 }NoDirBFSLoop \text{ 算法}                                                                                                  \\
+	\hline
+	 & 1.\textbf{Function}\ {NoBFSLoop}\ (u)  \verb|\\|\text{找到一个环路，并返回BE边祖先结点}                        \\
+	 & 2.\hspace*{20pt}queue.push(u),u.color:=GRAY                                                                                        \\
+	 & 3.\hspace*{20pt}\verb|/*|\text{queue存放入度为0的结点的队列}\verb|*/| \\
+	 & 4.\hspace*{20pt}\textbf{while }queue.empty()!=False\textbf{ do}                                                                              \\
+	 & 5.\hspace*{40pt}u=queue.pop()\verb|\\|\text{确定u为当前的逻辑起点}                                             \\
+	 & 6.\hspace*{40pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                                                              \\
+	 & 7.\hspace*{60pt}\textbf{if }v.color=WHITE\textbf{ then }queue.push(v)                                                                          \\
+	 & 8.\hspace*{60pt}\textbf{else return }True\verb|\\|\text{存在其他边，则为环路}\\
+	 & 9.\hspace*{20pt}\textbf{return }False\verb|\\|\text{当前BFS生成树不存在环路}                               \\
+	\hline
+	 & 1.\textbf{Function}\ {NoDirBFSLoop}\ (G(V,E))  \verb|\\|\text{wrapper部分}                             \\
+	 & 2.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                                        \\
+	 & 3.\hspace*{40pt}v.color:=WHITE   \verb|\\|\text{初始化所有点为未访问}                                                     \\
+	 & 4.\hspace*{20pt}\textbf{foreach }point\ u\ in\ V\textbf{ do}                                                                                 \\
+	 & 5.\hspace*{40pt}\textbf{if }u.color=WHITE\textbf{ then }                                                                                       \\
+	 & 6.\hspace*{60pt}\textbf{if }NoBFSLoop(u)\textbf{ then return }True  \verb|\\|\text{存在环路，无需继续遍历}                                                                                                               \\
+	 & 7.\hspace*{20pt}\textbf{return }False\verb|\\|\text{不存在返回False}                                      \\
+	\hline
+	\end{aligned}
+$
+综上无论是DFS还是BFS，不存在环路当且仅当仅有TE边。
+\subsubsection*{(2)}
+
 {\subsection*{problem 5.9}}
 \markright{problem 5.9}
 \addcontentsline{toc}{subsection}{problem 5.9}
