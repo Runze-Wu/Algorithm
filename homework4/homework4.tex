@@ -226,7 +226,7 @@ $
 \textbf{2.} 入度为0的结点的出边删去，必会出现入度为0的点（仍为无环图）。\\
 \textbf{3.} 重复\textbf{1，2}步，直到算法结束。可知时间复杂度为线性。\\
 由开始的\textbf{证明}可知，图中存在回路，会出现没有入度为0的点的情况，无法确定拓扑顺序。\\
-\textbf{算法实现}\\
+\textbf{算法实现:}\\
 $\begin{aligned}
 		\hline
 		\hypertarget{ZeroTopoLogical}{}
@@ -303,7 +303,7 @@ $
 易得影响力最低的连通片，一定是出度为0的连通片（一定存在，可能只有一个连通片），影响力是连通片中结点个数减1。
 因此，找到所有出度为0的连通片，并找出结点个数最小的即可。\\
 \hspace*{20pt}SCC的划分和寻找出度为0的连通片并统计的时间复杂度为$O(m+n)。$\\
-\textbf{算法实现}\\
+\textbf{算法实现:}\\
 $\begin{aligned}
 		\hline
 		\label{MinImpact}
@@ -360,7 +360,7 @@ $
 3. 假设本题有解即为有向无环图，一定再次出现入度为0的结点，将其加入暂存队列temqueue中。\\
 4. 当queue中结点全部弹出，学期数加1，即queue中的的课程均被安排。\\
 可得算法时间复杂度是线性$O(m+n)$。\\
-\textbf{算法实现}\\
+\textbf{算法实现:}\\
 $\begin{aligned}
 		\hline
 		 & \textbf{算法7 }ClassTopoLogical \text{ 算法}                                                                                                 \\
@@ -529,6 +529,7 @@ $
 \subsubsection*{(1)}
 \noindent 对于一个结点，其高度为左右子树中较高子树的高度加1。
 因此递归计算左右子树高度，当结点为空时高度记为0即可。每个结点访问一次，时间复杂度为$O(n)$。\\
+\textbf{算法实现:}\\
 $
 	\begin{aligned}
 		\hline
@@ -544,6 +545,7 @@ $
 \noindent 树的最短路径的最大的边一定通过根结点，
 从根出发到达左子树最长边和到达右子树
 最长边之和即为左右子树高度之和。时间复杂度同样为$O(n)$。\\
+\textbf{算法实现:}\\
 $
 	\begin{aligned}
 		\hline
@@ -567,8 +569,9 @@ $
 且有一条路径$v\rightarrow x\rightarrow \cdots\rightarrow u$，即u和v存在一条环路。
 \\
 如果有环，假设图中存在环路$u\rightarrow x\rightarrow\cdots v\rightarrow u$，
-任取环路中一点y为起点进行DFS，且存在边wy，则在遍历中，当遍历至w时，发现有一条指向y的边，同时y是其祖先结点，故wy为BE。
-\\
+任取环路中一点y为起点进行DFS，且存在边wy，则在遍历中，当遍历至w时，
+发现有一条指向y的边，同时y是其祖先结点，故wy为BE。\\
+\textbf{算法实现:}\\
 $
 	\begin{aligned}
 		\hline
@@ -602,6 +605,7 @@ $
 即队列每弹出一个结点，便将其出边删除，如果为无环图，该过程必产生入度为0的点，同样将其加入队列。
 最后判断放入队列的结点数的个数，如果等于总结点数，说明无环，否则有环。\\
 %\textbf{具体算法实现}与\hyperlink{ZeroTopoLogical}{ZeroTopoLogical算法}相同。\\
+\textbf{算法实现:}\\
 $
 \begin{aligned}
 	\hline
@@ -632,6 +636,7 @@ $
 \subsubsection*{2. 无向图}
 \paragraph{2.1 DFS}
 对于无向图，DFS中可能出现BE和TE，由\hyperlink{problem 5.8证明}{1.1DFS}证明可知，如果有BE则有环路。\\
+\textbf{算法实现:}\\
 $
 	\begin{aligned}
 		\hline
@@ -660,6 +665,7 @@ $
 \paragraph{2.2 BFS}
 对于无向图，BFS中可能存在CE和TE，如果存在uv为CE，即当遍历u时刻发现v是灰色，即两者皆在队列中，那么u和v必有一点x（已经出队）可达，
 则三点构成环路。\\
+\textbf{算法实现:}\\
 $
 \begin{aligned}
 	\hline
@@ -687,13 +693,90 @@ $
 	\hline
 	\end{aligned}
 $
-综上无论是DFS还是BFS，不存在环路当且仅当仅有TE边。
 \subsubsection*{(2)}
-
+\includegraphics[height=80pt]{5-8-2.png}\\
+构造如上图所示的有向图，除了出发结点外，每个结点与它的后继之间均存在DE，即总的边数为$\Omega(n^2)$。
+因为$O(n)$时间复杂度无法遍历所有边，故不能判断是否成环。
+\newpage
 {\subsection*{problem 5.9}}
 \markright{problem 5.9}
 \addcontentsline{toc}{subsection}{problem 5.9}
+\subsubsection*{(1)}
+因为图边权均为1，且图是连通的，则任意顶点出发进行一次DFS，
+除了TE别的边都舍弃，得到的DFS生出树即为最小生成树。
+\subsubsection*{(2)}
+首先进行一次DFS生成，在生成树中选取了n-1条边，还有额外的11条边。
+DFS生成树建立线性时间复杂度$O(m+n)$。
+为了满足边权最小，将这11条边逐一加入生成树。
+每加一条边则必然产生一个环，在这个环中找出边权最大的将其删除即可。
+每插入一次，找出环中最大边权并删除是线性时间$O(m+n)$。
+综上时间复杂度为$O(m+n)线性$。
+\subsubsection*{(3)}
+先只考虑边权为1的边，进行相同规则的DFS，记录所加的边权为1的边数。
+如果所有边权为1所在的点均已被遍历，所加边数仍小于n-1。
+若产生了k个连通片，从那些边权为2的边进行选择，每选一条使得两个连通片连通，
+选取k-1条后，算法终止。
+\newpage
 {\subsection*{problem 5.10}}
 \markright{problem 5.10}
 \addcontentsline{toc}{subsection}{problem 5.10}
+\subsubsection*{(1)}
+经由BFS遍历的生成树，从s到达每个顶点的TE即为最短路径。
+同时BE对图中的s和u来讲对最短路径没有贡献。
+而对于CE边来讲，如果存在边uv是CE，在有向图中$v.dis\leq u.dis+1$，
+则s从u到达v的距离是$u.dis+1$，而从s不经过u直接经过若干TE到达距离为$v.vis$，
+因此当$v.dis=u.dis+1$时，s经由u到达v也是最短路径。
+从s为起点进行BFS，每当遇到TE或者CE的边(两点的dis相差不为1)则将该边加入新图中。
+\\
+$
+\begin{aligned}
+	\hline
+	 & 1.\textbf{Function}\ {BFS}\ (u)                   \\
+	 & 2.\hspace*{20pt}temG.init(),queue.push(u),u.color:=GRAY,u.dis:=0                                                                                        \\
+	 & 3.\hspace*{20pt}\verb|/*|\text{temG为新产生的图，queue存放入度为0的结点的队列}\verb|*/| \\
+	 & 4.\hspace*{20pt}\textbf{while }queue.empty()!=False\textbf{ do}                                                                              \\
+	 & 5.\hspace*{40pt}u=queue.pop()\verb|\\|\text{确定u为当前的逻辑起点}                                             \\
+	 & 6.\hspace*{40pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                                                              \\
+	 & 7.\hspace*{60pt}\textbf{if }v.color=WHITE\textbf{ then }                                                                        \\
+	 & 8.\hspace*{80pt}v.vis:=u.dis+1,v.color:=GRAY,queue.push(v)\\
+	 & 9.\hspace*{80pt}temG.Add(u,v)\verb|\\|\text{将TE边uv加入图中}\\
+	 & 10.\hspace*{55pt}\textbf{elif }v.color=GRAY\textbf{ and }v.dis=u.dis+1\textbf{ then }\\
+	 & 11.\hspace*{75pt}temG.Add(u,v)\verb|\\|\text{将特定的CE边uv加入图中}\\
+	 & 12.\hspace*{55pt}u.color:=BLACK\\
+	 & 13.\hspace*{15pt}\textbf{return }temG                               \\
+	\hline
+	 & 1.\textbf{Function}\ {BFS-Wrapper}\ (G(V,E),s)  \verb|\\|\text{wrapper部分}                             \\
+	 & 2.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V\textbf{ do}                                        \\
+	 & 3.\hspace*{40pt}v.color:=WHITE,v.vis:=\infty    \verb|\\|\text{初始化所有点为未访问}                                                     \\
+	 & 4.\hspace*{20pt}G^{'}:=BFS(u)\\
+	\hline
+	\end{aligned}
+$
+\subsubsection*{(2)}
+由第一问的分析可知，s到达u的最短路径的个数，
+即为在$G^{'}$中u的父结点的个数，
+则从s开始BFS遍历逐层累加即可。\\
+\textbf{具体算法实现见}\hyperlink{GetPathNum}{GetPathNum 算法}。\\
+$
+\begin{aligned}
+	\hline
+		\hypertarget{GetPathNum}{}
+		\label{GetPathNum}
+		 & \textbf{算法13 } \text{GetPathNum 算法}     \\
+	\hline
+	 & 1.\textbf{Function}\ {GetPathNum}\ (G^{'}(V^{'},E^{'}),s)                       \\
+	 & 2.\hspace*{20pt}\textbf{foreach }point\ v\ in\ V^{'}\textbf{ do}                                        \\
+	 & 3.\hspace*{40pt}v.color:=WHITE,c[v]:=0\verb|\\|\text{初始化所有点为未访问}                                                     \\
+	 & 4.\hspace*{20pt}queue.push(s),c[s]:=1\verb|\\|\text{从s开始BFS，s到达s本身有一条最短路径}\\
+	 & 5.\hspace*{20pt}\textbf{while }queue.empty()!=False\textbf{ do}                                                                              \\
+	 & 6.\hspace*{40pt}u=queue.pop()\verb|\\|\text{确定u为当前的逻辑起点}                                             \\
+	 & 7.\hspace*{40pt}\textbf{foreach }neighbor\ v\ of\ u\textbf{ do}                                                                              \\
+	 & 8.\hspace*{60pt}c[v]:=c[v]+c[u]\verb|\\|\text{v的父结点数加u的父结点数目相同}\\
+	 & 9.\hspace*{60pt}\textbf{if }v.color=WHITE\textbf{ then }                                                                        \\
+	 & 10.\hspace*{75pt}v.color:=GRAY,queue.push(v)\\
+	 & 11.\hspace*{55pt}u.color:=BLACK\\
+	 & 12.\hspace*{15pt}\textbf{return }c                              \\
+	 \hline
+	\end{aligned}
+$
 \end{document}
