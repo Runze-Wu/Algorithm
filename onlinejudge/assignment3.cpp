@@ -1,8 +1,8 @@
-/*#include <iostream>
+#include <iostream>
 #include <queue>
 #include <stack>
-#include<string>
-#include<vector>
+#include <string>
+#include <vector>
 using namespace std;
 inline void my_swap(string &a, string &b)
 {
@@ -10,14 +10,17 @@ inline void my_swap(string &a, string &b)
     a = b;
     b = temp;
 }
-int findk_pos(vector<string>&array, int k_pos, int begin, int end)
+int findk_pos(vector<string> &array, int k_pos, int begin, int end)
 {
+    if (begin > end)
+        return -1;
     int split = begin;
     string key = array[begin];
     for (int i = begin + 1; i <= end; i++)
-        if (array[i] <= key)
+        if (array[i] < key)
             my_swap(array[++split], array[i]);
-    my_swap(array[split], array[begin]);
+    if (array[split] != array[begin])
+        my_swap(array[split], array[begin]);
     if (split == k_pos)
         return split;
     else if (split < k_pos)
@@ -25,20 +28,19 @@ int findk_pos(vector<string>&array, int k_pos, int begin, int end)
     else
         return findk_pos(array, k_pos, begin, split - 1);
 }
-priority_queue<string, vector<string>> myq1;               //大根堆
-priority_queue<string, vector<string>, greater<string>> myq2; //小根堆
+priority_queue<string, vector<string>> myq1;
+priority_queue<string, vector<string>, greater<string>> myq2;
 int main()
 {
     int k, n;
-    cin >> k >> n;
-    vector<string>array(n+1);
+    cin >> n >> k;
+    vector<string> array(n + 1);
     for (int i = 1; i <= n; i++)
         cin >> array[i];
     int mid = findk_pos(array, (n + 1) / 2, 1, n);
-    int left_pos=findk_pos(array,mid-k-1,1,mid-1);
-    int right_pos = findk_pos(array, k, mid+1, n);
-    cout<<left_pos<<" "<<mid<<" "<<right_pos<<endl;
-    for (int i = 1; i <=left_pos; i++)
+    int left_pos = findk_pos(array, mid - k, 1, mid - 1);
+    int right_pos = findk_pos(array, k + mid, mid + 1, n);
+    for (int i = left_pos; i <= mid - 1; i++)
         myq1.push(array[i]);
     for (int i = mid + 1; i <= right_pos; i++)
         myq2.push(array[i]);
@@ -62,7 +64,7 @@ int main()
         myq2.pop();
     }
     return 0;
-}*/
+}
 /*
 #include <iostream>
 #include <queue>
@@ -105,6 +107,7 @@ int main()
     }
     return 0;
 }*/
+/*
 #include <iostream>
 #include <queue>
 using namespace std;
@@ -204,4 +207,4 @@ int main()
     delete[] pre_order;
     delete[] in_order;
     return 0;
-}
+}*/
