@@ -193,7 +193,6 @@ void DFS(int point, vector<node> &nodes, vector<int> *edge)
 int main()
 {
     int n;
-    printf("I have read the rules about plagiarism punishment\n");
     cin >> n;
     vector<node> nodes(n + 1);
     vector<int> *edge = new vector<int>[n + 1];

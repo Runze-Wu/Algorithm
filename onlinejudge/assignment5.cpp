@@ -77,6 +77,7 @@ int main()
     return 0;
 }
 */
+/*
 #include <iostream>
 #include <stdio.h>
 #include <set>
@@ -145,35 +146,28 @@ void FindCutPoint(int root, int v, int parent)
         }
     }
 }
-void FindCutEdge(int root, int v, int parent)
-{
-}
+
 int main()
 {
-    // cout << "wo yi yue du guan yu chao xi de shuo ming" << endl;
-    // cin >> n;
-    // init();
-    // int u, v;
-    // while (cin >> u >> v)
-    // {
-    //     add(v, u);
-    //     add(u, v);
-    // }
-    // FindCutPoint(0, 0, 0);
-    // for (auto i = cutPoint.begin(); i != cutPoint.end(); i++)
-    // {
-    //     cout << *i << endl;
-    // }
-    // for(auto i=cutEdge.begin();i!=cutEdge.end();i++){
-    //     cout<<(*i).u<<" "<<(*i).v<<endl;
-    // }
-    char temp[6];
-    scanf("%6s",temp);
-    printf("%s",temp);
-    return 0;
+    cin >> n;
+    init();
+    int u, v;
+    while (cin >> u >> v)
+    {
+        add(v, u);
+        add(u, v);
+    }
+    FindCutPoint(0, 0, 0);
+    for (auto i = cutPoint.begin(); i != cutPoint.end(); i++)
+    {
+        cout << *i << endl;
+    }
+    for(auto i=cutEdge.begin();i!=cutEdge.end();i++){
+        cout<<(*i).u<<" "<<(*i).v<<endl;
+    }
 }
+*/
 
-/*
 #include <iostream>
 #include <vector>
 #include <stdio.h>
@@ -235,4 +229,4 @@ int main()
     }
     cout << res << endl;
     return 0;
-}*/
+}

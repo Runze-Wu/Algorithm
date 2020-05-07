@@ -55,7 +55,7 @@ void kruskal(int n, int m)
     {
         int u = edges[i].u;
         int v = edges[i].v;
-        if (find(u) != find(v)) 
+        if (find(u) != find(v))
         {
             sum_mst += edges[i].w;
             num++;
@@ -76,28 +76,165 @@ int main()
     kruskal(n, m);
     return 0;
 }*/
-#include<iostream>
-#include<vector>
-#include<sstream>
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <set>
+#include <algorithm>
+#include <sstream>
+#include <assert.h>
 using namespace std;
+const int MAXN = 200010;
+int my_min(int a, int b)
+{
+    return b < a ? b : a;
+}
+
+vector<vector<int>> edges;
+int n = 0, cnt = 0, stack_top = -1;
+bool vis[MAXN];
+int low[MAXN], discover[MAXN], stack[MAXN], myscc[MAXN], scc_size[MAXN], in_degree[MAXN];
+void tarjan(int x)
+{
+    low[x] = discover[x] = ++cnt;
+    stack[++stack_top] = x;
+    vis[x] = true;
+    for (int i = 0; i < edges[x].size(); i++)
+    {
+        if (discover[edges[x][i]] == 0)
+        {
+            tarjan(edges[x][i]);
+            low[x] = my_min(low[x], low[edges[x][i]]);
+        }
+        else if (vis[edges[x][i]])
+        {
+            low[x] = my_min(low[x], discover[edges[x][i]]);
+        }
+    }
+    if (low[x] == discover[x])
+    {
+        while (true)
+        {
+            myscc[stack[stack_top]] = x;
+            scc_size[x]++;
+            vis[stack[stack_top]] = 0;
+            stack_top--;
+            if (x == stack[stack_top + 1])
+                break;
+        }
+    }
+}
+
+void createDAG(vector<vector<int>> &sccDAG)
+{
+    for (int i = 0; i < edges.size(); i++)
+    {
+        for (int j = 0; j < edges[i].size(); j++)
+        {
+            int x = myscc[i], y = myscc[edges[i][j]];
+            if (x != y)
+            {
+                sccDAG[x].push_back(y);
+                in_degree[y]++;
+            }
+        }
+    }
+}
+void DFS(int x, vector<vector<int>> &sccDAG)
+{
+    vis[x] = true;
+    for (int i = 0; i < sccDAG[x].size(); i++)
+    {
+        if (!vis[sccDAG[x][i]])
+        {
+            DFS(sccDAG[x][i], sccDAG);
+        }
+    }
+}
+int topo(vector<vector<int>> &sccDAG, vector<int> &result)
+{
+    int Max = -1;
+    vector<int> orderq;
+    for (int i = 0; i < sccDAG.size(); i++)
+    {
+        if (in_degree[i] == 0)
+        {
+            orderq.push_back(i);
+        }
+    }
+    if (orderq.empty())
+        return false;
+    for (int i = 0; i < n; i++)
+    {
+        vis[i] = 0;
+    }
+    for (int i = 0; i < orderq.size(); i++)
+    {
+        int x = orderq[i];
+        DFS(x, sccDAG);
+        int res = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (vis[i] == true)
+            {
+                res += scc_size[i];
+                vis[i] = false;
+            }
+        }
+        if (res > Max)
+        {
+            Max = res;
+            result.clear();
+            result.push_back(x);
+        }
+        else if (res == Max)
+        {
+            result.push_back(x);
+        }
+        /*for (int i = 0; i < sccDAG[x].size(); i++) {
+            in_degree[sccDAG[x][i]]--;
+            if (in_degree[sccDAG[x][i]] == 0)orderq.push(sccDAG[x][i]);
+        }*/
+    }
+    return Max;
+}
 int main()
 {
     string oneline;
     stringstream in;
-    int n=0;
-    while (getline(cin,oneline))
+    while (getline(cin, oneline))
     {
-        if(oneline.length()==0)continue;
+        vector<int> edge;
         n++;
-        in<<oneline;
+        in << oneline;
         int temp;
-        while(in>>temp)
-        {
-            cout<<temp<<" ";
-        }
+        while (in >> temp)
+            edge.push_back(temp);
         in.clear();
+        edges.push_back(edge);
     }
-    cout<<n;
-    
+    printf("I have read the rules about plagiarism punishment\n");
+    vector<vector<int>> sccDAG(n);
+    for (int i = 0; i < n; i++)
+        if (discover[i] == 0)
+            tarjan(i);
+    createDAG(sccDAG);
+    vector<int> result;
+    set<int> finalres;
+    int res = topo(sccDAG, result);
+    if (res)
+    {
+        printf("%d\n", res - 1);
+        for (int i = 0; i < result.size(); i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                if (myscc[j] == result[i])
+                    finalres.insert(j);
+            }
+        }
+        for (auto i = finalres.begin(); i != finalres.end(); i++)
+            printf("%d ", *i);
+    }
     return 0;
 }
