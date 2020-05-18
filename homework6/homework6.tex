@@ -43,7 +43,7 @@
   showtabs=false,                  % show tabs within strings adding particular underscores  
   stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered  
   stringstyle=\color{orange},     % string literal style  
-  tabsize=2,                       % sets default tabsize to 2 spaces  
+  tabsize=4,                       % sets default tabsize to 2 spaces  
   %title=myPython.py                   % show the filename of files included with \lstinputlisting; also try caption instead of title  
 }  
 \hypersetup{hypertex=true,
@@ -63,7 +63,7 @@
 \renewcommand{\algorithmicensure}{\textbf{输出:}}
 
 \begin{titlepage}
-	\title{\Huge\textbf{算法设计与分析 作业五}\\}
+	\title{\Huge\textbf{算法设计与分析 作业六}\\}
 	\author{\Large\textbf{作者}：吴润泽 \and{\Large\textbf{学号}：181860109}\\
 	\\
 	\and {\Large\textbf{Email}：\href{mailto:181860109@smail.nju.edu.cn}{181860109@smail.nju.edu.cn}}\\}
@@ -167,30 +167,301 @@ ShortByV(G,v):
 \section*{Chapter 14}
 \markright{Chapter 14}
 \addcontentsline{toc}{section}{Chapter 14}
-{\subsection*{problem 14.2}}
+\hypertarget{14.2}{\subsection*{problem 14.2}}
 \markright{problem 14.2}
 \addcontentsline{toc}{subsection}{problem 14.2}
+\paragraph*{解}取子问题为$dp[i][j]$，含义为使用前i个数能否满足元素和为j。
+对于$dp[i][j]$要么使用了第i个元素，要么使用了前i-1个元素。故其递推式为:
+$$dp[i][j]=(dp[i-1][j])||(dp[i][j-A[i]]).$$
+基于此得到整数子集和算法，\textbf{时间复杂度} $O(nS)$
+，\textbf{空间复杂度} $O(nS)$:
+\begin{lstlisting}[language=C++,title=SubSeqSum.func]
+SubSeqSum(A,S):
+	dp:=[n+1][S+1] /*dp数组大小为(n+1)(S+1)的二维数组*/
+	for i:=1 to n do: /*初始化布尔dp数组*/
+		dp[i][0]:=dp[i][A[i]]:=true
+	for i:=2 to n do:
+		for j:=1 to S do:
+			if A[i]>j: /*如果A[i]已经大于j，必不能包含A[i]*/
+				dp[i][j]:=dp[i-1][j]
+			else:
+				dp[i][j]:=(dp[i-1][j])||(dp[i][j-A[i]])
+	return dp[n][s] /*返回使用n个数能否达到s即可*/
+\end{lstlisting}
+
 {\subsection*{problem 14.3}}
 \markright{problem 14.3}
 \addcontentsline{toc}{subsection}{problem 14.3}
+\paragraph*{解}取子问题$dp[i]$为正整数i变为1需要的最少操作数。
+根据上述规则，可根据子问题i与2，3的倍数关系，分成三种情况列出递推式：
+$$\left\{
+\begin{aligned}
+	&i=3k\&\&i=2k,& dp[i]=min(d[i-1],d[i/2],d[i/3])+1,\\
+	&i=2k\&\&i!=3k,& dp[i]=min(d[i-1],d[i/2])+1,\\
+	&i=3k\&\&i!=2k,& dp[i]=min(d[i-1],d[i/3])+1,\\
+	&i!=3k\&\&i!=2k,& dp[i]=d[i-1]+1.\\
+\end{aligned}\right.
+$$基于此得到算法伪代码，\textbf{时间复杂度} $O(n)$
+，\textbf{空间复杂度} $O(n)$::
+\begin{lstlisting}[language=C++,title=MiniOp.func]
+MiniOp(n):
+	dp:=[n+1] /*dp数组大小为n+1的一维数组*/
+	dp[1]:=dp[2]:=dp[3]:=1 /*1,2,3均只需要1次操作*/
+	for i:=4 to n do:
+		if i%6=0:
+			dp[i]:=min(d[i-1],d[i/2],d[i/3])+1
+		else if i%3=0:
+			dp[i]:=min(d[i-1],d[i/3])+1
+		else if i%2=0:
+			dp[i]:=min(d[i-1],d[i/2])+1
+		else:
+			dp[i]:=d[i-1]+1
+	return dp[n] /*返回子问题规模为n的最少操作数即可*/
+\end{lstlisting}
+\newpage
 {\subsection*{problem 14.6}}
 \markright{problem 14.6}
 \addcontentsline{toc}{subsection}{problem 14.6}
-{\subsection*{problem 14.7}}
+\paragraph*{1)}取子问题$dp[i][j]$记为X的前i个字符与Y的前j个字符的
+LCS长度。
+基于$X[i]$与$Y[j]$是否相等得到递推方程:
+$$\left\{
+	\begin{aligned}
+		&X[i]==Y[j],&dp[i][j]=dp[i-1][j-1]+1,\\
+		&X[i]!=Y[j],&dp[i][j]=max(dp[i-1][j],dp[i][j-1]).\\
+	\end{aligned}
+\right.
+$$
+基于此得到算法伪代码，\textbf{时间复杂度} $O(mn)$
+，\textbf{空间复杂度} $O(mn)$:
+\begin{lstlisting}[language=C++,title=LCS.func]
+LCS(X,Y):
+	dp:=[m+1][n+1] /*dp数组大小为(m+1)(n+1)的二维数组*/
+	for i:=1 to m do:
+		dp[i][0]:=0 /*X子串与空字符串的LCS为0*/
+	for j:=1 to n do:
+		dp[0][j]:=0 /*Y子串与空字符串的LCS为0*/
+	for i:=1 to m do:
+		for j:=1 to n do:
+			if X[i]=Y[j]:
+				dp[i][j]:=dp[i-1][j-1]+1
+			else:
+				dp[i][j]:=max(dp[i-1][j],dp[i][j-1])
+	return dp[m][n] /*返回子问题规模为X和Y的LCS即可*/
+\end{lstlisting}
+\paragraph*{2)}
+X中的字符可以重复出现，当$X[i]=Y[j]$时，对于子问题$dp[i][j]$，
+其等价于X的前i个字符与Y前j-1个字符的LCS加1。
+递推方程修改为:
+$$\left\{
+	\begin{aligned}
+		&X[i]==Y[j],&dp[i][j]=dp[i][j-1]+1,\\
+		&X[i]!=Y[j],&dp[i][j]=max(dp[i-1][j],dp[i][j-1]).\\
+	\end{aligned}
+\right.
+$$
+\begin{lstlisting}[language=C++,title=ReLCS.func]
+ReLCS(X,Y):
+	dp:=[m+1][n+1] /*dp数组大小为(m+1)(n+1)的二维数组*/
+	for i:=1 to m do:
+		dp[i][0]:=0 /*X子串与空字符串的LCS为0*/
+	for j:=1 to n do:
+		dp[0][j]:=0 /*Y子串与空字符串的LCS为0*/
+	for i:=1 to m do:
+		for j:=1 to n do:
+			if X[i]=Y[j]:
+				dp[i][j]:=dp[i][j-1]+1 /*递推式进行修改*/
+			else:
+				dp[i][j]:=max(dp[i-1][j],dp[i][j-1])
+	return dp[m][n] /*返回子问题规模为X和Y的LCS即可*/
+\end{lstlisting}
+时间复杂度与空间复杂度不变。
+\paragraph*{3)}
+在循环中记录重复次数，当$X[i]=Y[j]$且$X[i]$重复次数超过k后，
+$dp[i][j]$的LCS等价于X的前i-1个字符和Y前j-1个字符的LCS加1。
+\begin{lstlisting}[language=C++,title=LimReLCS.func]
+LimReLCS(X,Y,k):
+	dp:=[m+1][n+1] /*dp数组大小为(m+1)(n+1)的二维数组*/
+	for i:=1 to m do:
+		dp[i][0]:=0 /*X子串与空字符串的LCS为0*/
+	for j:=1 to n do:
+		dp[0][j]:=0 /*Y子串与空字符串的LCS为0*/
+	repnum:=0 /*重复次数初始化为0*/
+	for i:=1 to m do:
+		for j:=1 to n do:
+			if X[i]=Y[j]:
+				if repnum<k:
+					repnum:=repnum+1
+					dp[i][j]:=dp[i][j-1]+1 /*递推式进行修改*/
+				else:
+					dp[i][j]:=dp[i-1][j-1]+1
+			else:
+				repnum:=0 /*X[i]!=Y[j]即不再使用X[i]*/
+				dp[i][j]:=max(dp[i-1][j],dp[i][j-1])
+	return dp[m][n] /*返回子问题规模为X和Y的LCS即可*/
+\end{lstlisting}
+\newpage
+\hypertarget{14.7}{\subsection*{problem 14.7}}
 \markright{problem 14.7}
 \addcontentsline{toc}{subsection}{problem 14.7}
+\paragraph*{解}取子问题$dp[i][j]$记为以$T[i]$为结尾的前向串，
+以$T[j]$为开始的后向串的最大连续子串长度。
+为了满足两子串不重叠，易得$i<j$。
+根据$T[i]$与$T[j]$得递推方程:
+$$\left\{
+	\begin{aligned}
+		&T[i]==T[j]\&\&i<j,&dp[i][j]=dp[i-1][j+1]+1,\\
+		&T[i]!=T[j]\&\&i<j,&dp[i][j]=0.\\
+	\end{aligned}
+\right.
+$$
+基于此得到算法伪代码，\textbf{时间复杂度} $O(n^2)$
+，\textbf{空间复杂度} $O(n^2)$:
+\begin{lstlisting}[language=C++,title=FroLas.func]
+FroLas(T):
+	dp:=[n+1][n+1] /*dp数组大小为(m+1)(n+1)的二维数组*/
+	res:=-Inf /*初始化为最小值，结果保存最大的连续长度*/
+ 	for i:=1 to n do:
+		dp[i][0]:=dp[0][i]:=0 /*子串与空字符串的重叠长度为0*/
+	for i:=1 to n do:   /*前向串从头向后扩充*/
+		for j:=n to i+1 do:  /*前向串从尾部向前扩充*/
+			if T[i]=T[j]:
+				dp[i][j]:=dp[i-1][j+1]+1
+			else:
+				dp[i][j]:=0
+			res:=max(res,dp[i][j]) /*更新结果*/
+	return res
+\end{lstlisting}
 {\subsection*{problem 14.11}}
 \markright{problem 14.11}
 \addcontentsline{toc}{subsection}{problem 14.11}
+\paragraph*{1)}与 \hyperlink{14.7}{problem 14.7}类似，
+取子问题$dp[i][j]$为子串$T[i\cdots j]$的最长回文子序列。
+同样根据$T[i]$与$T[j]$得到递推方程:
+$$\left\{
+	\begin{aligned}
+		&T[i]==T[j]\&\&i<j,&dp[i][j]=dp[i+1][j-1]+2,\\
+		&T[i]!=T[j]\&\&i<j,&dp[i][j]=max(dp[i][j-1],dp[i+1][j]).\\
+	\end{aligned}
+\right.
+$$
+基于此得到算法伪代码，\textbf{时间复杂度} $O(n^2)$
+，\textbf{空间复杂度} $O(n^2)$:
+\begin{lstlisting}[language=C++,title=PalindromSeq.func]
+PalindromSeq(T):
+	dp:=[n+1][n+1] /*dp数组大小为(n+1)(n+1)的二维数组*/
+ 	for i:=1 to n do:
+		dp[i][i]:=1 /*单个字符的回文串长度为1*/
+	for i:=1 to n do:
+		for j:=i to n-i-1 do:  /*枚举i-j的子串*/
+			if T[i]=T[j]:
+				dp[i][j]:=dp[i+1][j-1]+2
+			else:
+				dp[i][j]:=max(dp[i][j-1],dp[i+1][j])
+	return dp[0][n-1] /*返回原字符串的最大回文序列长度*/
+\end{lstlisting}
+\paragraph*{2)}采用类似的算法，将字符串中的所有回文字串划分。
+取子问题$IsPalind[i][j]$子串从i到j是否为回文子串，递推方程为:
+$$
+IsPalind[i][j]=(IsPalind[i+1][j-1])\&(T[i]==T[j]).
+$$
+取子问题$dp[i]$为划分前i个字符串需要的划分次数，如果$j-i$为回文子串，
+那么$dp[i]\geq dp[j]+1$。因此
+递推方程为:
+$$
+dp[i]=\min(dp[i],(IsPalind[j][i])\&\&(dp[j]+1)),j=1,2,\cdots, i-1.
+$$
+基于此得到算法伪代码，\textbf{时间复杂度} $O(n^2)$
+，\textbf{空间复杂度} $O(n^2)$:
+\begin{lstlisting}[language=C++,title=PalindSplit.func]
+FindPalind(T):
+	IsPalind[n+1][n+1] /*IsPalind数组大小为(n+1)(n+1)的二维数组*/
+	for i:=1 to n do:
+		IsPalind[i][i]:=true /*单个字符均为回文串*/
+	for i:=1 to n do:
+		for j:=1 to i do:  /*枚举j-i的子串*/
+			IsPalind[i][j]:=(IsPalind[i+1][j-1])&(T[i]=T[j])
+
+PalindSplit(T):
+	FindPalind(T) /*将字符串中所有的回文子串进行标记*/
+	dp:=[n+1] /*dp数组大小为(n+1)的一维数组*/
+ 	for i:=1 to n do:
+		dp[i]:=i-1 /*初始化划分i个字符需要i-1次*/
+	for i:=1 to n do:
+		for j:=1 to i do:   /*枚举j-i的子串*/
+			if IsPalind[i][j]:
+				dp[i]:=min(dp[i],dp[j]+1)
+	return dp[n-1]+1 /*返回原字符串最小划分次数+1，即回文串数量*/
+\end{lstlisting}
 {\subsection*{problem 14.13}}
 \markright{problem 14.13}
 \addcontentsline{toc}{subsection}{problem 14.13}
+\paragraph*{1)}取子问题$dp[i]$记录是否可以表示金额i。
+枚举使用每个硬币且不超过金额v的情况，如果$dp[j]$为真，
+则$dp[x_k]$也为真，递推方程为:
+$$dp[j+x_k]:=dp[j],k=1,2\cdots,n.$$
+\begin{lstlisting}[language=C++,title=RepCoin.func]
+RepCoin(X,v):
+	dp:=[v+1] /*dp数组大小为(v+1)的一维数组*/
+	for k:=1 to n do: /*所有硬币整数倍的均可以拼凑*/
+		j:=0
+		while(j*X[j]<=v):
+			dp[j*X[j]]:=true
+			j++
+	for k:=1 to n do:
+		for j:=0 to v do:
+			if dp[j]=true:
+				dp[j+X[i]]:=true
+	return dp[v]
+\end{lstlisting}
+\paragraph*{2)}
+与 \hyperlink{14.2}{problem 14.2} 类似，
+取子问题为$dp[i][j]$，含义为使用前i个数能否满足金额和为j。
+对于$dp[i][j]$要么使用了第i个元素，要么使用了前i-1个元素。故其递推式为:
+$$dp[i][j]=(dp[i-1][j])||(dp[i][j-A[i]]).$$
+\paragraph*{3)}即找最少的硬币来兑换目标金额。
+取子问题$dp[i]$为组成金额$i$所需最少的硬币数量，则对应的递推方程为:
+$$dp[i]=\min(dp(i-x_k))+1,k=0,1,\cdots,n.$$
+\begin{lstlisting}[language=C++,title=MinRepCoin.func]
+MinRepCoin(X,v):
+	dp:=[v+1] /*dp数组大小为(v+1)的一维数组*/
+	for i:=0 to v do: /*枚举0-v金额*/
+		for j:=1 to n do: /*枚举使用每一枚硬币*/
+			if X[j]<=i: /*硬币面值不超过所需金额*/
+				dp[i]:=min(dp[i],dp[i-X[j]]+1)
+	return dp[v]
+\end{lstlisting}
 {\subsection*{problem 14.14}}
 \markright{problem 14.14}
 \addcontentsline{toc}{subsection}{problem 14.14}
+\paragraph*{解}
+每个点设有两种状态：\\
+$dp[i][0]$表示点i属于点覆盖集，并且以点i为根的子树中所连接的边都
+被覆盖的情况下，点覆盖集中所包含最少点的个数。\\
+$dp[i][1]$表示点i不属于点覆盖集，并且以点i为根的子树中所连接的边都
+被覆盖的情况下，点覆盖集中所包含最少点的个数。\\
+对于第一种状态，其最小个数等于所有子节点两种状态中最小值之和并加其本身。\\
+对于第二种状态，因为点i所连接的边都应被覆盖，故点i的子节点都应被加入点覆盖集。
+故其最小个数等于所有子节点的第一种状态之和。\\
+$$\left\{
+	\begin{aligned}
+		&dp[i][0]=\sum\min(dp[j][0],dp[j][1]),parent[j]=i,\\
+		&dp[i][1]=\sum(dp[j][0]),parent[j]=i.
+	\end{aligned}
+	\right.
+$$
+\begin{lstlisting}[language=C++,title=MiniVertexCover.func]
+MiniVertexCover(u):
+	dp[u][0]:=1;
+	dp[u][1]:=0;
+	for child v of u do:
+         MiniVertexCover(v)
+         dp[u][0]+=min(dp[v][0],dp[v][1])
+		 dp[u][1]+=dp[v][0]
+
+MiniVertexCoverWrapper(T,root):
+	dp:=[V+1][2] /*dp数组大小为2(V+1)的一维数组*/
+	dp(root)
+	return min(dp[root][0],dp[root][1])
+\end{lstlisting}
 \end{document}
-
-
-
-
-
