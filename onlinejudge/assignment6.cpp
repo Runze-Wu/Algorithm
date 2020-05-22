@@ -76,6 +76,7 @@ int main()
     kruskal(n, m);
     return 0;
 }*/
+/*
 #include <iostream>
 #include <vector>
 #include <queue>
@@ -191,10 +192,6 @@ int topo(vector<vector<int>> &sccDAG, vector<int> &result)
         {
             result.push_back(x);
         }
-        /*for (int i = 0; i < sccDAG[x].size(); i++) {
-            in_degree[sccDAG[x][i]]--;
-            if (in_degree[sccDAG[x][i]] == 0)orderq.push(sccDAG[x][i]);
-        }*/
     }
     return Max;
 }
@@ -213,7 +210,7 @@ int main()
         in.clear();
         edges.push_back(edge);
     }
-    printf("I have read the rules about plagiarism punishment\n");
+    //printf("I have read the rules about plagiarism punishment\n");
     vector<vector<int>> sccDAG(n);
     for (int i = 0; i < n; i++)
         if (discover[i] == 0)
@@ -235,6 +232,76 @@ int main()
         }
         for (auto i = finalres.begin(); i != finalres.end(); i++)
             printf("%d ", *i);
+    }
+    return 0;
+}*/
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <vector>
+#include <sstream>
+#include <memory.h>
+#include <assert.h>
+using namespace std;
+int num = 0;
+bool BFS(int v, vector<vector<int>> &edges, vector<int> &color)
+{
+    vector<bool> vis(num, 0);
+    queue<int> myque;
+    vis[v] = true;
+    myque.push(v);
+    while (!myque.empty())
+    {
+        int w = myque.front();
+        myque.pop();
+        for (int i = 0; i < edges[w].size(); i++)
+        {
+            int x = edges[w][i];
+            if (vis[x])
+            {
+                if (color[x] == color[w])
+                    return false;
+            }
+            else
+            {
+                color[x] = !color[w];
+                vis[x] = true;
+                myque.push(x);
+            }
+        }
+    }
+    return true;
+}
+int main()
+{
+    vector<vector<int>> tempedges;
+    string oneline;
+    stringstream in;
+    num = 0;
+    while (getline(cin, oneline))
+    {
+        vector<int> edge;
+        in << oneline;
+        int temp;
+        num++;
+        while (in >> temp)
+            edge.push_back(temp);
+        in.clear();
+        tempedges.push_back(edge);
+    }
+    vector<vector<int>> edges(num);
+    vector<int> color(num, -1);
+    for (auto i = 0; i < num; i++)
+    {
+        int cur = tempedges[i][0];
+        edges[cur].assign(tempedges[i].begin() + 1, tempedges[i].end());
+    }
+    color[0] = 1;
+    assert(BFS(0, edges, color));
+    for (int i = 0; i < num; i++)
+    {
+        if (color[i] == 1)
+            cout << i << endl;
     }
     return 0;
 }

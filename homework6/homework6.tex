@@ -43,7 +43,7 @@
   showtabs=false,                  % show tabs within strings adding particular underscores  
   stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered  
   stringstyle=\color{orange},     % string literal style  
-  tabsize=4,                       % sets default tabsize to 2 spaces  
+  tabsize=3,                       % sets default tabsize to 2 spaces  
   %title=myPython.py                   % show the filename of files included with \lstinputlisting; also try caption instead of title  
 }  
 \hypersetup{hypertex=true,
@@ -134,7 +134,8 @@ UPDATE-FRINGE(v,Fringe):
 		if w is UNSEEN: /*如果是第一次遍历到*/
 			Fringe.INSERT(w,w.priority)  /*将w加入队列*/
 		else:
-			Fringe.decrease(w,w.priority) /*将w的权值更新为w.priority*/
+			Fringe.decrease(w,w.priority) 
+			/*将w的权值更新为w.priority*/
 \end{lstlisting}
 \paragraph*{2)}仿照Floyd算法，对路径$i \rightarrow k \rightarrow j$从ij，ik，kj中选取最小权边即可。
 \begin{lstlisting}[language=C++,title=FloydCap.func]
@@ -154,15 +155,15 @@ $u$到$v_0$的最短路径加上$v$到$v_0$的最短路径。
 \begin{lstlisting}[language=C++,title=ShortByV.func]
 ShortByV(G,v):
 	D:=W /*初始化所有最短路径为起始结点权值*/
-	for(k:=1 to n): /*计算所有节点到达v的最短路径*/
-		for(i:=1 to n):
-			D[i][v]:=min(D[i][v],D[i][k]+D[k][v])
-	for(k:=1 to n): /*计算v到达所有节点的最短路径*/
-		for(i:=1 to n):
-			D[v][i]:=min(D[v][i],D[v][k]+D[k][i])
+	GT=reverse(G) /*得到G的转置图*/
+	D[][v]:=dijkstra(GT,v) /*对GT使用dijkstra算法*/
+	/*计算所有节点到达v的最短路径，结果存入D[][v]中*/
+	dijkstra(G,v) /*对G使用dijkstra算法*/
+	/*计算v到达所有节点的最短路径，结果存入D[v][]中*/
 	for(i:=1 to n):
 		for(j:=1 to n):
-			D[i][j]:=D[i][v]+D[v][j] /*最短路径为i到v加v到j的最短路径*/
+			D[i][j]:=D[i][v]+D[v][j] 
+			/*最短路径为i到v加v到j的最短路径*/
 \end{lstlisting}
 \section*{Chapter 14}
 \markright{Chapter 14}
@@ -279,26 +280,31 @@ ReLCS(X,Y):
 \paragraph*{3)}
 在循环中记录重复次数，当$X[i]=Y[j]$且$X[i]$重复次数超过k后，
 $dp[i][j]$的LCS等价于X的前i-1个字符和Y前j-1个字符的LCS加1。
+开辟三维数组记录，$dp[i][j][1]$记录原始的LCS结果，$dp[i][j][2]$记录$X[i]$重复使用的次数。
 \begin{lstlisting}[language=C++,title=LimReLCS.func]
 LimReLCS(X,Y,k):
-	dp:=[m+1][n+1] /*dp数组大小为(m+1)(n+1)的二维数组*/
+	dp:=[m+1][n+1][2] /*dp数组大小为2(m+1)(n+1)的三维数组*/
 	for i:=1 to m do:
-		dp[i][0]:=0 /*X子串与空字符串的LCS为0*/
+		dp[i][0][1]:=0 /*X子串与空字符串的LCS为0*/
 	for j:=1 to n do:
-		dp[0][j]:=0 /*Y子串与空字符串的LCS为0*/
-	repnum:=0 /*重复次数初始化为0*/
+		dp[0][j][1]:=0 /*Y子串与空字符串的LCS为0*/
+	dp[][][2]:=0 /*初始化重复次数均为0*/
 	for i:=1 to m do:
 		for j:=1 to n do:
 			if X[i]=Y[j]:
-				if repnum<k:
-					repnum:=repnum+1
-					dp[i][j]:=dp[i][j-1]+1 /*递推式进行修改*/
+				if dp[i][j-1][2]>=k:
+					dp[i][j][2]:=dp[i-1][j-1][2]
+					dp[i][j][1]:=dp[i-1][j-1][1]+1
 				else:
-					dp[i][j]:=dp[i-1][j-1]+1
+					if dp[i][j-1][1]>dp[i-1][j-1][1] /*即需要使用X[i]*/
+						dp[i][j][1]:=dp[i][j-1][1]+1
+						dp[i][j][2]:=dp[i][j-1][2]+1 /*重复次数加1*/
+					else:
+						dp[i][j][1]:=dp[i-1][j-1][1]+1
+						dp[i][j][2]:=0 /*没有使用X[i]*/
 			else:
-				repnum:=0 /*X[i]!=Y[j]即不再使用X[i]*/
-				dp[i][j]:=max(dp[i-1][j],dp[i][j-1])
-	return dp[m][n] /*返回子问题规模为X和Y的LCS即可*/
+				dp[i][j]:=max(dp[i-1][j],dp[i][j-1]) /*重复次数与LCS结果均被复制*/
+	return dp[m][n][1] /*返回子问题规模为X和Y的LCS即可*/
 \end{lstlisting}
 \newpage
 \hypertarget{14.7}{\subsection*{problem 14.7}}

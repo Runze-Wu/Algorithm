@@ -100,88 +100,110 @@ int main()
 }*/
 
 #include <iostream>
-#include <vector>
 #include <queue>
-#include<memory.h>
-#include <assert.h>
+#include <algorithm>
+#include <vector>
+#include <map>
+#include <memory.h>
 using namespace std;
-#define MIN -2147483648
-#define MAX 2147483647
-int mymax(int a, int b)
+#define maxn 200010
+#define MAX 0x3f3f3f3f
+struct edge
 {
-    return a > b ? a : b;
+    int to, next, w;
+} e[maxn];
+struct node
+{
+    int v, pri;
+    node(int _v, int _pri) : v(_v), pri(_pri) {}
+    bool operator<(const node &a) const
+    {
+        return pri > a.pri;
+    }
+};
+int n, cnt, head[maxn];
+int dis[maxn];
+bool vis[maxn];
+/*void spfa(int s)
+{
+	queue<int> myque;
+	myque.push(s);
+	vis[s] = true;
+	dis[s] = 0;
+	while (!myque.empty())
+	{
+		int u = myque.front();
+		myque.pop();
+		vis[u] = false;
+		for (int i = head[u]; ~i; i = e[i].next)
+		{
+			int v = e[i].to;
+			int weight = e[i].w;
+			if (dis[v] > max(dis[u], weight))
+			{
+				dis[v] = max(dis[u], weight);
+				if (!vis[v]) {
+					myque.push(v);
+					vis[v] = true;
+				}
+			}
+		}
+	}
+}*/
+void init(int n)
+{
+    for (int i = 0; i <= n; i++)
+    {
+        vis[i] = false;
+        dis[i] = MAX;
+        head[i] = -1;
+    }
 }
-struct Node
+void add(int u, int v, int w)
 {
-    int v, w;
-    Node(int _v, int _w) : v(_v), w(_w) {}
-    bool operator<(const Node&a)const{
-        return w<a.w;
-    }
-};
-class Graph
+    e[cnt].to = v;
+    e[cnt].w = w;
+    e[cnt].next = head[u];
+    head[u] = cnt++;
+}
+void dijkstra(int s, int t)
 {
-private:
-    int num;
-    vector<Node> *edges;
-    vector<int> InDegree;
-
-public:
-    Graph(int _num) : num(_num)
-    {
-        edges = new vector<Node>[_num];
-        InDegree = vector<int>(_num, 0);
-    }
-    void AddEdge(int u, int v, int w = 0)
-    {
-        Node temp(v, w);
-        edges[u].push_back(temp);
-        InDegree[v]++;
-    }
-    int dijkstra(int s,int t);
-};
-int Graph::dijkstra(int s,int t)
-{
-    bool *vis=new bool[num+1];
-    int *dis=new int[num+1];
-    memset(dis, false, sizeof(vis));
-    memset(vis,false,sizeof(vis));
-    priority_queue<Node>myque;
-    myque.push(Node(s,0));
-    dis[s]=0;
-    int res=MAX;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> myque;
+    dis[s] = 0;
+    myque.push(make_pair(0, s));
     while (!myque.empty())
     {
-        Node x=myque.top();
+        int u = myque.top().second;
         myque.pop();
-        int u=x.v,cost=x.w;
-        if(u==t){
-            res=res<cost?cost:res;
-        }
-        if(vis[u])continue;
-        vis[u]=true;
-        for(int i=0;i<edges[u].size();i++)
+        if (u == t)
+            return;
+        if (vis[u])
+            continue;
+        vis[u] = true;
+        for (int i = head[u]; ~i; i = e[i].next)
         {
-            int v=edges[u][i].v,w=edges[u][i].w;
-            int maxcost = cost>w?cost:w;
-            if (maxcost>dis[v]){
-                dis[v]=maxcost;
-                myque.push(Node(v,maxcost));
+            int v = e[i].to;
+            int weight = e[i].w;
+            if (dis[v] > max(dis[u], weight))
+            {
+                dis[v] = max(dis[u], weight);
+                myque.push(make_pair(dis[v], v));
             }
         }
     }
-    return res;
 }
 int main()
 {
     printf("I have read the rules about plagiarism punishment\n");
-    int n,s,t,u,v,w;
-    scanf("%d%d%d",&n,&s,&t);
-    Graph mygraph(n);
-    while (scanf("%d%d%d", &w,&u, &v) == 3){
-        mygraph.AddEdge(u, v, w);
-        mygraph.AddEdge(u, v, w);
+    int n, s, t, u, v, w;
+    scanf("%d%d%d", &n, &s, &t);
+    init(n);
+    while (scanf("%d%d%d", &w, &u, &v) == 3)
+    {
+        add(u, v, w);
+        add(v, u, w);
     }
-    assert(n);
-    printf("%d",mygraph.dijkstra(s,t));
+    dijkstra(s, t);
+    printf("%d", dis[t]);
+    return 0;
 }
