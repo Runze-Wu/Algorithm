@@ -98,7 +98,7 @@ int main()
         printf("%d ", res[i]);
     return 0;
 }*/
-
+/*
 #include <iostream>
 #include <queue>
 #include <algorithm>
@@ -106,25 +106,17 @@ int main()
 #include <map>
 #include <memory.h>
 using namespace std;
-#define maxn 200010
-#define MAX 0x3f3f3f3f
+#define maxn 500010
+#define MAX 2147483647
 struct edge
 {
     int to, next, w;
 } e[maxn];
-struct node
-{
-    int v, pri;
-    node(int _v, int _pri) : v(_v), pri(_pri) {}
-    bool operator<(const node &a) const
-    {
-        return pri > a.pri;
-    }
-};
+
 int n, cnt, head[maxn];
 int dis[maxn];
 bool vis[maxn];
-/*void spfa(int s)
+void spfa(int s)
 {
 	queue<int> myque;
 	myque.push(s);
@@ -149,9 +141,10 @@ bool vis[maxn];
 			}
 		}
 	}
-}*/
+}
 void init(int n)
 {
+    cnt=0;
     for (int i = 0; i <= n; i++)
     {
         vis[i] = false;
@@ -166,17 +159,15 @@ void add(int u, int v, int w)
     e[cnt].next = head[u];
     head[u] = cnt++;
 }
+priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> myque;
 void dijkstra(int s, int t)
 {
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> myque;
     dis[s] = 0;
     myque.push(make_pair(0, s));
     while (!myque.empty())
     {
         int u = myque.top().second;
         myque.pop();
-        if (u == t)
-            return;
         if (vis[u])
             continue;
         vis[u] = true;
@@ -184,7 +175,7 @@ void dijkstra(int s, int t)
         {
             int v = e[i].to;
             int weight = e[i].w;
-            if (dis[v] > max(dis[u], weight))
+            if (!vis[v]&&dis[v] > max(dis[u], weight))
             {
                 dis[v] = max(dis[u], weight);
                 myque.push(make_pair(dis[v], v));
@@ -198,12 +189,69 @@ int main()
     int n, s, t, u, v, w;
     scanf("%d%d%d", &n, &s, &t);
     init(n);
-    while (scanf("%d%d%d", &w, &u, &v) == 3)
+    while (scanf("%d%d%d", &w, &u, &v) != EOF)
     {
         add(u, v, w);
         add(v, u, w);
     }
     dijkstra(s, t);
     printf("%d", dis[t]);
+    return 0;
+}*/
+#include <iostream>
+#include <queue>
+#include <algorithm>
+#include <vector>
+#include <map>
+using namespace std;
+#define MAX 2147483647
+struct edge
+{
+    int v;
+    int w;
+    edge(int _v, int _w) : v(_v), w(_w) {}
+};
+
+int n, s, t, u, v, w;
+priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> myque;
+int dijkstra(int s, int t, vector<vector<edge>> &edges)
+{
+    vector<bool> vis(n, false);
+    vector<int> dis(n, MAX);
+    dis[s] = 0;
+    myque.push(make_pair(0, s));
+    while (!myque.empty())
+    {
+        int u = myque.top().second;
+        myque.pop();
+        //printf("%d\n", u);
+        if (vis[u])
+            continue;
+        vis[u] = true;
+        for (int i = 0; i < edges[u].size(); i++)
+        {
+            int v = edges[u][i].v;
+            int weight = edges[u][i].w;
+            if (!vis[v] && dis[v] > max(dis[u], weight))
+            {
+                dis[v] = max(dis[u], weight);
+                myque.push(make_pair(dis[v], v));
+            }
+        }
+    }
+    return dis[t];
+}
+int main()
+{
+    printf("I have read the rules about plagiarism punishment\n");
+
+    scanf("%d%d%d", &n, &s, &t);
+    vector<vector<edge>> edges(n);
+    while (scanf("%d%d%d", &w, &u, &v) != EOF)
+    {
+        edges[u].push_back(edge(v, w));
+        edges[v].push_back(edge(u, w));
+    }
+    printf("%d", dijkstra(s, t, edges));
     return 0;
 }
