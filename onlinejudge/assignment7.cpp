@@ -1,4 +1,4 @@
-/*#include <iostream>
+#include <iostream>
 #include <vector>
 #include <queue>
 #include <assert.h>
@@ -97,7 +97,7 @@ int main()
     for (int i = 1; i < res.size(); i++)
         printf("%d ", res[i]);
     return 0;
-}*/
+}
 /*
 #include <iostream>
 #include <queue>
