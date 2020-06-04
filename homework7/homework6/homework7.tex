@@ -1,0 +1,270 @@
+\documentclass[11pt,a4paper,oneside,oldfontcommands]{ctexart}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{graphicx} 
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{color}
+\usepackage{xcolor}
+\definecolor{keywordcolor}{rgb}{0.8,0.1,0.5}
+\usepackage{listings}
+
+
+\definecolor{mygreen}{rgb}{0,0.6,0}  
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}  
+\definecolor{mymauve}{rgb}{0.58,0,0.82}  
+  
+\lstset{ %  
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}  
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code  
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace  
+  breaklines=true,                 % sets automatic line breaking  
+  captionpos=bl,                    % sets the caption-position to bottom  
+  commentstyle=\color{mygreen},    % comment style  
+  deletekeywords={...},            % if you want to delete keywords from the given language  
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code  
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8  
+  frame=single,                    % adds a frame around the code  
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)  
+  keywordstyle=\color{blue},       % keyword style  
+  %language=Python,                 % the language of the code  
+  morekeywords={*,...},            % if you want to add more keywords to the set  
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)  
+  numbersep=5pt,                   % how far the line-numbers are from the code  
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers  
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))  
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'  
+  showstringspaces=false,          % underline spaces within strings only  
+  showtabs=false,                  % show tabs within strings adding particular underscores  
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered  
+  stringstyle=\color{orange},     % string literal style  
+  tabsize=3,                       % sets default tabsize to 2 spaces  
+  %title=myPython.py                   % show the filename of files included with \lstinputlisting; also try caption instead of title  
+}  
+\hypersetup{hypertex=true,
+	colorlinks=true,
+	linkcolor=red,
+	anchorcolor=blue,
+	citecolor=blue}
+\fancyhf{}
+\chead{\textbf{算法设计与分析}}
+\fancyhead[r]{\bfseries\thepage}
+\fancyhead[l]{\bfseries\rightmark}
+\renewcommand{\headrulewidth}{0.4pt} % 注意不用 \setlength
+\renewcommand{\footrulewidth}{0pt}
+
+\floatname{algorithm}{算法}
+\renewcommand{\algorithmicrequire}{\textbf{输入:}}
+\renewcommand{\algorithmicensure}{\textbf{输出:}}
+
+\begin{titlepage}
+	\title{\Huge\textbf{算法设计与分析 作业七}\\}
+	\author{\Large\textbf{作者}：吴润泽 \and{\Large\textbf{学号}：181860109}\\
+	\\
+	\and {\Large\textbf{Email}：\href{mailto:181860109@smail.nju.edu.cn}{181860109@smail.nju.edu.cn}}\\}
+	\date{\Large\today}
+\end{titlepage}
+\begin{document}
+\maketitle
+
+\tableofcontents
+\cleardoublepage
+\section*{Chapter 15}
+\markright{Chapter 15}
+\addcontentsline{toc}{section}{Chapter 15}
+{\subsection*{problem 15.1}}
+\markright{problem 15.1}
+\addcontentsline{toc}{subsection}{problem 15.1}
+\subsubsection*{(1)}
+\paragraph*{CLIQUE}
+\subparagraph*{优化问题}
+\begin{itemize}
+	\item {输入实例： 无向图G}
+	\item {优化问题：求图G中最大团的大小}
+\end{itemize}
+\subparagraph*{判定问题}
+\begin{itemize}
+	\item {输入实例： 无向图G；参数k}
+	\item {判定问题：图G中是否存在大小为k的团}
+\end{itemize}
+\paragraph*{KNAPSACK}
+\subparagraph*{优化问题}
+\begin{itemize}
+	\item {输入实例： n个物品，其大小分别为$s_1,s_2,\cdots,s_n$，每个物品的价值为$c_1,c_2,\cdots,c_n$；参数C}
+	\item {优化问题：背包中装若干物品，使得背包中物品的大小之和不超过C的物品价值和的最大值}
+\end{itemize}
+\subparagraph*{判定问题}
+\begin{itemize}
+	\item {输入实例： n个物品，其大小分别为$s_1,s_2,\cdots,s_n$，每个物品的价值为$c_1,c_2,\cdots,c_n$；参数k和C}
+	\item {判定问题：是否可以在背包中装若干物品，使得背包中物品的大小之和不超过C，且价值之和不低于k}
+\end{itemize}
+\paragraph*{INDEPENDENT-SET}
+\subparagraph*{优化问题}
+\begin{itemize}
+	\item {输入实例： 无向图G}
+	\item {优化问题：求图G中最大独立集的大小}
+\end{itemize}
+\subparagraph*{判定问题}
+\begin{itemize}
+	\item {输入实例： 无向图G；参数k}
+	\item {判定问题：图G中是否存在大小为k的独立集}
+\end{itemize}
+\paragraph*{VERTEX-COVER}
+\subparagraph*{优化问题}
+\begin{itemize}
+	\item {输入实例： 无向图G}
+	\item {优化问题：求图G中最小点覆盖的大小}
+\end{itemize}
+\subparagraph*{判定问题}
+\begin{itemize}
+	\item {输入实例： 无向图G；参数k}
+	\item {判定问题：图G中是否存在大小为k的点覆盖}
+\end{itemize}
+\subsubsection*{(2)}
+\paragraph*{CLIQUE}
+\subparagraph*{优化问题多项式时间可解} 设其最大团大小为n，对于其判定问题，
+输入参数为k。如果$k\leq n$，则判定结果为$true$，否则结果为$false$。因此判定问题也是多项式时间可解。
+\subparagraph*{判定问题多项式时间可解} 假设图G点数为n，则分别取判定问题输入参数$k=1,2,\cdots,n$，
+当$k<m$时结果均为$true$，$k=m$时结果为$false$，则图G的最大团大小即为$m-1$，则最多进行了n次的判定问题求解。
+由于多项式的计算封闭性，优化问题也为多项式时间可解。
+\paragraph*{KNAPSACK}
+\subparagraph*{优化问题多项式时间可解} 设对于给定的若干物品，以及容量$C^{'}$，其最大的物品价值和为m，
+对于其判定问题，令输入参数$C=C^{'}$，其另一输入参数k。如果$k\leq m$，则判定结果为$true$，否则结果为$false$。因此判定问题也是多项式时间可解。
+\subparagraph*{判定问题多项式时间可解} 对于给定容量$C$，分别取判定问题输入参数$k=sum(1),sum(2),\cdots,sum(n)$，
+$sum(i)$为前i个物品价值总和，
+当$k<m$时结果均为$true$，$k=m$时结果为$false$，则背包中物品的大小之和不超过C的物品价值和的最大值即为$m-1$，
+则最多进行了n次的判定问题求解。
+由于多项式的计算封闭性，优化问题也为多项式时间可解。
+\paragraph*{INDEPENDENT-SET}
+\subparagraph*{优化问题多项式时间可解}设其最大独立集大小为n，对于其判定问题，
+输入参数为k。如果$k\leq n$，则判定结果为$true$，否则结果为$false$。因此判定问题也是多项式时间可解。
+\subparagraph*{判定问题多项式时间可解}假设图G点数为n，则分别取判定问题输入参数$k=1,2,\cdots,n$，
+当$k<m$时结果均为$true$，$k=m$时结果为$false$，则图G的最大独立集大小即为$m-1$，则最多进行了n次的判定问题求解。
+由于多项式的计算封闭性，优化问题也为多项式时间可解。
+\paragraph*{VERTEX-COVER}
+\subparagraph*{优化问题多项式时间可解}设其最小点覆盖大小为n，对于其判定问题，
+输入参数为k。如果$k\geq n$，则判定结果为$true$，否则结果为$false$。因此判定问题也是多项式时间可解。
+\subparagraph*{判定问题多项式时间可解}假设图G点数为n，则分别取判定问题输入参数$k=n,n-1,\cdots,1$，
+当$k\geq m$时结果均为$true$，$k<m$时结果为$false$，则图G的最小点覆盖大小即为$m$，则最多进行了n次的判定问题求解。
+由于多项式的计算封闭性，优化问题也为多项式时间可解。
+{\subsection*{problem 15.2}}
+\markright{problem 15.2}
+\addcontentsline{toc}{subsection}{problem 15.2}
+\paragraph*{证明}即证明如果有$L_1\leq_pL_2$，且$L_2\leq_pL_3$则有$L_1\leq_pL_3$。
+因为$L_1\leq_pL_2$，则问题$L_1$可以通过多项式时间转换函数$T_1$归约到问题$L_2$，同理，
+问题$L_2$可以通过多项式时间转换函数$T_2$归约到问题$L_3$。由多项式计算封闭性可知，$L_1$可以通过
+多项式时间转换$T_3$归约到问题$L_3$，因此$L_1\leq_pL_3$。
+{\subsection*{problem 15.4}}
+\markright{problem 15.4}
+\addcontentsline{toc}{subsection}{problem 15.4}
+设原始序列为$a_1,a_2,\cdots,a_n$，选择输入参数k，代表选择第k大。
+\paragraph*{排序归约到选择}
+对于排序的原始序列直接设为传入选择算法的序列即可，输入转换代价为常数，
+对序列进行n次选择，输入参数$k=1,2,\cdots,n$，即依次选择第i大元素将其放在目标序列的对应位置。
+n次选择后，即可得到已经排好序的序列，将其输出即可。
+\paragraph*{选择归约到排序}对于选择的原始序列直接设为传入排序算法的序列即可，输入转换代价为常数，
+然后根据选择算法的输入参数k，获取排序后序列的下标为k的元素作为输出即可。
+
+\noindent 与选择排序相似，每次选择待排序序列的最大元素加入已排序的末尾。
+{\subsection*{problem 15.5}}
+\markright{problem 15.5}
+\addcontentsline{toc}{subsection}{problem 15.5}
+\paragraph*{问题1归约到问题2}
+对于问题1的输入集合S直接设为传入问题2的输入集合即可，并令问题2的输入参数$k=\frac{n+1}{2}$，
+输出即为集合S的中位数。
+\paragraph*{问题2归约到问题1}不妨设n为奇数，阶为k的元素为m\\
+	1. 当k等于$\frac{n+1}{2}$时，将原集合传入问题1，即可找到m；\\
+	2. 当k小于$\frac{n+1}{2}$时，遍历原集合S，记录其元素最小值为min，对于原集合S，有$n-k$个元素大于m，$k-1$个元素小于m。\\
+	3. 开辟新集合temp，将前$n-2k+1$个元素值赋为min-1，并将S的n个元素放入其后。
+	则集合temp中有$n-k$个元素大于m，$n-k$个元素小于m。因此m为temp中位数，将temp传入问题1，即可找到m。\\
+	4. 当k大于$\frac{n+1}{2}$时，同理记录其元素最大值为max，开辟数组temp，在数组temp中前$2k-n-1$个赋值为max+1。同样使得m变为temp中位数，将temp传入问题1，即可找到m。\\
+\newpage
+\section*{Chapter 16}
+\markright{Chapter 16}
+\addcontentsline{toc}{section}{Chapter 16}
+{\subsection*{problem 16.2}}
+\markright{problem 16.2}
+\addcontentsline{toc}{subsection}{problem 16.2}
+\subsubsection*{1)}
+对于判定算法，选择图G中的k个点，共有$C_n^k=\frac{n!}{(n-k)!k!}$种选择，
+选择k个点后，判断k个点之间是否均有边相连，则最多遍历$C_k^2=\frac{k(k-1)}{2}$条边。
+算法最多需要判断所有可能选择是否成立，因此时间复杂度为$T(n)=\frac{n!}{(n-k)!k!}\times\frac{k(k-1)}{2}$，
+同时k为常数，则$T(n)=O(n^k)$，即为多项式复杂度。
+\begin{lstlisting}[language=C++,title=FakeCliqueJudge.func]
+FakeCliqueJudge(G,k)
+Loop:
+	for each G_k in G:  /*选取G中的每个有k个点的子图*/
+		for v in G_k:
+			for w in G_k:
+				if v=w: continue;
+				if vw not in G: goto Loop;
+				/*如果图G中不存在vw边，则判断下一个k点子图*/
+		return true; /*每一对点均有边，则说明为团*/
+	return false;
+\end{lstlisting}
+\subsubsection*{2)}
+不能证明。因为题中要求的判定问题中，是根据给定的常数k，判断是否具有k大小的团。
+而$CLIQUE$问题的判定问题中，输入参数k是不确定的变量，在确定判定问题复杂度时，k为常数的条件不再成立。
+伪最大团问题与$CLIQUE$问题并不等价，因此并不能证明$P=NP$。
+\newpage
+{\subsection*{problem 16.3}}
+\markright{problem 16.3}
+\addcontentsline{toc}{subsection}{problem 16.3}
+\subsubsection*{1)}
+对于DNF-SAT，每个子句间以逻辑或相连，因此若使整个表达式成立，则使得其中任意一个子句成立即可。
+对于任意子句，其中各变量以逻辑与相连，只要其中不同时存在某一变量和该变量的非，
+则就可以对子句中每一布尔变量进行相应的赋值，使其为$true$即可，就能使得子句为$true$。
+如果每一子句都包含了布尔变量和布尔变量的非，则DNF-SAT中每一子句均不能为$true$，最终结果为$false$。
+显然在$O(n)$时间内即可完成，即多项时间内可解，DNF-SAT为P问题。
+\subsubsection*{2)}
+CNF-SAT等价地转换为DNF-SAT时，这个归约过程无法保证在多项式时间内完成，所以后续推理不成立。
+则不能得到$CNF-SAT\leq_p DNF-SAT$，不能证明$P=NP$。
+{\subsection*{problem 16.4}}
+\markright{problem 16.4}
+\addcontentsline{toc}{subsection}{problem 16.4}
+\paragraph*{稠密子图为NP问题}
+对于任意猜测的解，（k个点的形式）
+我们可以在$O(k^2)$的时间内验证，
+这个子图中的边数是否至少有y条边，
+即解可以多项式时间内验证，所以是NP问题。
+\paragraph*{稠密子图为NP难问题}
+可通过证明最大团问题可以在多项式时间下归约到稠密子图问题，来进行证明。
+对于最大团问题其输入G，k直接作为稠密子图的输入G、k，
+并令$y=C_k^2=\frac{k(k-1)}{2}$，显然归约为多项式时间。\\
+\hspace*{20pt}\textbf{输出的正确性: }
+对于一个子图H，有k个顶点，则其最多有$C_k^2$条边，即完全图的情况。
+如果对于上述归约后的输入，稠密子图输出为$true$，则说明G中存在
+k大小的完全图(团)；稠密子图输出为$false$，则说明G中任意k个顶点的子图，
+其边数均不足$C_k^2$，即不存在k大小的完全图。
+\paragraph*{稠密子图为NP完成问题}
+综上最大团问题可以多项式时间归约到稠密子图问题，
+因为最大团问题是NP完全问题，
+并且稠密子图是NP问题 ，
+所以稠密子图是NP完全问题。
+
+{\subsection*{problem 16.5}}
+\markright{problem 16.5}
+\addcontentsline{toc}{subsection}{problem 16.5}
+\paragraph*{SET-COVER为NP问题}
+给定k个子集，我们可以在O(kn)时间内验证它们的并集是否是U，
+所以我们可以在多项式时间内，验证这个问题的一个解，所以这个问题是NP的。
+\paragraph*{SET-COVER为NP难问题}
+可通过证明DOMINATION-SET问题可以在多项式时间下归约到SET-COVER问题，来证明。
+对于DOMINATION-SET问题其输入G，k，
+以k作为SET-COVER的输入k，以图G的顶点集合作为输入U，每个子集$S_i$为图G第i个点以及该点的邻居。
+显然归约为多项式时间。\\
+\hspace*{20pt}\textbf{输出的正确性: }
+如果对于上述归约后的输入，输出为$true$，则说明存在大小为k的集合$S_1^{'},S_2^{'},\cdots,S_k^{'}$覆盖U，
+而$S_i^{'}$则对应了图G中的点$v_i^{'}$，即存在大小为k的支配集；如果输出为$false$，同理，
+说明不存在大小为k的支配集。
+\paragraph*{SET-COVER为NP完成问题}
+综上DOMINATION-SET问题可以多项式时间归约到SET-COVER问题，
+因为DOMINATION-SET问题是NP完全问题，
+并且SET-COVER是NP问题 ，
+所以稠SET-COVER问题是NP完全问题。
+\end{document}
