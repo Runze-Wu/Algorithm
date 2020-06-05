@@ -583,15 +583,15 @@ $u$到$v_0$的最短路径加上$v$到$v_0$的最短路径。
 \begin{lstlisting}[language=C++,title=ShortByV.func]
 ShortByV(G,v):
 	D:=W /*初始化所有最短路径为起始结点权值*/
-	for(k:=1 to n): /*计算所有节点到达v的最短路径*/
-		for(i:=1 to n):
-			D[i][v]:=min(D[i][v],D[i][k]+D[k][v])
-	for(k:=1 to n): /*计算v到达所有节点的最短路径*/
-		for(i:=1 to n):
-			D[v][i]:=min(D[v][i],D[v][k]+D[k][i])
+	GT=reverse(G) /*得到G的转置图*/
+	D[][v]:=dijkstra(GT,v) /*对GT使用dijkstra算法*/
+	/*计算所有节点到达v的最短路径，结果存入D[][v]中*/
+	dijkstra(G,v) /*对G使用dijkstra算法*/
+	/*计算v到达所有节点的最短路径，结果存入D[v][]中*/
 	for(i:=1 to n):
 		for(j:=1 to n):
-			D[i][j]:=D[i][v]+D[v][j] /*最短路径为i到v加v到j的最短路径*/
+			D[i][j]:=D[i][v]+D[v][j] 
+			/*最短路径为i到v加v到j的最短路径*/
 \end{lstlisting}
 \newpage
 {\subsection*{problem 13.9}}
