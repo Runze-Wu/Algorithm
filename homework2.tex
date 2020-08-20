@@ -137,7 +137,7 @@
 			\State{$swap(b[i++],b[j--])$}
 			\EndWhile
 			\State{$l<mark\ ? \ match(A,B,l,mark-1)$}
-			\State{$r<mark\ ? \ match(A,B,mark+1,r)$}
+			\State{$r>mark\ ? \ match(A,B,mark+1,r)$}
 			\EndFunction
 		\end{algorithmic}
 	\end{algorithm}
@@ -149,8 +149,8 @@
 	\paragraph{算法分析}利用归并排序的思想，在归并排序中合并左右数组A，B\\
 	\hspace*{20pt}1. 由归并排序定义可知，A、B两数组已经有序。\\
 	\hspace*{20pt}2. 在合并过程中，就需要计算a[i]，b[j]分别来自左右两部分的逆序对数，同时遍历两个数组，对于遍历的两个数进行比较大小，如果$a[i]<b[0]$显然没有逆序。\\
-	\hspace*{20pt}4. 如果$a[i]>b[j]$，那么$a[i+1\cdots n]>b[j]$均成立，即逆序对数有$n-i+1$个
-	因此遍历时没遇到$a[i]>b[j]$，逆序对数加$n-i+1$即可。
+	\hspace*{20pt}4. 如果$a[i]>b[j]$，那么$a[i+1\cdots n]>b[j]$均成立，即逆序对数有$n-i+1$个。
+	因此遍历时如遇到$a[i]>b[j]$，逆序对数加$n-i+1$即可。
 	\paragraph{具体算法实现请见算法MergeSort：\hyperref[MergeSort算法]{MergeSort算法}}
 	\paragraph{算法时间复杂度}与归并排序算法相同，在合并函数中仅添加一条赋值语句，复杂度仍为$O(n\log n)$符合题目要求。
 	\subsubsection*{(2)}
@@ -410,7 +410,7 @@
 	\subsubsection*{算法设计}
 	1. 给定最大堆为heap1，新建最大堆heap2，存储结构元素(value,index)，比较原则为value。\\
 	\hspace*{20pt}2. 从heap1中取出根节点将其放入heap2。\\
-	\hspace*{20pt}3. 从heap1中弹出根节点Node，K减一，当K减为0，返回Node的value即可。\\
+	\hspace*{20pt}3. 从heap2中弹出根节点Node，K减一，当K减为0，返回Node的value即可。\\
 	\hspace*{20pt}4. 插入根节点对应的左右子节点到heap2中。\\
 	\hspace*{20pt}5. 回到第2步。\\
 
@@ -438,7 +438,7 @@
 	\markright{problem 7.3}
 	\addcontentsline{toc}{subsection}{problem 7.3}
 	对于d叉堆中第m层的第n个元素(m,n均从1开始)，则它在数组中的下标为：
-	$$I(m,n)=(1+d+d^2+\cdots+d^{m-2})+j=\frac{d^{m-1}-1}{d-1}+n$$
+	$$I(m,n)=(1+d+d^2+\cdots+d^{m-2})+n=\frac{d^{m-1}-1}{d-1}+n$$
 	对于其父节点，则为第m-1层的第$\lfloor\frac{n}{d}\rfloor$个元素，因此下标为：\\
 	$
 	\begin{aligned}

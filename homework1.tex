@@ -808,8 +808,8 @@
 			\State $left\gets 0,\ s1\gets 0$
 			\For {$i \gets center \ to\ start$}
 			\State $left\gets lefts+S[i]$
-			\State $s1\gets max(left,s1)$\\
-			\EndFor
+			\State $s1\gets max(left,s1)$
+			\EndFor\\
 			\verb|/**|同理计算包含右半部分最左元素的最大和s2	\verb|**/|
 			\State $res=max(left\_res,right\_res,s1+s2)$
 			\EndIf
@@ -843,7 +843,7 @@
 			\verb|/**|sum[i]用来记录以S[i]结尾的序列最大和\verb|**/|
 			\State $res\gets0,len \gets S.length(),\ sum[0]\gets0$
 			\For {$i \gets 1 \ to\ len$}
-			\State $sum[i]=max(sum[i],sum[i-1]+num[i])$
+			\State $sum[i]=max(num[i],sum[i-1]+num[i])$
 			\State $res=max(sum[i],res)$
 			\EndFor
 			\State \Return {$res$}
